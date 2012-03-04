@@ -23,6 +23,7 @@ namespace JD_Bacon_The_Game
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            // Hello World!!!
         }
 
         /// <summary>
