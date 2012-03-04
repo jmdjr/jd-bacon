@@ -10,3 +10,5 @@ So far, here are the external libraries I plan on using (as of 3/3/2012)
 XNAnimation - Chartacter modeling support, animation and texture mapping.
 
 ScreenManager - Used to manage scene transistions (title scene, game scene, etc)
+
+EasyXnaAudioComponent - simple and small class to assist managing the songs and sound effects in our game.
