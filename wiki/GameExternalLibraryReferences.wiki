@@ -4,7 +4,7 @@
 Since XNA is such a core library, implementing everything necessary for any good game across multiple platforms, it can't account for all the important aspects of a game.  This is where external libraries come in.  Here, I will include links to and details about the External libraries used to assist in developing our game.
 
 = Details =
-First off, I would like to thank [http://nelxon.com/resources/xdsk2/ XDSK2]
+First off, I would like to thank Nelxon and his XNA Developer Survival Kit 2 found [http://nelxon.com/resources/xdsk2/ here].  Most if not all of these external libraries are found at that link.
 So far, here are the external libraries I plan on using (as of 3/3/2012)
 
 XNAnimation - Chartacter modeling support, animation and texture mapping.
