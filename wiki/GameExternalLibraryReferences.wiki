@@ -4,8 +4,6 @@
 Since XNA is such a core library, implementing everything necessary for any good game across multiple platforms, it can't account for all the important aspects of a game.  This is where external libraries come in.  Here, I will include links to and details about the External libraries used to assist in developing our game.
 
 = Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+So far, here are the external libraries I plan on using (as of 3/3/2012)
+XNAnimation - Chartacter modeling support, animation and texture mapping.
+ScreenManager - Used to manage scene transistions (title scene, game scene, etc)
