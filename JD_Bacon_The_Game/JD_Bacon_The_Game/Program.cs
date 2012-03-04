@@ -1,5 +1,4 @@
 using System;
-
 namespace JD_Bacon_The_Game
 {
 #if WINDOWS || XBOX
