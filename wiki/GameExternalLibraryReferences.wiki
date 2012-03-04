@@ -12,3 +12,9 @@ XNAnimation - Chartacter modeling support, animation and texture mapping.
 ScreenManager - Used to manage scene transistions (title scene, game scene, etc)
 
 EasyXnaAudioComponent - simple and small class to assist managing the songs and sound effects in our game.
+
+
+
+
+== reference material ==
+http://www.digitalrune.com/Support/Blog/tabid/719/EntryId/49/XNA-4-0-Class-Diagrams.aspx
