@@ -1,0 +1,9 @@
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\bin\x86\Release\WinFormsContentLoading.exe
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\bin\x86\Release\WinFormsContentLoading.pdb
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\WinFormsContentLoading.MainForm.resources
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\WinFormsContentLoading.Properties.Resources.resources
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\WinFormsContentLoading.exe
+C:\Projects\XNA Game Engine Open Sources\XNA in Windows Forms\WinFormsContentLoading\obj\x86\Release\WinFormsContentLoading.pdb
