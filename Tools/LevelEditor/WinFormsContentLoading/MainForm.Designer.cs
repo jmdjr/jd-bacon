@@ -75,10 +75,21 @@ namespace WinFormsContentLoading
             this.modelViewerControl.Location = new System.Drawing.Point(0, 24);
             this.modelViewerControl.Model = null;
             this.modelViewerControl.Name = "modelViewerControl";
+            this.modelViewerControl.PosX = 0;
+            this.modelViewerControl.PosY = 0;
+            this.modelViewerControl.PosZ = 0;
+            this.modelViewerControl.RotX = 0F;
+            this.modelViewerControl.RotY = 0F;
             this.modelViewerControl.Size = new System.Drawing.Size(792, 549);
             this.modelViewerControl.TabIndex = 1;
             this.modelViewerControl.Text = "modelViewerControl";
             this.modelViewerControl.Click += new System.EventHandler(this.modelViewerControl_Click);
+            this.modelViewerControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.modelViewerControl_KeyDown);
+            this.modelViewerControl.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.modelViewerControl_KeyPress);
+            this.modelViewerControl.KeyUp += new System.Windows.Forms.KeyEventHandler(this.modelViewerControl_KeyUp);
+            this.modelViewerControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.modelViewerControl_MouseDown);
+            this.modelViewerControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.modelViewerControl_MouseMove);
+            this.modelViewerControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.modelViewerControl_MouseUp);
             // 
             // MainForm
             // 

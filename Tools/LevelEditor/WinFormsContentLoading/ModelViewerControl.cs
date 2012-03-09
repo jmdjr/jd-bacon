@@ -51,6 +51,14 @@ namespace WinFormsContentLoading
         float modelRadius;
 
 
+        // Manipulation variables.
+        public int PosX { get; set; }
+        public int PosY { get; set; }
+        public int PosZ { get; set; }
+
+        public float RotX { get; set; }
+        public float RotY { get; set; }
+
         // Timer controls the rotation speed.
         Stopwatch timer;
 
@@ -81,9 +89,8 @@ namespace WinFormsContentLoading
             if (model != null)
             {
                 // Compute camera matrices.
-                float rotation = (float)timer.Elapsed.TotalSeconds;
 
-                Vector3 eyePosition = modelCenter;
+                Vector3 eyePosition = modelCenter + new Vector3(PosX, PosY, PosZ);
 
                 eyePosition.Z += modelRadius * 2;
                 eyePosition.Y += modelRadius;
@@ -93,7 +100,8 @@ namespace WinFormsContentLoading
                 float nearClip = modelRadius / 100;
                 float farClip = modelRadius * 100;
 
-                Matrix world = Matrix.CreateRotationY(rotation);
+                Matrix worldRotY = Matrix.CreateRotationY(RotY);
+                Matrix worldRotX = Matrix.CreateRotationX(RotX);
                 Matrix view = Matrix.CreateLookAt(eyePosition, modelCenter, Vector3.Up);
                 Matrix projection = Matrix.CreatePerspectiveFieldOfView(1, aspectRatio,
                                                                     nearClip, farClip);
@@ -103,10 +111,9 @@ namespace WinFormsContentLoading
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.World = boneTransforms[mesh.ParentBone.Index] * world;
+                        effect.World = boneTransforms[mesh.ParentBone.Index] * (worldRotX) * (worldRotY);
                         effect.View = view;
                         effect.Projection = projection;
-
                         effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
                         effect.SpecularPower = 16;

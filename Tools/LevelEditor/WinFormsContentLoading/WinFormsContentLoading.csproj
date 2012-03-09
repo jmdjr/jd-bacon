@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="ContentBuilder.cs" />
     <Compile Include="ErrorLogger.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
