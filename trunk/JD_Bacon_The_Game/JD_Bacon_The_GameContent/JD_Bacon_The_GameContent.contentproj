@@ -29,6 +29,69 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\2d Assets\" />
+    <Folder Include="Assets\3d Assets\Done\Level 1\" />
+    <Folder Include="Assets\3d Assets\Done\Level 2 a\" />
+    <Folder Include="Assets\3d Assets\Done\Level 2 b\" />
+    <Folder Include="Assets\3d Assets\Done\Level 3\" />
+    <Folder Include="Assets\3d Assets\Done\Level 4\" />
+    <Folder Include="Assets\3d Assets\Done\Level 5\" />
+    <Folder Include="Assets\3d Assets\Done\Level 6\" />
+    <Folder Include="Assets\3d Assets\Done\Level 7\" />
+    <Folder Include="Assets\3d Assets\Done\Level 8\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 1\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 2 a\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 2 b\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 3\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 4\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 5\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 6\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 7\" />
+    <Folder Include="Assets\3d Assets\Modeling\Level 8\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 1\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 2 a\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 2 b\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 3\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 4\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 5\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 6\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 7\" />
+    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 8\" />
+    <Folder Include="Assets\Cinematic Assets\Concept\" />
+    <Folder Include="Assets\Cinematic Assets\Done\" />
+    <Folder Include="Assets\Text Assets\" />
+    <Folder Include="Assets\UI And Menu Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="background.png">
+      <Name>background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="blank.png">
+      <Name>blank</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="gradient.png">
+      <Name>gradient</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gamefont.spritefont">
+      <Name>gamefont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="menufont.spritefont">
+      <Name>menufont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
