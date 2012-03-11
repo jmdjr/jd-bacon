@@ -13,6 +13,8 @@ ScreenManager - Used to manage scene transistions (title scene, game scene, etc)
 
 EasyXnaAudioComponent - simple and small class to assist managing the songs and sound effects in our game.
 
+Jitter - [http://jitter-physics.com/wordpress/ from the makers of JigLibX]Physics engine.  Simple and extensible, found through XDSK2.
+
 
 
 
