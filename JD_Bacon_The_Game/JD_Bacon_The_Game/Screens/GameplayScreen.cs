@@ -19,9 +19,13 @@ using Jitter.Collision;
 using Jitter.Dynamics;
 using Jitter.LinearMath;
 using Jitter.Collision.Shapes;
+using System.Diagnostics;
+using JD_Bacon_The_Game;
+using LevelContentStructure;
+using Physics.Primitives;
 #endregion
-
-namespace GameStateManagement
+using SingleBodyConstraints = Jitter.Dynamics.Constraints.SingleBody;
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// This screen implements the actual game logic. It is just a
@@ -31,19 +35,29 @@ namespace GameStateManagement
     class GameplayScreen : GameScreen
     {
         #region Fields
-
         ContentManager content;
         SpriteFont gameFont;
 
-        CollisionSystem collisionSystem = new CollisionSystemSAP();
-        World gameWorld;
+        private JitterScene scene;
+        private bool multithread = true;
+
+        private GamePadState padState;
+        private KeyboardState keyState;
+        private MouseState mouseState;
+        
+        KeyboardState keyboardPreviousState = new KeyboardState();
+        GamePadState gamePadPreviousState = new GamePadState();
+        MouseState mousePreviousState = new MouseState();
 
         float pauseAlpha;
 
         #endregion
 
         #region Initialization
-
+        private void ControlMapping()
+        {
+            CommandMapper.AddMapping("Left", new Keys[] { Keys.Left });
+        }
 
         /// <summary>
         /// Constructor.
@@ -53,70 +67,30 @@ namespace GameStateManagement
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            gameWorld = new World(collisionSystem);
-
-            
-
+            this.ControlMapping();
         }
-
-        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
-        {
-
-            return !body.IsStatic;
-        }
-                 
-         private void BuildScene()
-        {
-            System.Diagnostics.Debug.WriteLine("Building Scene...");
-
-             // creating two boxShapes with different sizes
-             Shape boxShape = new BoxShape ( JVector.One );
-             Shape groundShape = new BoxShape (new JVector (10 , 1, 10) );
-
-             // create new instances of the rigid body class and pass
-             // the boxShapes to them
-             RigidBody boxBody1 = new RigidBody ( boxShape );
-             RigidBody boxBody2 = new RigidBody ( boxShape );
-
-             RigidBody groundBody = new RigidBody ( groundShape );
-
-             // set the position of the box size =(1 ,1 ,1)
-             // 2 and 5 units above the ground box size =(10 ,1 ,10)
-             boxBody1.Position = new JVector (0 , 2, 0.0f);
-             boxBody2.Position = new JVector (0 , 5, 0.3f);
-
-             // make the body static , so it can 't be moved
-             groundBody.IsStatic = true;
-
-             // add the bodies to the world .
-             gameWorld.AddBody(boxBody1);
-             gameWorld.AddBody(boxBody2);
-             gameWorld.AddBody(groundBody);
-         }
 
         /// <summary>
         /// Load graphics content for the game.
         /// </summary>
-        public override void LoadContent()
+        public override void LoadContent(Game game)
         {
-            if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, "Content");
+            base.LoadContent(game);
+            if (content == null) content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+            InputState state = new InputState();
+            JDLevelManagerObject curLevel = content.Load<JDLevelManagerObject>("Levels/Level01");
+
+            scene = new EmptyScene((JDBaconTheGame)game);
+            scene.Build();
             gameFont = content.Load<SpriteFont>("gamefont");
-
-            // A real game would probably have more content than this sample, so
-            // it would take longer to load. We simulate that by delaying for a
-            // while, giving you a chance to admire the beautiful loading screen.
-            Thread.Sleep(1000);
-
+            BuildPhysicalEntities();
+            
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
             ScreenManager.Game.ResetElapsedTime();
-
-            BuildScene();
         }
-
 
         /// <summary>
         /// Unload graphics content used by the game.
@@ -125,13 +99,9 @@ namespace GameStateManagement
         {
             content.Unload();
         }
-
-
         #endregion
 
         #region Update and Draw
-
-
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
         /// property, so the game will stop updating when the pause menu is active,
@@ -148,9 +118,11 @@ namespace GameStateManagement
             else
                 pauseAlpha = Math.Max(pauseAlpha - 1f / 32, 0);
 
-            gameWorld.Step(gameTime.ElapsedGameTime.Ticks, false);
+            if (this.IsActive)
+            {
+                UpdatePhysics(gameTime);
+            }
         }
-
 
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
@@ -164,7 +136,6 @@ namespace GameStateManagement
             // Look up inputs for the active player profile.
             int playerIndex = (int)ControllingPlayer.Value;
 
-            KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
             // The game pauses either if the user presses the pause button, or if
@@ -180,31 +151,9 @@ namespace GameStateManagement
             }
             else
             {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
-
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    movement.X--;
-
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    movement.X++;
-
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    movement.Y--;
-
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    movement.Y++;
-
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
-
-                if (movement.Length() > 1)
-                    movement.Normalize();
+                HandlePlayerInput(input);
             }
         }
-
 
         /// <summary>
         /// Draws the gameplay screen.
@@ -212,9 +161,10 @@ namespace GameStateManagement
         public override void Draw(GameTime gameTime)
         {
             // This game has a blue background. Why? Because!
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);
-
+            if (this.IsActive)
+            {
+                DrawGameState(gameTime);
+            }
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
@@ -225,6 +175,61 @@ namespace GameStateManagement
             }
         }
 
+        #endregion
+
+        #region Handling GameState
+
+        private void BuildPhysicalEntities()
+        {
+        }
+
+        private void UpdatePhysics(GameTime gameTime)
+        {
+            padState = GamePad.GetState(PlayerIndex.One);
+            keyState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
+
+            // let the user escape the demo
+            if (PressedOnce(Keys.Escape, Buttons.Back)) ((JDBaconTheGame)this.game).Exit();
+            
+            float step = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (step > 1.0f / 100.0f) step = 1.0f / 100.0f;
+            ((JDBaconTheGame)this.game).World.Step(step, multithread);
+
+            gamePadPreviousState = padState;
+            keyboardPreviousState = keyState;
+            mousePreviousState = mouseState;
+
+            this.scene.Draw();
+        }
+
+        private bool PressedOnce(Keys key, Buttons button)
+        {
+            bool keyboard = keyState.IsKeyDown(key) && !keyboardPreviousState.IsKeyDown(key);
+
+            if (key == Keys.Add) key = Keys.OemPlus;
+            keyboard |= keyState.IsKeyDown(key) && !keyboardPreviousState.IsKeyDown(key);
+
+            if (key == Keys.Subtract) key = Keys.OemMinus;
+            keyboard |= keyState.IsKeyDown(key) && !keyboardPreviousState.IsKeyDown(key);
+
+            bool gamePad = padState.IsButtonDown(button) && !gamePadPreviousState.IsButtonDown(button);
+
+            return keyboard || gamePad;
+        }
+
+        private void HandlePlayerInput(InputState input)
+        {
+
+            padState = GamePad.GetState(ControllingPlayer.Value);
+            keyState = Keyboard.GetState(ControllingPlayer.Value);
+            mouseState = Mouse.GetState();
+        }
+
+        private void DrawGameState(GameTime gameTime)
+        {
+        }
 
         #endregion
     }

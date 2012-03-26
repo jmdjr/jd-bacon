@@ -26,6 +26,13 @@ namespace JD_Bacon_The_Game
             MAPPING_NOT_FOUND = 1 << 5,
         }
 
+
+        public enum MappingDevice : uint
+        {
+            CONTROLLER,
+            KEYBOARD,
+        }
+
         /// <summary>
         /// Maps the keys on a keyboard to strings
         /// </summary>
@@ -120,6 +127,72 @@ namespace JD_Bacon_The_Game
             }
 
             _controllerMap.Add(commandName, buttons);
+
+            return true;
+        }
+
+        public static bool UpdateMapping(string commandName, Keys[] keys)
+        {
+            LastError = MappingError.NO_ERROR;
+
+            if (!_keyboardMap.Keys.Contains(commandName))
+            {
+                LastError |= MappingError.MAPPING_NOT_FOUND;
+            }
+
+            if (LastError != MappingError.NO_ERROR)
+            {
+                return false;
+            }
+
+            _keyboardMap[commandName] = keys;
+
+            return true;
+        }
+        public static bool UpdateMapping(string commandName, Buttons buttons)
+        {
+            LastError = MappingError.NO_ERROR;
+
+            if (!_controllerMap.Keys.Contains(commandName))
+            {
+                LastError |= MappingError.MAPPING_NOT_FOUND;
+            }
+
+            if (LastError != MappingError.NO_ERROR)
+            {
+                return false;
+            }
+
+            _controllerMap[commandName] = buttons;
+
+            return true;
+        }
+
+        public static bool DeleteMapping(string commandName, MappingDevice device)
+        {
+            LastError = MappingError.NO_ERROR;
+
+            if ((device == MappingDevice.KEYBOARD && !_keyboardMap.Keys.Contains(commandName)) ||
+                (device == MappingDevice.CONTROLLER && _controllerMap.Keys.Contains(commandName)))
+            {
+                LastError |= MappingError.MAPPING_NOT_FOUND;
+            }
+
+            if (LastError != MappingError.NO_ERROR)
+            {
+                return false;
+            }
+
+            switch (device)
+            {
+                case MappingDevice.KEYBOARD:
+                    _keyboardMap.Remove(commandName);
+                    break;
+
+                case MappingDevice.CONTROLLER:
+                    _controllerMap.Remove(commandName);
+                    break;
+            }
 
             return true;
         }

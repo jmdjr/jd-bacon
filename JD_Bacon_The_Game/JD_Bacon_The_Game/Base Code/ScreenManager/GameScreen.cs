@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// Enum describes the screen transition state.
@@ -36,8 +36,13 @@ namespace GameStateManagement
     /// </summary>
     public abstract class GameScreen
     {
+        #region Enabling 3d Stuff
+
+        #endregion
+
         #region Properties
 
+        protected Game game; 
 
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
@@ -215,13 +220,13 @@ namespace GameStateManagement
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
+        public virtual void LoadContent(Game game) { this.game = game; }
 
 
         /// <summary>
         /// Unload content for the screen.
         /// </summary>
-        public virtual void UnloadContent() { }
+        public virtual void UnloadContent() { this.game = null; }
 
 
         #endregion

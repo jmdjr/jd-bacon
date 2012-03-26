@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// The pause menu comes up over the top of the game,

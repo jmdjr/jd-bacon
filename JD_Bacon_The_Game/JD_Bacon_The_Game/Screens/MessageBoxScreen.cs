@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// A popup message box screen, used to display "are you sure?"
@@ -75,8 +75,9 @@ namespace GameStateManagement
         /// Whenever a subsequent MessageBoxScreen tries to load this same content,
         /// it will just get back another reference to the already loaded data.
         /// </summary>
-        public override void LoadContent()
+        public override void LoadContent(Game game)
         {
+            base.LoadContent(game);
             ContentManager content = ScreenManager.Game.Content;
 
             gradientTexture = content.Load<Texture2D>("gradient");

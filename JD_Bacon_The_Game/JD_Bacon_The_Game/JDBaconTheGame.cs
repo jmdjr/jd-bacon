@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using GameStateManagement;
+using JD_Bacon_The_Game.GameStateManagement;
+using Jitter.Collision;
+using Jitter;
 
 namespace JD_Bacon_The_Game
 {
@@ -19,9 +21,16 @@ namespace JD_Bacon_The_Game
     {
         #region Fields
 
-        GraphicsDeviceManager graphics;
-        ScreenManager screenManager;
+        public GraphicsDeviceManager graphics;
+        public ScreenManager screenManager;
 
+        public CollisionSystem Collision;
+        public World World;
+        public JD_Game_Camera Camera;
+
+        private Color backgroundColor = new Color(63, 66, 73);
+
+        RasterizerState  cullMode, normal;
 
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
@@ -42,33 +51,52 @@ namespace JD_Bacon_The_Game
         public JDBaconTheGame()
         {
             Content.RootDirectory = "Content";
+            this.IsFixedTimeStep = false;
+            this.Window.AllowUserResizing = true;
 
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 853;
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.PreferMultiSampling = true;
+            graphics.PreferredBackBufferWidth = 840;
             graphics.PreferredBackBufferHeight = 480;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
 
-            Components.Add(screenManager);
-
             // Activate the first screens.
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+
+            Collision = new CollisionSystemPersistentSAP();
+
+            World = new World(Collision);
+            World.AllowDeactivation = true;
+
+            cullMode = new RasterizerState();
+            cullMode.CullMode = CullMode.None;
+
+            normal = new RasterizerState();
+
+            Components.Add(screenManager);
         }
-
-
+         
         /// <summary>
         /// Loads graphics content.
         /// </summary>
         protected override void LoadContent()
         {
-            foreach (string asset in preloadAssets)
-            {
-                Content.Load<object>(asset);
-            }
         }
 
+        protected override void Initialize()
+        {
+            this.Camera = new JD_Game_Camera(this);
+            Camera.Position = new Vector3(150, 150, 300);
+            Camera.Target = Camera.Position + Vector3.Normalize(new Vector3(10, 5, 20));
+            this.Components.Add(this.Camera);
+            
+            base.Initialize();
+        }
 
         #endregion
 
@@ -80,10 +108,13 @@ namespace JD_Bacon_The_Game
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(backgroundColor);
+
+            GraphicsDevice.RasterizerState = cullMode;
 
             // The real drawing happens inside the screen manager component.
             base.Draw(gameTime);
+            GraphicsDevice.RasterizerState = normal;
         }
 
         #endregion

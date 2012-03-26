@@ -15,9 +15,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Jitter.Collision;
+using Jitter;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen
@@ -122,7 +124,7 @@ namespace GameStateManagement
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
             {
-                screen.LoadContent();
+                screen.LoadContent(this.Game);
             }
         }
 
@@ -243,7 +245,7 @@ namespace GameStateManagement
             // If we have a graphics device, tell the screen to load content.
             if (isInitialized)
             {
-                screen.LoadContent();
+                screen.LoadContent(this.Game);
             }
 
             screens.Add(screen);

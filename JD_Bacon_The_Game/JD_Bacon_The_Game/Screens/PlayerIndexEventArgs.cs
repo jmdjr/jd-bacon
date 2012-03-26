@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// Custom event argument which includes the index of the player who
