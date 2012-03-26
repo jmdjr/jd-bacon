@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="LevelContentStructure.JDLevelManagerObject">
+      <Levels>
+          <Level>
+              <ID>
+                  1
+              </ID>
+              <TypeName>
+
+              </TypeName>
+              <GroundAppearance>
+                  <TextureSource>
+
+                  </TextureSource>
+                  <MeshSource>
+
+                  </MeshSource>
+              </GroundAppearance>
+              <PhysicalObjectSet>
+                  <PhysicalObject>
+                      <ID>
+                          1
+                      </ID>
+                      <TypeName>
+                      </TypeName>
+                      <Appearance>
+                          <TextureSource>
+
+                          </TextureSource>
+                          <MeshSource>
+
+                          </MeshSource>
+                      </Appearance>
+                  </PhysicalObject>
+              </PhysicalObjectSet>
+              <StaticObjectSet>
+                  <StaticObject>
+                      <ID>
+                          1
+                      </ID>
+                      <TypeName>
+
+                      </TypeName>
+                      <Appearance>
+                          <TextureSource>
+
+                          </TextureSource>
+                          <MeshSource>
+
+                          </MeshSource>
+                      </Appearance>
+                  </StaticObject>
+              </StaticObjectSet>
+              <CollectableObjectSet>
+                  <CollectableObject>
+                      <ID>
+                          1
+                      </ID>
+                      <TypeName>
+
+                      </TypeName>
+                      <Appearance>
+                          <TextureSource>
+                              
+                          </TextureSource>
+                          <MeshSource>
+                              
+                          </MeshSource>
+                      </Appearance>
+                  </CollectableObject>
+              </CollectableObjectSet>
+              <CharacterObjectSet>
+                  <CharacterObject>
+                      <ID>
+                          1
+                      </ID>
+                      <TypeName>
+
+                      </TypeName>
+                      <Appearance>
+                          <TextureSource>
+
+                          </TextureSource>
+                          <MeshSource>
+
+                          </MeshSource>
+                      </Appearance>
+                  </CharacterObject>
+              </CharacterObjectSet>
+          </Level>
+      </Levels>
+  </Asset>
+</XnaContent>

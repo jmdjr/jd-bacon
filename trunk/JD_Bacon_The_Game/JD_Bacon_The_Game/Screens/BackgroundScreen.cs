@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace GameStateManagement
+namespace JD_Bacon_The_Game.GameStateManagement
 {
     /// <summary>
     /// The background screen sits behind all the other menu screens.
@@ -50,8 +50,9 @@ namespace GameStateManagement
         /// used the shared ContentManager provided by the Game class, the content
         /// would remain loaded forever.
         /// </summary>
-        public override void LoadContent()
+        public override void LoadContent(Game game)
         {
+            base.LoadContent(game);
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
