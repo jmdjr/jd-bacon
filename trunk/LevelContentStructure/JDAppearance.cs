@@ -12,9 +12,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace LevelContentStructure
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class JDAppearance
     {
         #region Public Serialized Fields
@@ -23,7 +20,7 @@ namespace LevelContentStructure
         #endregion
 
         public JDAppearance()
-        { 
+        {
         }
     }
 }

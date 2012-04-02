@@ -17,10 +17,9 @@ namespace LevelContentStructure
     /// </summary>
     public class JDPhysicalObject : JDObject
     {
-        #region Public Serialized Fields
         public JDAppearance Appearance;
+        public Vector3 Position;
 
         public JDPhysicalObject() { }
-        #endregion 
     }
 }

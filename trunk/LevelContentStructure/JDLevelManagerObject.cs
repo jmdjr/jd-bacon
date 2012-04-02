@@ -8,9 +8,8 @@ namespace LevelContentStructure
 {
     public class JDLevelManagerObject
     {
-        [ContentSerializer(CollectionItemName = "Level")]
-        public List<JDLevelObject> Levels;
-
+        [ContentSerializer(CollectionItemName = "LevelName")]
+        public List<string> Levels;
         public JDLevelManagerObject() { }
     }
 }

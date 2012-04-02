@@ -37,9 +37,12 @@ namespace JD_Bacon_The_Game.GameStateManagement
         #region Fields
         ContentManager content;
         SpriteFont gameFont;
+        LevelManagerAndBuilder Manager;
 
         private JitterScene scene;
         private bool multithread = true;
+
+        public DebugDrawer DebugDrawer { private set; get; }
 
         private GamePadState padState;
         private KeyboardState keyState;
@@ -48,6 +51,8 @@ namespace JD_Bacon_The_Game.GameStateManagement
         KeyboardState keyboardPreviousState = new KeyboardState();
         GamePadState gamePadPreviousState = new GamePadState();
         MouseState mousePreviousState = new MouseState();
+
+        Color[] rndColors;
 
         float pauseAlpha;
 
@@ -67,6 +72,15 @@ namespace JD_Bacon_The_Game.GameStateManagement
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
+
+            Random rr = new Random();
+            rndColors = new Color[20];
+
+            for (int i = 0; i < 20; i++)
+            {
+                rndColors[i] = new Color((float)rr.NextDouble(), (float)rr.NextDouble(), (float)rr.NextDouble());
+            }
+
             this.ControlMapping();
         }
 
@@ -79,10 +93,19 @@ namespace JD_Bacon_The_Game.GameStateManagement
             if (content == null) content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             InputState state = new InputState();
-            JDLevelManagerObject curLevel = content.Load<JDLevelManagerObject>("Levels/Level01");
 
+            //DebugDrawer = new DebugDrawer(this.game);
+            //this.game.Components.Add(DebugDrawer);
+
+            // Just to define a good base reference in the game area.
             scene = new EmptyScene((JDBaconTheGame)game);
             scene.Build();
+
+            Manager = new LevelManagerAndBuilder((JDBaconTheGame)game, "Levels/LevelsManager");
+
+            this.game.Components.Add(Manager);
+
+
             gameFont = content.Load<SpriteFont>("gamefont");
             BuildPhysicalEntities();
             
@@ -181,6 +204,11 @@ namespace JD_Bacon_The_Game.GameStateManagement
 
         private void BuildPhysicalEntities()
         {
+            Manager.LoadNextLevel();
+
+            if (!Manager.CompletedAllLevels)
+            {
+            }
         }
 
         private void UpdatePhysics(GameTime gameTime)
@@ -200,8 +228,6 @@ namespace JD_Bacon_The_Game.GameStateManagement
             gamePadPreviousState = padState;
             keyboardPreviousState = keyState;
             mousePreviousState = mouseState;
-
-            this.scene.Draw();
         }
 
         private bool PressedOnce(Keys key, Buttons button)
@@ -227,8 +253,21 @@ namespace JD_Bacon_The_Game.GameStateManagement
             mouseState = Mouse.GetState();
         }
 
+        private void DrawJitterDebugInfo()
+        {
+            int cc = 0;
+
+            foreach (RigidBody body in ((JDBaconTheGame)this.game).World.RigidBodies)
+            {
+                DebugDrawer.Color = rndColors[cc % rndColors.Length];
+                body.DebugDraw(DebugDrawer);
+                cc++;
+            }
+        }
+
         private void DrawGameState(GameTime gameTime)
         {
+            //DrawJitterDebugInfo();
         }
 
         #endregion

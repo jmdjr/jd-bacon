@@ -38,26 +38,26 @@ namespace JD_Bacon_The_Game
         {
             base.LoadContent();
 
-            ShotgunModel = this.myGame.Content.Load<Model>(@"Assets\3d Assets\Done\Level 1\1by1");
+            //ShotgunModel = this.myGame.Content.Load<Model>(@"Assets\3d Assets\Done\Level 1\1by1");
 
-            List<JVector> jvecs = new List<JVector>();
-            List<TriangleVertexIndices> indices = new List<TriangleVertexIndices>();
+            //List<JVector> jvecs = new List<JVector>();
+            //List<TriangleVertexIndices> indices = new List<TriangleVertexIndices>();
 
-            ModelDataExtraction.ExtractData(jvecs, indices, ShotgunModel);
+            //ModelDataExtraction.ExtractData(jvecs, indices, ShotgunModel);
 
-            int[] convexHullIndices = JConvexHull.Build(jvecs, JConvexHull.Approximation.Level6);
+            //int[] convexHullIndices = JConvexHull.Build(jvecs, JConvexHull.Approximation.Level6);
 
-            List<JVector> hullPoints = new List<JVector>();
+            //List<JVector> hullPoints = new List<JVector>();
 
-            for (int i = 0; i < convexHullIndices.Length; i++)
-            {
-                hullPoints.Add(jvecs[convexHullIndices[i]]);
-            }
+            //for (int i = 0; i < convexHullIndices.Length; i++)
+            //{
+            //    hullPoints.Add(jvecs[convexHullIndices[i]]);
+            //}
 
-            ConvexHullShape generalshape = new ConvexHullShape(hullPoints);
-            ShotgunBody = new RigidBody(generalshape);
-            ShotgunBody.Tag = BodyTag.DrawMe;
-            this.myGame.World.AddBody(this.ShotgunBody);
+            //ConvexHullShape generalshape = new ConvexHullShape(hullPoints);
+            //ShotgunBody = new RigidBody(generalshape);
+            //ShotgunBody.Tag = BodyTag.DrawMe;
+            //this.myGame.World.AddBody(this.ShotgunBody);
         }
 
         protected void GenericTransform(Model model, BasicEffect effect, ModelMesh mesh)
@@ -70,7 +70,7 @@ namespace JD_Bacon_The_Game
 
         public override void Draw(GameTime gameTime)
         {
-            this.DrawModelsMeshEffects(ShotgunModel, GenericTransform);
+            //this.DrawModelsMeshEffects(ShotgunModel, GenericTransform);
             base.Draw(gameTime);
         }
     }

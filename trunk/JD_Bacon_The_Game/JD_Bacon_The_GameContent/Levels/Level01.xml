@@ -1,94 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="LevelContentStructure.JDLevelManagerObject">
-      <Levels>
-          <Level>
+  <Asset Type="LevelContentStructure.JDLevelObject">
+      <WorldMusic>
+          <ID>
+              0
+          </ID>
+          <TypeName>
+
+          </TypeName>
+          <FilePath>
+
+          </FilePath>
+          <FileName>
+          </FileName>
+      </WorldMusic>
+      <GroundAppearance>
+          <TextureSource>
+
+          </TextureSource>
+          <MeshSource>
+
+          </MeshSource>
+      </GroundAppearance>
+      <CameraObject>
+          <ID> 0 </ID>
+          <TypeName>JDDebugCamera</TypeName>
+          <Position>0 0 10</Position>
+          <Target>0 0 0</Target>
+          <NearPlaneDistance>0.01</NearPlaneDistance>
+          <FarPlaneDistance>1000.0</FarPlaneDistance>
+      </CameraObject>
+      <StaticObjectSet>
+          <StaticObject>
               <ID>
                   1
               </ID>
               <TypeName>
 
               </TypeName>
-              <GroundAppearance>
+              <Appearance>
                   <TextureSource>
 
                   </TextureSource>
                   <MeshSource>
 
                   </MeshSource>
-              </GroundAppearance>
-              <PhysicalObjectSet>
-                  <PhysicalObject>
-                      <ID>
-                          1
-                      </ID>
-                      <TypeName>
-                      </TypeName>
-                      <Appearance>
+              </Appearance>
+              <Position>0 0 0</Position>
+          </StaticObject>
+      </StaticObjectSet>
+      <CollectableObjectSet>
+          <CollectableObject>
+              <ID>
+                  1
+              </ID>
+              <TypeName>
+
+              </TypeName>
+              <Appearance>
+                  <TextureSource>
+
+                  </TextureSource>
+                  <MeshSource>
+
+                  </MeshSource>
+              </Appearance>
+              <Position>0 0 0</Position>
+          </CollectableObject>
+      </CollectableObjectSet>
+      <PhysicalObjectSet>
+          <PhysicalObject>
+              <ID>
+                  1
+              </ID>
+              <TypeName>
+              </TypeName>
+              <Appearance>
+                  <TextureSource>
+
+                  </TextureSource>
+                  <MeshSource>
+
+                  </MeshSource>
+              </Appearance>
+              <Position>0 0 0</Position>
+          </PhysicalObject>
+      </PhysicalObjectSet>
+      <CharacterObjectSet>
+          <CharacterObject>
+              <ID>
+                  1
+              </ID>
+              <TypeName>
+
+              </TypeName>
+              <Appearance>
+                  <TextureSource>
+
+                  </TextureSource>
+                  <MeshSource>
+
+                  </MeshSource>
+              </Appearance>
+              <Position>0 0 0</Position>
+
+              <Animations>
+                  <Item>
+                      <Key>
+
+                      </Key>
+                      <Value>
                           <TextureSource>
 
                           </TextureSource>
                           <MeshSource>
 
                           </MeshSource>
-                      </Appearance>
-                  </PhysicalObject>
-              </PhysicalObjectSet>
-              <StaticObjectSet>
-                  <StaticObject>
-                      <ID>
-                          1
-                      </ID>
-                      <TypeName>
+                      </Value>
+                  </Item>
+              </Animations>
+          </CharacterObject>
+      </CharacterObjectSet>
+      <TriggerObjectSet>
 
-                      </TypeName>
-                      <Appearance>
-                          <TextureSource>
-
-                          </TextureSource>
-                          <MeshSource>
-
-                          </MeshSource>
-                      </Appearance>
-                  </StaticObject>
-              </StaticObjectSet>
-              <CollectableObjectSet>
-                  <CollectableObject>
-                      <ID>
-                          1
-                      </ID>
-                      <TypeName>
-
-                      </TypeName>
-                      <Appearance>
-                          <TextureSource>
-                              
-                          </TextureSource>
-                          <MeshSource>
-                              
-                          </MeshSource>
-                      </Appearance>
-                  </CollectableObject>
-              </CollectableObjectSet>
-              <CharacterObjectSet>
-                  <CharacterObject>
-                      <ID>
-                          1
-                      </ID>
-                      <TypeName>
-
-                      </TypeName>
-                      <Appearance>
-                          <TextureSource>
-
-                          </TextureSource>
-                          <MeshSource>
-
-                          </MeshSource>
-                      </Appearance>
-                  </CharacterObject>
-              </CharacterObjectSet>
-          </Level>
-      </Levels>
+      </TriggerObjectSet>
   </Asset>
 </XnaContent>

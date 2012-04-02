@@ -82,11 +82,14 @@
   <ItemGroup>
     <Compile Include="Base Code\EasyXnaAudio\EasyXnaAudioComponent.cs" />
     <Compile Include="Base Code\KeyMapManager\CommandMapper.cs" />
+    <Compile Include="Base Code\Physics\JitterExtensions\DebugDrawer.cs" />
+    <Compile Include="Base Code\Physics\JitterExtensions\JDConvexHullShape.cs" />
     <Compile Include="Base Code\Physics\JitterExtensions\ModelDataExtraction.cs" />
     <Compile Include="Base Code\ScreenManager\GameScreen.cs" />
     <Compile Include="Base Code\ScreenManager\InputState.cs" />
     <Compile Include="Base Code\ScreenManager\ScreenManager.cs" />
-    <Compile Include="Gameplay\Camera\JD_Game_Camera.cs" />
+    <Compile Include="Gameplay\Camera\JDCamera.cs" />
+    <Compile Include="Gameplay\Camera\JDDebugCamera.cs" />
     <Compile Include="Base Code\Physics\JitterExtensions\Conversion.cs" />
     <Compile Include="Base Code\Physics\JitterExtensions\EmptyScene.cs" />
     <Compile Include="Base Code\Physics\JitterExtensions\JitterScene.cs" />
@@ -100,7 +103,23 @@
     <Compile Include="Base Code\Physics\Primitives\SpherePrimitive.cs" />
     <Compile Include="Base Code\Physics\Primitives\TerrainPrimitive.cs" />
     <Compile Include="Base Code\Physics\Primitives\VertexPositionNormal.cs" />
+    <Compile Include="Gameplay\Camera\JDHeroCamera.cs" />
     <Compile Include="Gameplay\Characters\Weapons\Shotgun.cs" />
+    <Compile Include="Gameplay\Environment\Physical\AnyGround.cs" />
+    <Compile Include="Gameplay\Environment\Physical\FlatLand.cs" />
+    <Compile Include="Gameplay\Environment\Physical\TestConcretBlock.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Factories\CharacterFactory.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Factories\CollectablesFactory.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Generics\GenericCharacterObject.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Generics\GenericCollectableObject.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Generics\GenericPhysicalObject.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Generics\GenericStaticObject.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Generics\GenericTriggerObject.cs" />
+    <Compile Include="Gameplay\_BaseObjects\JDBTG.cs" />
+    <Compile Include="Gameplay\_BaseObjects\JDLevel.cs" />
+    <Compile Include="Gameplay\_BaseObjects\LevelManagerAndBuilder.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Factories\PhysicalObjectFactory.cs" />
+    <Compile Include="Gameplay\_BaseObjects\Factories\StaticObjectFactory.cs" />
     <Compile Include="Screens\BackgroundScreen.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -179,12 +198,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\Characters\Interactive\" />
-    <Folder Include="Gameplay\Characters\Static\" />
-    <Folder Include="Gameplay\Collectables\Interactive\" />
-    <Folder Include="Gameplay\Collectables\Static\" />
-    <Folder Include="Gameplay\Environment\Interactive\" />
+    <Folder Include="Gameplay\Characters\JDBaconHero\" />
+    <Folder Include="Gameplay\Collectables\" />
     <Folder Include="Gameplay\Environment\Static\" />
+    <Folder Include="Gameplay\Triggers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

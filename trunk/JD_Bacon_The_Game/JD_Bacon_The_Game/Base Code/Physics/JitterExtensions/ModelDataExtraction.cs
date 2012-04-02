@@ -14,7 +14,7 @@ namespace Physics
 {
     public static class ModelDataExtraction
     {
-        public static void ExtractData(List<JVector> vertices, List<TriangleVertexIndices> indices, Model model)
+        public static void ExtractData(ref List<JVector> vertices, ref List<TriangleVertexIndices> indices, Model model)
         {
             Matrix[] bones_ = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(bones_);
@@ -30,6 +30,7 @@ namespace Physics
                     // Read the format of the vertex buffer 
                     VertexDeclaration declaration = meshPart.VertexBuffer.VertexDeclaration;
                     VertexElement[] vertexElements = declaration.GetVertexElements();
+
                     // Find the element that holds the position 
                     VertexElement vertexPosition = new VertexElement();
                     foreach (VertexElement vert in vertexElements)
@@ -48,8 +49,10 @@ namespace Physics
                     {
                         throw new Exception("Model uses unsupported vertex format!");
                     }
+
                     // This where we store the vertices until transformed 
                     JVector[] allVertex = new JVector[meshPart.NumVertices];
+
                     // Read the vertices from the buffer in to the array 
                     meshPart.VertexBuffer.GetData<JVector>(
                         meshPart.VertexOffset * declaration.VertexStride + vertexPosition.Offset,
@@ -57,11 +60,13 @@ namespace Physics
                         0,
                         meshPart.NumVertices,
                         declaration.VertexStride);
+
                     // Transform them based on the relative bone location and the world if provided 
                     for (int i = 0; i != allVertex.Length; ++i)
                     {
                         JVector.Transform(ref allVertex[i], ref xform, out allVertex[i]);
                     }
+
                     // Store the transformed vertices with those from all the other meshes in this model 
                     vertices.AddRange(allVertex);
 
@@ -71,6 +76,7 @@ namespace Physics
                         // This could probably be handled by using int in place of short but is unnecessary 
                         throw new Exception("Model uses 32-bit indices, which are not supported.");
                     }
+
                     // Each primitive is a triangle 
                     short[] indexElements = new short[meshPart.PrimitiveCount * 3];
                     meshPart.IndexBuffer.GetData<short>(
@@ -78,6 +84,7 @@ namespace Physics
                     indexElements,
                     0,
                     meshPart.PrimitiveCount * 3);
+
                     // Each TriangleVertexIndices holds the three indexes to each vertex that makes up a triangle 
                     TriangleVertexIndices[] tvi = new TriangleVertexIndices[meshPart.PrimitiveCount];
                     for (int i = 0; i != tvi.Length; ++i)

@@ -2,8 +2,14 @@ Content\background.xnb
 Content\blank.xnb
 Content\gradient.xnb
 Content\checker.xnb
+Content\Assets\Testing\ConcretBlockFinish1.xnb
+Content\Assets\Testing\Steps Unwrap Finish.xnb
+Content\Assets\Testing\Wooden Crate Finish.xnb
 Content\gamefont.xnb
 Content\menufont.xnb
 Content\Levels\Level01.xnb
-Content\Assets\3d Assets\Shotgun_BrandonModel.xnb
-Content\Assets\3d Assets\Done\Level 1\1by1.xnb
+Content\Levels\LevelsManager.xnb
+Content\Levels\LevelTest.xnb
+Content\Assets\Testing\ConcretBlock.xnb
+Content\Assets\Testing\Steps.xnb
+Content\Assets\Testing\Wooden Crate.xnb

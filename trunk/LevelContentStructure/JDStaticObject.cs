@@ -17,10 +17,9 @@ namespace LevelContentStructure
     /// </summary>
     public class JDStaticObject : JDObject
     {
-        #region Public Serialized Fields
         public JDAppearance Appearance;
+        public Vector3 Position;
 
         public JDStaticObject() { }
-        #endregion 
     }
 }
