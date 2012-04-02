@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JDAppearance.cs" />
+    <Compile Include="JDAudioObject.cs" />
     <Compile Include="JDCharacterObject.cs" />
     <Compile Include="JDCollectableObject.cs" />
     <Compile Include="JDCameraObject.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="JDLevelManagerObject.cs" />
     <Compile Include="JDLevelObject.cs" />
     <Compile Include="JDPhysicalObject.cs" />
+    <Compile Include="JDTriggerObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JDStaticObject.cs" />
   </ItemGroup>

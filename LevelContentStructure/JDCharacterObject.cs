@@ -17,10 +17,11 @@ namespace LevelContentStructure
     /// </summary>
     public class JDCharacterObject : JDObject
     {
-        #region Public Serialized Fields
         public JDAppearance Appearance;
+        public Vector3 Position;
+
+        public Dictionary<string, JDAppearance> Animations;
 
         public JDCharacterObject() { }
-        #endregion 
     }
 }

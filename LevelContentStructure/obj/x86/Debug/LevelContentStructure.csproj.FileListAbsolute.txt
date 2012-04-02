@@ -1,6 +1,0 @@
-C:\Projects\JD Bacon\LevelContentStructure\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Projects\JD Bacon\LevelContentStructure\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\Projects\JD Bacon\LevelContentStructure\bin\x86\Debug\LevelContentStructure.dll
-C:\Projects\JD Bacon\LevelContentStructure\bin\x86\Debug\LevelContentStructure.pdb
-C:\Projects\JD Bacon\LevelContentStructure\obj\x86\Debug\LevelContentStructure.dll
-C:\Projects\JD Bacon\LevelContentStructure\obj\x86\Debug\LevelContentStructure.pdb

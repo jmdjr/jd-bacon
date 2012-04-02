@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using JD_Bacon_The_Game.GameStateManagement;
 using Jitter.Collision;
 using Jitter;
+using Jitter.LinearMath;
 
 namespace JD_Bacon_The_Game
 {
@@ -26,7 +27,29 @@ namespace JD_Bacon_The_Game
 
         public CollisionSystem Collision;
         public World World;
-        public JD_Game_Camera Camera;
+
+        private JDCamera cameraReference;
+        public JDCamera CameraReference
+        {
+            get
+            {
+                return cameraReference;
+            }
+            set
+            {
+                if (this.Components.Contains(cameraReference))
+                {
+                    this.Components.Remove(cameraReference);
+                }
+
+                cameraReference = value;
+
+                if (!this.Components.Contains(cameraReference))
+                {
+                    this.Components.Add(this.cameraReference);
+                }
+            }
+        }
 
         private Color backgroundColor = new Color(63, 66, 73);
 
@@ -61,6 +84,9 @@ namespace JD_Bacon_The_Game
             graphics.PreferredBackBufferWidth = 840;
             graphics.PreferredBackBufferHeight = 480;
 
+
+            // Establishing JDBTG object instances.
+            JDBTG.MusicManager = new EasyXnaAudioComponent(this, "Assets/Audio");
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
 
@@ -72,6 +98,7 @@ namespace JD_Bacon_The_Game
 
             World = new World(Collision);
             World.AllowDeactivation = true;
+            World.Gravity = new JVector(0, -10, 0);
 
             cullMode = new RasterizerState();
             cullMode.CullMode = CullMode.None;
@@ -86,15 +113,11 @@ namespace JD_Bacon_The_Game
         /// </summary>
         protected override void LoadContent()
         {
+            base.LoadContent();
         }
 
         protected override void Initialize()
         {
-            this.Camera = new JD_Game_Camera(this);
-            Camera.Position = new Vector3(150, 150, 300);
-            Camera.Target = Camera.Position + Vector3.Normalize(new Vector3(10, 5, 20));
-            this.Components.Add(this.Camera);
-            
             base.Initialize();
         }
 
@@ -114,6 +137,7 @@ namespace JD_Bacon_The_Game
 
             // The real drawing happens inside the screen manager component.
             base.Draw(gameTime);
+
             GraphicsDevice.RasterizerState = normal;
         }
 

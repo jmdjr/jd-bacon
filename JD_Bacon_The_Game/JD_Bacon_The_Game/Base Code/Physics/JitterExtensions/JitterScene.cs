@@ -25,19 +25,19 @@ namespace JD_Bacon_The_Game
 
         public abstract void Build();
 
-        private QuadDrawer quadDrawer = null;
+        private FlatLand quadDrawer = null;
         protected RigidBody ground = null;
 
         public void AddGround()
         {
-            ground = new RigidBody(new BoxShape(new JVector(1000, 20, 1000)));
-            ground.Position = new JVector(0, -10, 0);
+            ground = new RigidBody(new BoxShape(new JVector(100, 10, 100)));
+            ground.Position = new JVector(0, -5, 0);
             ground.Tag = BodyTag.DontDrawMe;
             ground.IsStatic = true;
             Demo.World.AddBody(ground);
             ground.Material.KineticFriction = 0.0f;
 
-            quadDrawer = new QuadDrawer(Demo,100);
+            quadDrawer = new FlatLand(Demo, 100);
             Demo.Components.Add(quadDrawer);
         }
 

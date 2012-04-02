@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <!-- TODO: replace this Asset with your own XML asset data. -->
+  <Asset Type="LevelContentStructure.JDLevelObject">
+      <WorldMusic>
+          <ID>0</ID>
+          <TypeName></TypeName>
+          <FilePath></FilePath>
+          <FileName></FileName>
+      </WorldMusic>
+      <GroundAppearance>
+          <TextureSource></TextureSource>
+          <MeshSource></MeshSource>
+      </GroundAppearance>
+      <CameraObject>
+          <ID>0</ID>
+          <TypeName>JDDebugCamera</TypeName>
+          <Position>-300 200 300</Position>
+          <Target>-10 10 -20</Target>
+          <NearPlaneDistance>0.01</NearPlaneDistance>
+          <FarPlaneDistance>1000.0</FarPlaneDistance>
+      </CameraObject>
+      <StaticObjectSet>
+      </StaticObjectSet>
+      <CollectableObjectSet>
+      </CollectableObjectSet>
+      <PhysicalObjectSet>
+          <PhysicalObject>
+              <ID>0</ID>
+              <TypeName>ConcreteBlock</TypeName>
+              <Appearance>
+                  <TextureSource>Assets/Testing/ConcretBlockFinish1</TextureSource>
+                  <MeshSource>Assets/Testing/ConcretBlock</MeshSource>
+              </Appearance>
+              <Position>10 100 10</Position>
+          </PhysicalObject>
+          <PhysicalObject>
+              <ID>1</ID>
+              <TypeName>ConcreteBlock</TypeName>
+              <Appearance>
+                  <TextureSource>Assets/Testing/ConcretBlockFinish1</TextureSource>
+                  <MeshSource>Assets/Testing/ConcretBlock</MeshSource>
+              </Appearance>
+              <Position>-20 500 -20</Position>
+          </PhysicalObject>
+      </PhysicalObjectSet>
+      <CharacterObjectSet>
+      </CharacterObjectSet>
+      <TriggerObjectSet>
+          
+      </TriggerObjectSet>
+  </Asset>
+</XnaContent>

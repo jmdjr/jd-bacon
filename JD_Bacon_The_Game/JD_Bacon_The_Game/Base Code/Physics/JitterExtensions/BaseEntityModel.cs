@@ -15,6 +15,14 @@ namespace JD_Bacon_The_Game
     {
         protected delegate void CustomEffectTransforms(Model model, BasicEffect effect, ModelMesh mesh);
 
+        protected Model model;
+        protected Texture2D texture;
+        protected RigidBody body;
+
+        public Model BaseModel { get { return this.model; } }
+        public Texture2D BaseTexture { get { return this.texture; } }
+        public RigidBody BaseBody { get { return this.body; } }
+
         protected JDBaconTheGame myGame { get { return (JDBaconTheGame)this.Game; } }
 
         public BaseEntityModel(Game game)
@@ -24,6 +32,17 @@ namespace JD_Bacon_The_Game
 
         public virtual void Build()
         {
+            this.myGame.Components.Add(this);
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            if (this.BaseBody != null)
+            {
+                this.myGame.World.AddBody(this.BaseBody);
+            }
         }
        
         /// <summary>
@@ -37,15 +56,22 @@ namespace JD_Bacon_The_Game
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    transforms(model, effect, mesh);
-
                     effect.EnableDefaultLighting();
-                    effect.View = myGame.Camera.View;
-                    effect.Projection = myGame.Camera.Projection;
+
+                    transforms(model, effect, mesh);
+                    
+                    effect.View = myGame.CameraReference.View;
+                    effect.Projection = myGame.CameraReference.Projection;
                 }
 
                 mesh.Draw();
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
         }
     }
 }

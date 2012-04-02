@@ -15,24 +15,32 @@ namespace LevelContentStructure
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class JDLevelObject : JDObject
+    public class JDLevelObject
     {
-        #region Public Serialized Fields
+        [ContentSerializer(Optional = true)]
+        public JDAudioObject WorldMusic;
+
         public JDAppearance GroundAppearance;
 
-        [ContentSerializer(CollectionItemName = "PhysicalObject")]
-        public List<JDPhysicalObject> PhysicalObjectSet;
+        public JDCameraObject CameraObject;
 
         [ContentSerializer(CollectionItemName = "StaticObject")]
         public List<JDStaticObject> StaticObjectSet;
 
         [ContentSerializer(CollectionItemName = "CollectableObject")]
         public List<JDCollectableObject> CollectableObjectSet;
-        public JDLevelObject() { }
+
+        [ContentSerializer(CollectionItemName = "PhysicalObject")]
+        public List<JDPhysicalObject> PhysicalObjectSet;
 
         [ContentSerializer(CollectionItemName = "CharacterObject")]
         public List<JDCharacterObject> CharacterObjectSet;
-        #endregion 
 
+        [ContentSerializer(CollectionItemName = "TriggerObject")]
+        public List<JDTriggerObject> TriggerObjectSet;
+
+        
+        public JDLevelObject() { }
+        
     }
 }

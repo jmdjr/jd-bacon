@@ -30,33 +30,13 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\2d Assets\" />
-    <Folder Include="Assets\3d Assets\Done\Level 2 a\" />
-    <Folder Include="Assets\3d Assets\Done\Level 2 b\" />
-    <Folder Include="Assets\3d Assets\Done\Level 3\" />
-    <Folder Include="Assets\3d Assets\Done\Level 4\" />
-    <Folder Include="Assets\3d Assets\Done\Level 5\" />
-    <Folder Include="Assets\3d Assets\Done\Level 6\" />
-    <Folder Include="Assets\3d Assets\Done\Level 7\" />
-    <Folder Include="Assets\3d Assets\Done\Level 8\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 1\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 2 a\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 2 b\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 3\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 4\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 5\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 6\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 7\" />
-    <Folder Include="Assets\3d Assets\Modeling\Level 8\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 1\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 2 a\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 2 b\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 3\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 4\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 5\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 6\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 7\" />
-    <Folder Include="Assets\3d Assets\Needs To Be Textured\Level 8\" />
+    <Folder Include="Assets\2D\Character\" />
+    <Folder Include="Assets\2D\Cinematic\" />
+    <Folder Include="Assets\2D\Collectables\" />
+    <Folder Include="Assets\2D\UI And Menu\" />
+    <Folder Include="Assets\3D\Dynamic\" />
+    <Folder Include="Assets\3D\Static\" />
+    <Folder Include="Assets\Audio\" />
     <Folder Include="Assets\Cinematic Assets\Concept\" />
     <Folder Include="Assets\Cinematic Assets\Done\" />
     <Folder Include="Assets\Text Assets\" />
@@ -115,17 +95,53 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\3d Assets\Shotgun_BrandonModel.fbx">
-      <Name>Shotgun_BrandonModel</Name>
+    <Compile Include="Assets\Testing\ConcretBlock.FBX">
+      <Name>ConcretBlock</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Testing\Steps.FBX">
+      <Name>Steps</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Testing\Wooden Crate.FBX">
+      <Name>Wooden Crate</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\3d Assets\Done\Level 1\1by1.FBX">
-      <Name>1by1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+    <Compile Include="Assets\Testing\ConcretBlockFinish1.jpg">
+      <Name>ConcretBlockFinish1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Testing\Steps Unwrap Finish.jpg">
+      <Name>Steps Unwrap Finish</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Testing\Wooden Crate Finish.jpg">
+      <Name>Wooden Crate Finish</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\LevelsManager.xml">
+      <Name>LevelsManager</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\LevelTest.xml">
+      <Name>LevelTest</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
