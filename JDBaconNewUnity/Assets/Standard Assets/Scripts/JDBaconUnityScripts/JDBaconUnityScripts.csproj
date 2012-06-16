@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Users\null\Desktop\WarriorCursedByLoneliness_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
@@ -43,10 +44,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivateTrigger.cs" />
-    <Compile Include="CombineChildren.cs" />
+    <Compile Include="GameStatManagment\IReportStats.cs" />
+    <Compile Include="GeneralScripts\ApplyExternalForces.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="MeshCombineUtility.cs" />
+    <Compile Include="GameStatManagment\UserData.cs" />
+    <Compile Include="UtilityScripts\ActivateTrigger.cs" />
+    <Compile Include="UtilityScripts\CombineChildren.cs" />
+    <Compile Include="UtilityScripts\MeshCombineUtility.cs" />
+    <Compile Include="GameStatManagment\_GameSaveLoad.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PlayerMovement\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
