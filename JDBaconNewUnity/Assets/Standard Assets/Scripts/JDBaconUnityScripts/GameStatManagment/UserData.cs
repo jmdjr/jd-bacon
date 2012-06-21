@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
-using UnityScript.Lang;
+
 // UserData is our custom class that holds our defined objects we want to store in XML format 
 public class UserData
 {

@@ -7,7 +7,6 @@ public class ApplyExternalForces : MonoBehaviour
 
     public void OnTriggerStay(Collider collider)
     {
-        Debug.Log("test ");
         if (collider.collider.rigidbody != null)
         {
             collider.collider.rigidbody.velocity += ForcesToApply;

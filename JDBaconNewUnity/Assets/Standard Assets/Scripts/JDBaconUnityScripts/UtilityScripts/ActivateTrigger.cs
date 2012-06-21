@@ -16,7 +16,7 @@ public class ActivateTrigger : MonoBehaviour {
 	/// The game object to affect. If none, the trigger work on this game object
 	public Object target;
 	public GameObject source;
-	public int triggerCount = 1;///
+	public int triggerCount = 1;
 	public bool repeatTrigger = false;
 	
 	void DoActivateTrigger () {
