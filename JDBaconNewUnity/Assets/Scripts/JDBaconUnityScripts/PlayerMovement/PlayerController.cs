@@ -3,118 +3,164 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : GameObjectStateMachine
+public class PlayerController : StateMachineSystem
 {
-    private GameObjectState Idle = new GameObjectState("Idle");
-    private GameObjectState WalkingRight = new GameObjectState("Walking to the Right");
-    private GameObjectState WalkingLeft = new GameObjectState("Walking to the Left");
-    private GameObjectState JumpingUp = new GameObjectState("Jumping into the Air");
-    private GameObjectState DoubleJumpingUp = new GameObjectState("2nd Jumping into the Air");
-
+    #region Variables
     public float WalkingSpeed = 1f;
-    public float JumpingSpeed = 2.0f;
+    public float MaxWalkSpeed = 10.0f;
+    public ForceMode WalkingForceMode = ForceMode.Acceleration;
+    public float JumpStrength = 1.0f;
+    public float AntiGravityJumpFactor = -0.4f;
+    public float WaitTimeForJump = 0.5f;
     public bool AllowDoubleJump = true;
+    public ForceMode JumpingForceMode = ForceMode.Impulse;
 
     private bool airborne = false;
-    private bool airjumped = false;
+    #endregion
 
-    protected override void InitializeStateManager()
-    {
-        SetInitialState(Idle);
-        
-        ExitStateCondition ToWalkingLeft = new ExitStateCondition(ToWalkingLeftCondition, WalkingLeft);
-        ExitStateCondition ToWalkingRight = new ExitStateCondition(ToWalkingRightCondition, WalkingRight);
-        ExitStateCondition ToIdle = new ExitStateCondition(ToIdleCondition, Idle);
-        ExitStateCondition ToJumpingUp = new ExitStateCondition(ToJumpCondition, JumpingUp);
-        ExitStateCondition ToDoubleJumpingUp = new ExitStateCondition(ToDoubleJumpCondition, DoubleJumpingUp);
-
-        Idle.Action = IdleAction;
-        Idle.AddExitCondition(ToWalkingLeft);
-        Idle.AddExitCondition(ToWalkingRight);
-        Idle.AddExitCondition(ToJumpingUp);
-
-        WalkingRight.Action = WalkingRightAction;
-        WalkingRight.RepeatActionCount = 0;
-        WalkingRight.AddExitCondition(ToWalkingLeft);
-        WalkingRight.AddExitCondition(ToIdle);
-        WalkingLeft.AddExitCondition(ToJumpingUp);
-
-        WalkingLeft.Action = WalkingLeftAction;
-        WalkingLeft.RepeatActionCount = 0;
-        WalkingLeft.AddExitCondition(ToWalkingRight);
-        WalkingLeft.AddExitCondition(ToIdle);
-        WalkingLeft.AddExitCondition(ToJumpingUp);
-    }
-
+    #region Walking
+    private StateMachine WalkingSM;
+    #region States
+    private GameObjectState IdleWalking = new GameObjectState("Idle Walking");
+    private GameObjectState WalkingRight = new GameObjectState("Walking to the Right");
+    private GameObjectState WalkingLeft = new GameObjectState("Walking to the Left");
+    #endregion
     #region Actions
-    private IEnumerator IdleAction()
+    private IEnumerator IdleWalkingAction()
     {
-        this.airjumped = false;
-        this.airborne = false;
-
-        yield return 0;
-    }
-    private IEnumerator WalkingRightAction()
-    {
-        this.rigidbody.velocity = new Vector3(WalkingSpeed * -1, this.rigidbody.velocity.y);
         yield return 0;
     }
     private IEnumerator WalkingLeftAction()
     {
-        this.rigidbody.velocity = new Vector3(WalkingSpeed * 1, this.rigidbody.velocity.y);
+        Vector3 NewMotion = WalkingSpeed * Vector3.left;
+        if (this.rigidbody.velocity.magnitude < this.MaxWalkSpeed)
+        {
+            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        }
         yield return 0;
     }
-    private IEnumerator JumpingUpEntered()
+    private IEnumerator WalkingRightAction()
     {
-        airborne = true;
+        Vector3 NewMotion = WalkingSpeed * Vector3.right;
+        if (this.rigidbody.velocity.magnitude < this.MaxWalkSpeed)
+        {
+            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        }
         yield return 0;
     }
-    private IEnumerator DoubleJumpingUpEntered()
+    #endregion
+    #region Conditions
+    private bool ToWalkingRightCondition()
     {
-        airborne = true;
+        return Input.GetAxis("Horizontal") < 0;
+    }
+    private bool ToWalkingLeftCondition()
+    {
+        return Input.GetAxis("Horizontal") > 0;
+    }
+    private bool ToIdleWalkingCondition()
+    {
+        return Input.GetAxis("Horizontal") == 0;
+    }
+    #endregion
+    #endregion
+
+    #region Jumping
+    private StateMachine JumpingSM;
+    #region States
+    private GameObjectState IdleJumping = new GameObjectState("Idle Jumping");
+    private GameObjectState JumpingUp = new GameObjectState("Jumping into the Air");
+    private GameObjectState DoubleJumpingUp = new GameObjectState("2nd Jumping into the Air");
+    #endregion
+    #region Actions
+    private IEnumerator IdleJumpingAction()
+    {
         yield return 0;
     }
     private IEnumerator JumpingUpAction()
     {
-        this.rigidbody.AddRelativeForce(0.0f, 0.0f, JumpingSpeed * Input.GetAxis("Vertical"), ForceMode.Impulse); 
-        yield return 0;
+        Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
+        this.rigidbody.AddForce(NewMotion, JumpingForceMode);
+        this.airborne = true;
+        yield return new WaitForSeconds(WaitTimeForJump);
     }
     #endregion
-
     #region Conditions
-    private bool ToWalkingRightCondition()
+    private bool ToIdleJumpingCondition()
     {
-        return Input.GetAxis("Horizontal") > 0;
-    }
-    private bool ToWalkingLeftCondition()
-    {
-        return Input.GetAxis("Horizontal") < 0;
-    }
-    private bool ToIdleCondition()
-    {
-        return Input.GetAxis("Horizontal") == 0;
+        //ERROR: This is bad logic, the transition condition needs to be changed to 
+        //        properly detect when jumping is no longer occuring.
+        return !this.airborne;
     }
     private bool ToJumpCondition()
     {
-        return Input.GetAxis("Vertical") > 0 && !this.airborne;
+        return Input.GetAxis("Jump") > 0 && !this.airborne;
     }
     private bool ToDoubleJumpCondition()
     {
-        return Input.GetAxis("Vertical") > 0 && !this.airjumped;
+        return Input.GetAxis("Jump") > 0 && this.airborne && this.AllowDoubleJump;
     }
     #endregion
+    #endregion
 
-
-
-    // it should still be fine for a state machine to have an update function, so long as the update function does not
-    //  attempt to alter the flow of the statemachine directly.
-    public void Update()
+    protected void InitializeWalkingSM()
     {
-        if (Input.GetAxis("Vertical") > 0 && !this.airborne)
-        {
-            this.airborne = true;
-            this.rigidbody.AddRelativeForce(0.0f, 0.0f, JumpingSpeed * Input.GetAxis("Vertical"), ForceMode.Impulse);
-        }
+        ExitStateCondition ToIdleWalk = new ExitStateCondition(ToIdleWalkingCondition, IdleWalking);
+        ExitStateCondition ToWalkingLeft = new ExitStateCondition(ToWalkingLeftCondition, WalkingLeft);
+        ExitStateCondition ToWalkingRight = new ExitStateCondition(ToWalkingRightCondition, WalkingRight);
+
+        IdleWalking.Action = IdleWalkingAction;
+        IdleWalking.AddExitCondition(ToWalkingLeft);
+        IdleWalking.AddExitCondition(ToWalkingRight);
+
+        WalkingLeft.Action = WalkingLeftAction;
+        WalkingLeft.RepeatActionCount = 0;
+        WalkingLeft.AddExitCondition(ToWalkingRight);
+        WalkingLeft.AddExitCondition(ToIdleWalk);
+
+        WalkingRight.Action = WalkingRightAction;
+        WalkingRight.RepeatActionCount = 0;
+        WalkingRight.AddExitCondition(ToWalkingLeft);
+        WalkingRight.AddExitCondition(ToIdleWalk);
+
+        WalkingSM = new StateMachine("Walking", IdleWalking);
+    }
+    protected void InitializeJumpingSM()
+    {
+        JumpingSM = new StateMachine("Jumping", IdleJumping);
+        ExitStateCondition ToIdleJump = new ExitStateCondition(ToIdleJumpingCondition, IdleJumping);
+        ExitStateCondition ToJumpingUp = new ExitStateCondition(ToJumpCondition, JumpingUp);
+        ExitStateCondition ToDoubleJumpingUp = new ExitStateCondition(ToDoubleJumpCondition, DoubleJumpingUp);
+
+        IdleJumping.Action = IdleJumpingAction;
+        IdleJumping.AddExitCondition(ToJumpingUp);
+
+        JumpingUp.Action = JumpingUpAction;
+        JumpingUp.RepeatActionCount = 1;
+        JumpingUp.AddExitCondition(ToIdleJump);
+        JumpingUp.AddExitCondition(ToDoubleJumpingUp);
+
+        DoubleJumpingUp.Action = JumpingUpAction;
+        DoubleJumpingUp.RepeatActionCount = 1;
+        DoubleJumpingUp.AddExitCondition(ToIdleJump);
     }
 
+    protected override void InitializeStateManager()
+    {
+        base.InitializeStateManager();
+
+        InitializeWalkingSM();
+        InitializeJumpingSM();
+
+        this.MachineList.Add(WalkingSM);
+        this.MachineList.Add(JumpingSM);
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        ContactPoint point = collision.contacts[0];
+        if (collision.collider.transform.tag == "LevelTerrain")
+        {
+            this.airborne = false;
+        }
+    }
 }
