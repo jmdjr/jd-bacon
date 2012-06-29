@@ -33,19 +33,25 @@ public class PlayerController : StateMachineSystem
     private IEnumerator WalkingLeftAction()
     {
         Vector3 NewMotion = WalkingSpeed * Vector3.left;
-        if (this.rigidbody.velocity.magnitude < this.MaxWalkSpeed)
+        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
+        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
         {
-            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+            NewMotion.Normalize();
+            NewMotion *= this.MaxWalkSpeed;
         }
+            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
         yield return 0;
     }
     private IEnumerator WalkingRightAction()
     {
         Vector3 NewMotion = WalkingSpeed * Vector3.right;
-        if (this.rigidbody.velocity.magnitude < this.MaxWalkSpeed)
+        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
+        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
         {
-            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+            NewMotion.Normalize();
+            NewMotion *= this.MaxWalkSpeed;
         }
+        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
         yield return 0;
     }
     #endregion

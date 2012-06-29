@@ -64,35 +64,31 @@ public class StateMachineSystem : MonoBehaviour
             Debug.Log(this.Name + ": Running Machine");
             if (currentState != null)
             {
-                Debug.Log(this.Name + ": Current State = " + currentState.Name);
                 do
                 {
                     GameObjectState ToState = currentState.RunTests();
 
                     if (ToState != null)
                     {
-                        Debug.Log(this.Name + ": State Changed From..." + currentState.Name);
 
                         if (currentState.Exiting != null)
                         {
-                            Debug.Log(this.Name + ": Exiting State = " + currentState.Name);
                             yield return CoroutineDelegate(currentState.Exiting());
                         }
                         currentState = ToState;
 
-                        Debug.Log(this.Name + ": State Changed To..." + currentState.Name);
                         if (currentState.Entering != null)
                         {
-                            Debug.Log(this.Name + ": Entering State = " + currentState.Name);
                             yield return CoroutineDelegate(currentState.Entering());
                         }
 
-                        timesActionPerformed = 0;
+                        timesActionPerformed = currentState.RepeatActionCount;
                     }
 
-                    if (currentState.RepeatActionCount == 0 || currentState.RepeatActionCount >= ++timesActionPerformed)
+                    if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
                     {
                         yield return CoroutineDelegate(currentState.Action());
+                        --timesActionPerformed;
                     }
                     else
                     {
