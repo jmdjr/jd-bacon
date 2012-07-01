@@ -30,8 +30,12 @@ using System.Collections.Generic;
 public class OT : MonoBehaviour
 {
     static OT instance = null;
-    
-    
+	
+	public enum World { WorldSide2D, WorldTopDown2D, World3D };
+        
+	/// <summary>
+	/// The object prototypes tha orthello knows
+	/// </summary>
     public OTObjectType[] objectPrototypes;
     /// <summary>
     /// Material references known to the Orthello framework.
@@ -43,10 +47,107 @@ public class OT : MonoBehaviour
     /// The default materials : solid, transparent and additive can be activated by checking the
     /// setting the sprite properties <see cref="OTSprite.transparent" /> and <see cref="OTSprite.additive" />.
     /// </remarks>
-    
     public OTMatRef[] materials;
-
-   	
+	public World _world = World.WorldSide2D;
+	
+	public bool deactivatePrototypes = true;
+	public bool _debug = false;
+	public bool _reset = false;
+	
+	static Camera[] _inputCameras = new Camera[] {};
+	/// <summary>
+	/// Gets or sets the input cameras.
+	/// </summary>
+	/// <remarks>
+	/// When using multiple camera's to construct your display
+	/// and both camera's are at different world positions and contain
+	/// orthello elements that have to be captured for input, fill
+	/// this array with all camera's that are viewing Orthello objects.
+	/// </remarks>
+	public static Camera[] inputCameras
+	{
+		get
+		{
+			if (_inputCameras.Length == 0)
+				_inputCameras = new Camera[] { OT.view.camera };
+			return _inputCameras;
+		}
+		set
+		{
+			_inputCameras = value;
+		}			
+	}
+	
+	static bool _painterAlgorithm = true;
+	/// <summary>
+	/// Gets or sets a value indicating whether the painter algorithm is used.
+	/// </summary>
+	/// <remarks>
+	/// Defaults to true. When the painter algorithm is used, the x and y position
+	/// are taken into account when calculating the depth. Adding a fractured number
+	/// to the zValue and thus order sprites left to right and top to bottom when
+	/// they are on the same depth (layer)
+	/// </remarks>
+	public static bool painterAlgorithm
+	{
+		get
+		{
+			return _painterAlgorithm;
+		}
+		set
+		{
+			_painterAlgorithm = value;
+		}
+	}
+	
+	
+	static bool _loaded = false;
+	/// <summary>
+	/// Gets a value indicating whether the Orthello system is loaded.
+	/// </summary>
+	public static bool loaded
+	{
+		get
+		{
+			return _loaded;
+		}
+	}
+	
+	/// <summary>
+	/// Gets a value indicating whether the Orthello system has a 3D orientation
+	/// </summary>
+	public static bool world3D
+	{
+		get
+		{
+			return (world == World.World3D);
+		}
+	}
+	
+	/// <summary>
+	/// Gets a value indicating whether the Orthello system has a 3D orientation
+	/// </summary>
+	public static bool world2D
+	{
+		get
+		{
+			return (world != World.World3D);
+		}
+	}
+	
+	/// <summary>
+	/// Gets the world type of this orthello system
+	/// </summary>
+	public static World world
+	{
+		get
+		{
+			if (!isValid)
+				return World.WorldSide2D;
+			return (instance._world);
+		}
+	}	
+	   	
     /// <summary>
     /// Check and handle object setting changes while playing.
     /// </summary>   
@@ -76,9 +177,60 @@ public class OT : MonoBehaviour
     public static bool objectPooling = true;
 
     /// <summary>
-    /// Show debug info with OT.Print(msg)
+    /// if true, debug mode will be active
     /// </summary>
-    public static bool debug = false;
+    /// <remarks>\
+    /// Use OTDebug class to send debug messages to the Orthello framework. These
+	/// message can be viewed using normal GUI by toggling the messages on/off
+	/// The Key-code for the toggle or the doubleTap-location for a mobile device 
+	/// can be configured.
+    /// </remarks>
+    public static bool debug
+	{
+		get
+		{
+			if (!isValid)
+				return false;
+			return instance._debug;
+		}
+		set
+		{
+			if (!isValid)
+				return;
+			instance._debug = value;
+		}
+	}
+	
+	/// <summary>
+	/// Gets the (first) valid touch after you OT.Over or OT.Clicked
+	/// </summary>
+	/// <value>
+	/// The touch.
+	/// </value>
+	public static Touch touch
+	{
+		get
+		{
+			if (instance!=null)
+				return instance._touch;
+			Touch t = new Touch();
+			return t;
+		}
+	}
+	
+	/// <summary>
+	/// Gets a value indicating whether we are on a mobile platform
+	/// </summary>
+	/// <value>
+	/// <c>true</c> if on a mobile platform; otherwise, <c>false</c>.
+	/// </value>
+	public static bool mobile
+	{
+		get
+		{
+			return (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer);
+		}
+	}
 
     /// <summary>
     /// Check if all containers are ready.
@@ -94,7 +246,31 @@ public class OT : MonoBehaviour
         }
         return true;
     }
-
+			
+	public static bool multiDrag
+	{
+		get
+		{
+			if (!isValid)
+				return false;
+			return instance._multiDrag;
+		}
+		set
+		{
+			if (!isValid)				
+				return;
+			instance._multiDrag = value;
+		}
+	}
+	
+	static List<OTObject> persistantObjects = new List<OTObject>();
+	public static void Persist(OTObject o)
+	{
+		if (!persistantObjects.Contains(o))
+			persistantObjects.Add(o);
+		DontDestroyOnLoad(o.gameObject);
+	}
+	
 
     /// <summary>
     /// Framework initialization indicator.
@@ -113,6 +289,8 @@ public class OT : MonoBehaviour
                     instance = OT.GetComponent<OT>();
                 if (instance==null)
                     return false;
+				
+				instance._sound = instance.GetComponent<OTSounds>();				
             }
 
             if (materialSolid == null || materialTransparent == null || materialAdditive == null)
@@ -142,6 +320,7 @@ public class OT : MonoBehaviour
 					}
 				}
             }
+			_loaded = true;
 
             return true;
         }
@@ -217,6 +396,19 @@ public class OT : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Main sound controller
+    /// </summary>
+    public static OTSounds sound
+    {
+        get
+        {
+            if (isValid)
+                return instance._sound;
+            else
+                return null;
+        }
+    }	
     
     public static Material materialSolid
     {
@@ -274,11 +466,40 @@ public class OT : MonoBehaviour
     {
         if (g.collider != null)
         {
-            RaycastHit hit;
-            return (g.collider.Raycast(view.camera.ScreenPointToRay(Input.mousePosition), out hit, 2500f));
+			if (Input.touches.Length>0)
+			{
+				for (int t=0; t<Input.touches.Length; t++)
+				{
+					// check if any of the touches are over/on the object
+		            RaycastHit hit;
+		            bool found = g.collider.Raycast(view.camera.ScreenPointToRay(Input.touches[t].position), out hit, 2500f);				
+					if (found)
+					{
+						instance._touch = Input.touches[t];
+						return true;
+					}
+				}				
+			}
+			else
+			{						
+				// check if the mouse is over the object
+	            RaycastHit hit;
+	            return (g.collider.Raycast(view.camera.ScreenPointToRay(Input.mousePosition), out hit, 2500f));
+			}
         }
         return false;
     }
+	
+	/// <summary>
+	/// Reset's the orthello system
+	/// </summary>
+	public static void Reset()
+	{
+		if (!isValid) return;
+		instance._Reset();
+	}
+	
+	
     /// <summary>
     /// Checks if we are over a specific Orthello object
     /// </summary>
@@ -298,10 +519,7 @@ public class OT : MonoBehaviour
     public static bool Clicked(GameObject g, int button)
     {
         if (g.collider != null && Input.GetMouseButtonDown(button))
-        {
-            RaycastHit hit;
-            return (g.collider.Raycast(view.camera.ScreenPointToRay(Input.mousePosition), out hit, 2500f));
-        }
+            return Over(g);
         return false;
     }
     /// <summary>
@@ -353,10 +571,10 @@ public class OT : MonoBehaviour
     }
 
     
-    public static void MatInc(Material mat)
+    public static void MatInc(Material mat, string matName)
     {
         if (instance != null)
-            instance._MatInc(mat);
+            instance._MatInc(mat, matName);
     }
     
     public static void MatDec(Material mat, string matName)
@@ -392,7 +610,19 @@ public class OT : MonoBehaviour
         }
         return null;
     }
+		
+	public static void ClearMaterials(string name)
+	{
+		if (isValid)
+		{
+			instance._ClearMaterials(name);
+		}
+	}
 
+	public static void ClearMaterials()
+	{
+		ClearMaterials("");
+	}
     
     public static Material LookupMaterial(string name)
     {
@@ -552,21 +782,45 @@ public class OT : MonoBehaviour
             return instance._CreateObject(objectPrototype);
         return null;
     }
+	
+    /// <summary>
+    /// Creates a new OTSprite from a registered prototype
+    /// </summary>
+    /// <param name="objectPrototype">Name of object prototype to create</param>
+    /// <returns>Created or pooled OTSprite</returns>
+    public static OTSprite CreateSprite(string objectPrototype)
+    {
+        if (isValid)
+            return instance._CreateObject(objectPrototype).GetComponent<OTSprite>();
+        return null;
+    }
 
     /// <summary>
     /// Destroys an Orthello object and puts it back into the object pool
     /// </summary>
     public static void DestroyObject(OTObject o)
     {
+		if (o==null) return;
         if (isValid)
             instance._DestroyObject(o);
     }
 
     /// <summary>
+    /// Destroys an Orthello object and puts it back into the object pool
+    /// </summary>
+    public static void DestroyObject(Component c)
+    {
+		if (c==null) return;
+        if (isValid)
+            instance._DestroyObject(c.gameObject);
+    }
+	
+    /// <summary>
     /// Destroys an gameobject and puts it back into the object pool
     /// </summary>
     public static void DestroyObject(GameObject g)
     {
+		if (g==null) return;
         if (isValid)
             instance._DestroyObject(g);
     }
@@ -667,7 +921,31 @@ public class OT : MonoBehaviour
         if (isValid)
             instance._RegisterForClick(o);
     }
-
+	
+	public static Dictionary<Material, int> matcount
+	{
+		get
+		{
+			return instance.materialCount;
+		}
+	}
+		
+	public static List<OTSprite> ContainerSprites(OTContainer container)
+	{
+		if (isValid)
+		{
+			List<OTSprite> res = new List<OTSprite>();
+			for (int o=0; o<instance.objects.Count; o++)
+			{
+				if (instance.objects[o] is OTSprite && (instance.objects[o] as OTSprite).spriteContainer == container)
+					res.Add(instance.objects[o] as OTSprite);
+			}
+			return res;
+		}
+		return null;
+	}
+	
+	
     List<OTObject> objects = new List<OTObject>();
     List<OTObject> inputObjects = new List<OTObject>();
     Dictionary<string, OTObject> lookup = new Dictionary<string, OTObject>();
@@ -692,9 +970,8 @@ public class OT : MonoBehaviour
     Material _materialTransparent = null;
     Material _materialAdditive = null;
 
-    bool _debug = false;
-
-
+	Touch _touch;
+			
     float _fps;
     float fpsTime = 0;
 
@@ -702,11 +979,17 @@ public class OT : MonoBehaviour
     RaycastHit[] hits;
 
     OTView _view = null;
+	OTSounds _sound = null;
+	World _world_ = World.WorldSide2D;
 
     // Use this for initialization
     void Awake()
     {
         instance = this;
+		_sound = instance.GetComponent<OTSounds>();
+		if (_sound==null)
+			_sound = instance.gameObject.AddComponent<OTSounds>();
+		
         // find view class as child of the OT main class
         for (int c = 0; c < transform.childCount; c++)
         {
@@ -715,6 +998,8 @@ public class OT : MonoBehaviour
                 break;
         }
         if (view != null) view.InitView();
+		
+		_world_ = _world;
 
         if (Application.isPlaying)
         {
@@ -731,12 +1016,17 @@ public class OT : MonoBehaviour
                     Transform t = transform.GetChild(c);
                     // object prototypes found so add them to the lookup table
                     for (int p = 0; p < t.childCount; p++)
+					{
                         OTObjectType.lookup.Add(t.GetChild(p).gameObject.name.ToLower(), t.GetChild(p).gameObject);
+						if (deactivatePrototypes)
+							t.GetChild(p).gameObject.SetActiveRecursively(false);
+							
+					}
                     break;
                 }
             }
+			
         }
-
     }
 
     
@@ -751,7 +1041,7 @@ public class OT : MonoBehaviour
         return null;
     }
 
-    
+	
     public OTObject[] _ObjectsUnderPoint(Vector2 screenPoint, OTObject[] checkObjects, OTObject[] ignoreObjects)
     {
         List<OTObject> _ignoreObjects = new List<OTObject>(ignoreObjects);
@@ -759,24 +1049,28 @@ public class OT : MonoBehaviour
         List<OTObject> _foundObjects = new List<OTObject>();
         List<RaycastHit> _hits = new List<RaycastHit>();
 
-        Ray ray = Camera.main.ScreenPointToRay(screenPoint);
-        hits = Physics.RaycastAll(ray, 5000);
-        if (hits.Length > 0)
-        {
-            for (int h = hits.Length - 1; h >= 0; h--)
-            {
-                OTObject o = hits[h].collider.gameObject.GetComponent<OTObject>();
-                if (_ignoreObjects.Contains(o)) continue;
-                if (o != null)
-                {
-                    if ((_checkObjects.Count > 0 && _checkObjects.Contains(o)) || _checkObjects.Count == 0)
-                    {
-                        _foundObjects.Add(o);
-                        _hits.Add(hits[h]);
-                    }
-                }
-            }
-        }
+		for (int i=0; i<inputCameras.Length; i++)
+		{
+	        Ray ray = inputCameras[i].ScreenPointToRay(screenPoint);
+	        hits = Physics.RaycastAll(ray, 5000);
+	        if (hits.Length > 0)
+	        {
+	            for (int h = hits.Length - 1; h >= 0; h--)
+	            {
+	                OTObject o = hits[h].collider.gameObject.GetComponent<OTObject>();
+	                if (_ignoreObjects.Contains(o)) continue;
+	                if (o != null)
+	                {
+	                    if ((_checkObjects.Count > 0 && _checkObjects.Contains(o)) || _checkObjects.Count == 0)
+	                    {
+	                        _foundObjects.Add(o);
+	                        _hits.Add(hits[h]);
+	                    }
+	                }
+	            }
+	        }				
+		}
+		
         hits = _hits.ToArray();
         return _foundObjects.ToArray();
     }
@@ -820,7 +1114,10 @@ public class OT : MonoBehaviour
     public static OTObject[] ObjectsUnderPoint()
     {
         if (!isValid) return null;
-        return instance._ObjectsUnderPoint(Input.mousePosition, new OTObject[] { }, new OTObject[] { });
+		if (Input.touches.Length>0)
+        	return instance._ObjectsUnderPoint(Input.touches[0].position, new OTObject[] { }, new OTObject[] { });
+		else
+        	return instance._ObjectsUnderPoint(Input.mousePosition, new OTObject[] { }, new OTObject[] { });
     }
     
     public OTObject _ObjectUnderPoint(Vector2 screenPoint, OTObject[] checkObjects, OTObject[] ignoreObjects)
@@ -881,15 +1178,129 @@ public class OT : MonoBehaviour
     public static OTObject ObjectUnderPoint()
     {
         if (!isValid) return null;
-        return instance._ObjectUnderPoint(Input.mousePosition, new OTObject[] { }, new OTObject[] { });
+		
+		if (Input.touches.Length>0)
+        	return instance._ObjectUnderPoint(Input.touches[0].position, new OTObject[] { }, new OTObject[] { });
+		else		
+        	return instance._ObjectUnderPoint(Input.mousePosition, new OTObject[] { }, new OTObject[] { });
     }
+	
+	bool _multiDrag = false;
+	Vector2 dragPosition;
+	bool maybeDrag = false;
+	int maybeButton = 0;
+		
+	void Drag(OTDragObject o, Vector2 pos)
+	{
+		Vector3 vp = OT.view.camera.ScreenToWorldPoint(pos) - OT.view.camera.ScreenToWorldPoint(o.position);
+		if (OT.world == World.WorldSide2D)
+			o.dragObject.position += (Vector2)vp;
+		else
+			o.dragObject.position += new Vector2(vp.x,vp.z);
+		o.position = pos;
+		o.dragObject.HandleDrag("drag", null);
+	}
+	    		
+	void DragControl(OTObject dragObject)
+	{
+		if (!OTDragObject.Dragging(dragObject))
+		{
+			if (mobile)
+			{
+				if (touch.phase == TouchPhase.Began)
+				{					
+					if (!multiDrag)
+ 						OTDragObject.Clear();
+					
+					if (OTDragObject.ByFinger(touch.fingerId)==null)
+						OTDragObject.New(touch.fingerId).position = touch.position;					
+				}
+				else
+				{
+					OTDragObject o = OTDragObject.ByFinger(touch.fingerId);
+					if (!o.dragging)
+					{
+						if (touch.phase == TouchPhase.Moved && o!=null)
+						{
+							o.dragging = true;																	
+							o.dragObject = dragObject;
+							dragObject.HandleDrag("start", null);
+							dragObject.dragTouch = touch;
+							Drag(o,touch.position);				
+						}
+					}
+				}
+			}
+			else
+			{
+				if (!maybeDrag && Input.GetMouseButton(dragObject.dragButton))
+				{
+					dragPosition = Input.mousePosition;
+					maybeDrag = true;
+					maybeButton = dragObject.dragButton;
+				}
+				else
+				if (Input.GetMouseButton(dragObject.dragButton) && !((Vector2)Input.mousePosition).Equals(dragPosition))
+				{
+					OTDragObject o = OTDragObject.New(dragObject);
+					o.dragging = true;
+					o.position = dragPosition;
+					maybeDrag = false;
+					dragObject.HandleDrag("start", null);
+					Drag(o, Input.mousePosition);				
+				}
+			}
+		}
+		else
+		{
+			// find touch
+			OTDragObject o = OTDragObject.ByObject(dragObject);
+			if (OT.mobile)
+			{			
+				if (o!=null)
+				{	
+					if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+					{
+						dragObject.HandleDrag("end", null);
+						OTDragObject.Remove(o);
+					}
+					else
+					{
+						dragObject.dragTouch = touch;						
+						Drag(o, touch.position);						
+					}
+				}
+			}
+			else
+			{
+				if (!Input.GetMouseButton(dragObject.dragButton))
+				{
+					dragObject.HandleDrag("end", null);
+					OTDragObject.Remove(o);
+				}
+				else
+					Drag(o, Input.mousePosition);				
+			}
+		}
+	}
 
+	void EndDragObject(int idx)
+	{
+		if (OTDragObject.dragObjects[idx].dragging)
+			OTDragObject.dragObjects[idx].dragObject.HandleDrag("end", null);
+		OTDragObject.dragObjects.RemoveAt(idx);
+	}
+	
 
     void HandleInput(Vector2 screenPoint)
-    {
+    {		
         OTObject hitObject = ObjectUnderPoint(screenPoint, inputObjects.ToArray());
         if (hitObject != null && hitObject.enabled)
-           hitObject.OnInput(hit.point);
+		{
+			if (hitObject.draggable && !OTDragObject.Dragging(hitObject))
+				DragControl(hitObject);				
+			hitObject.OnInput(hit.point);
+		}
     }
 	
 	bool _recordMode = false;
@@ -915,11 +1326,49 @@ public class OT : MonoBehaviour
     }
 #endif
 	
+	
+	void _ResetContainer(OTContainer container)
+	{
+		container.Reset();
+	}
+	void _ResetAnimation(OTAnimation animation)
+	{
+		animation.Reset();		
+	}
+	void _ResetObject(OTObject o)
+	{
+		o.Reset();
+	}
+	
+	void _Reset()
+	{
+		materialLookup.Clear();
+		materialCount.Clear();
+		for (int i=0; i<containerList.Count; i++)
+			_ResetContainer(containerList[i]);
+		for (int i=0; i<animationList.Count; i++)
+			_ResetAnimation(animationList[i]);
+		for (int i=0; i<objects.Count; i++)
+			_ResetObject(objects[i]);					 		
+	}
+		
     // Update is called once per frame
     void Update()
     {
         if (instance == null) instance = this;
-				
+		
+		if (_reset || _world_!=_world)
+		{
+			if (_world_!=_world)
+			{
+				_world_ = _world;
+				view.InitView();
+			}
+						
+			_Reset();
+			_reset = false;
+		}
+						
 #if UNITY_EDITOR	
 		recordModeCheckTime+=Time.deltaTime;
 		if (recordModeCheckTime > checkRecordModeFrequency)
@@ -955,19 +1404,76 @@ public class OT : MonoBehaviour
                 Input.GetMouseButtonUp(0) ||
                 Input.GetMouseButtonUp(1) ||
                 Input.GetMouseButtonUp(2))
-            {
-                if (Input.touchCount > 0)
-                    HandleInput(Input.touches[0].position);
-                else
-                    HandleInput(Input.mousePosition);                     
+            {												
+				if ((!(mobile && multiDrag)) && OTDragObject.isDragging)
+				{
+					if (mobile)
+						for (int t=0; t<Input.touches.Length; t++)
+							if (Input.touches[t].fingerId == OTDragObject.dragObjects[0].finger)
+							{
+								_touch = Input.touches[t];
+								break;
+							}
+					
+					DragControl(OTDragObject.dragObjects[0].dragObject);
+				}
+				else
+				{							
+	                if (Input.touchCount > 0)
+					{
+						List<int> fingers = new List<int>();
+						for (int t=0; t<Input.touches.Length; t++)
+						{
+							_touch = Input.touches[t];
+							if (mobile && multiDrag && OTDragObject.dragObjects.Count>0)
+							{
+								OTDragObject o = OTDragObject.ByFinger(touch.fingerId);
+								if (o!=null && o.dragObject!=null && o.dragging)
+									DragControl(o.dragObject);
+							}
+							
+							if (_touch.phase !=  TouchPhase.Ended && _touch.phase !=  TouchPhase.Canceled)
+								fingers.Add(touch.fingerId);
+							
+	                    	HandleInput(touch.position);
+							
+						}
+						
+						if (mobile && multiDrag && OTDragObject.dragObjects.Count>0)
+						{
+							int i=0;
+							while (i<OTDragObject.dragObjects.Count)
+							{
+								if (OTDragObject.dragObjects[i].dragging && !fingers.Contains(OTDragObject.dragObjects[i].finger))
+									EndDragObject(i);
+								else
+									i++;
+							}
+						}							
+					}
+	                else
+	                    HandleInput(Input.mousePosition);                     
+				}
             }
+			else
+			{
+				if (mobile && Input.touchCount == 0 && OTDragObject.isDragging)
+				{
+					while (OTDragObject.dragObjects.Count>0)
+						EndDragObject(0);
+				}
+			}
         }
 
+		if (maybeDrag && !Input.GetMouseButton(maybeButton))
+			maybeDrag = false;
+		
+		
         // calculate fps every 100ms
         fpsTime += Time.deltaTime;
-        if (fpsTime >= 0.1f)
+        if (fpsTime >= 0.25f)
         {
-            _fps = 1 / Time.deltaTime;
+            _fps = (_fps + (int)1 / Time.deltaTime)/2;
             fpsTime = 0;
         }
 		
@@ -981,6 +1487,9 @@ public class OT : MonoBehaviour
                     co.Update(Time.deltaTime);
             }
         }
+		
+		if (debug)
+			OTDebug.Update();
 
     }
 
@@ -1063,8 +1572,8 @@ public class OT : MonoBehaviour
 
     void _Print(string msg)
     {
-        if (_debug)
-            Debug.Log(msg);
+        if (debug)
+			OTDebug.Message(msg);
     }
 
 
@@ -1157,7 +1666,7 @@ public class OT : MonoBehaviour
         while(gObjects.Count<numberOfInstances)
         {
             GameObject g = _CreateObject(proto, false);
-            g.active = false;
+            g.SetActiveRecursively(false);
             g.name = objectProtoType + "-" + (++index);
             if (pool!=null)
                 g.transform.parent = pool.transform;
@@ -1184,7 +1693,7 @@ public class OT : MonoBehaviour
 
     void _ToObjectPool(string poolName, GameObject g)
     {
-        g.active = false;
+        g.SetActiveRecursively(false);
         string _poolName = poolName.ToLower();
         List<GameObject> gObjects;
         GameObject pool = null;
@@ -1245,15 +1754,22 @@ public class OT : MonoBehaviour
                     gObjects.RemoveAt(0);
 
                     OTObject o = g.GetComponent<OTObject>();
-                    if (o != null)
-                    {
-                        OTObject oproto = OTObjectType.lookup[proto].GetComponent<OTObject>();
-                        if (oproto != null)
-                            o.Assign(oproto);
-                        o.StartUp();
-                    }
+					GameObject gproto = OTObjectType.lookup[proto];
+					if (gproto!=null)
+					{
+                    	OTObject oproto = gproto.GetComponent<OTObject>();
+						if (o!=null && oproto!=null)
+							o.Assign(oproto);
+						else
+						{
+							g.transform.position = gproto.transform.position;
+							g.transform.localScale = gproto.transform.localScale;
+							g.transform.rotation = gproto.transform.rotation;								
+						}
+					}
                     g.transform.parent = null;
-                    g.active = true;
+                    g.SetActiveRecursively(true);
+					g.SendMessage("StartUp",null,SendMessageOptions.DontRequireReceiver);
                     if (g.renderer != null)
                         g.renderer.enabled = true;
                     return g;
@@ -1285,8 +1801,10 @@ public class OT : MonoBehaviour
                 objects.Remove(o);
             if (inputObjects.Contains(o))
                 inputObjects.Remove(o);
+			if (persistantObjects.Contains(o))
+				persistantObjects.Remove(o);
         }
-        o.gameObject.active = false;
+        o.gameObject.SetActiveRecursively(false);
     }
 
     void _RemoveObject(GameObject g)
@@ -1295,7 +1813,7 @@ public class OT : MonoBehaviour
         if (o != null)
             _RemoveObject(o);
         else
-            g.active = false;
+            g.SetActiveRecursively(false);
     }
 
     void _RemoveContainer(OTContainer container)
@@ -1323,6 +1841,7 @@ public class OT : MonoBehaviour
 
     void _DestroyObject(OTObject o, string pool)
     {
+		if (o==null) return;
         _RemoveObject(o);
         if (pool != "" && objectPooling)
         {
@@ -1337,12 +1856,14 @@ public class OT : MonoBehaviour
     }
 
     void _DestroyObject(OTObject o)
-    {
+    {		
+		if (o==null) return;
         _DestroyObject(o, o.protoType);
     }
 
     void _DestroyObject(GameObject g)
     {
+		if (g==null) return;
         OTObject o = g.GetComponent<OTObject>();
         if (o != null)
             _DestroyObject(o, o.protoType);
@@ -1435,6 +1956,27 @@ public class OT : MonoBehaviour
         if (!inputObjects.Contains(o))
             inputObjects.Add(o);
     }
+	
+	void _ClearMaterials(string name)
+	{			
+		if (materialLookup.Count>0)
+		{		
+			List<KeyValuePair<string, Material>> toRemove = new List<KeyValuePair<string, Material>>();
+			foreach(KeyValuePair<string ,Material> entry in materialLookup)
+			{
+			    if (entry.Key.IndexOf(name) == 0)
+					toRemove.Add(entry);
+			}
+			
+			for (int l=0; l<toRemove.Count; l++)
+			{
+				materialLookup.Remove(toRemove[l].Key);
+				materialCount.Remove(toRemove[l].Value);
+				DestroyImmediate(toRemove[l].Value);
+			}
+			
+		}
+	}
 
     
     Material _GetMaterial(string name, Color tintColor, float alpha)
@@ -1462,13 +2004,20 @@ public class OT : MonoBehaviour
         return null;
     }
 
-    void _MatInc(Material mat)
+    void _MatInc(Material mat, string matName)
     {
         if (mat == null) return;
-        if (materialCount.ContainsKey(mat))
+						
+		if (!materialLookup.ContainsKey(matName.ToLower()))
+			materialLookup.Add(matName.ToLower(),mat);		
+		
+        if (materialCount.ContainsKey(mat))									
             materialCount[mat]++;
         else
             materialCount.Add(mat, 1);
+									
+		OTDebug.Message("inc++ ("+materialCount[mat]+") mat ["+matName+"]", "ot-mat");		
+		
     }
 
     void _MatDec(Material mat, string matName)
@@ -1477,11 +2026,14 @@ public class OT : MonoBehaviour
         if (materialCount.ContainsKey(mat))
         {
             materialCount[mat]--;
+			OTDebug.Message("dec-- ("+materialCount[mat]+") mat ["+matName+"]", "ot-mat");			
             if (materialCount[mat] == 0)
             {
+				OTDebug.Message("rem mat ["+matName+"]", "ot-mat");
                 materialCount.Remove(mat);
-                materialLookup.Remove(matName);
-                if (Application.isPlaying)
+				if (materialLookup.ContainsKey(matName.ToLower()))
+                	materialLookup.Remove(matName.ToLower());
+                if (Application.isPlaying)				
                     Destroy(mat);
                 else
                     DestroyImmediate(mat);
@@ -1604,6 +2156,469 @@ public class OT : MonoBehaviour
         	instance._RemoveController(c);
     }
 		
+	void OnGUI()
+	{
+		if (debug && OTDebug.showing)
+			OTDebug.DisplayGUI();
+	}			
 	
+	void OnLevelWasLoaded(int level)
+	{
+		for (int o = 0; o<persistantObjects.Count; o++)
+		{
+			OTObject obj = persistantObjects[o];
+			if (obj!=null && obj.gameObject!=null)
+			{
+				_Register(obj);			
+				if (obj.registerInput)
+					_InputTo(obj);
+			}
+		}
+	}			
+	
+}
 
+class OTDragObject {
+	
+	public bool dragging = false;
+	
+	public static bool isDragging
+	{
+		get
+		{
+			for (int i=0; i<dragObjects.Count; i++)
+				if (dragObjects[i].dragging)
+					return true;
+			return false;
+		}
+	}
+
+	public Vector2 position
+	{
+		get
+		{
+			return _position;			
+		}
+		set
+		{
+			_position = value;
+		}		
+	}
+	
+	
+	public int finger
+	{
+		get
+		{
+			return _finger;			
+		}
+		set
+		{
+			_finger = value;
+			if (!fingerLookup.ContainsKey(_finger))
+				fingerLookup.Add(_finger,this);
+		}		
+	}
+	
+	public OTObject dragObject
+	{
+		get
+		{
+			return _dragObject;
+		}
+		set
+		{
+			_dragObject = value;
+			if (!objectLookup.ContainsKey(_dragObject))
+				objectLookup.Add(_dragObject,this);
+		}
+		
+	}
+	
+	public static List<OTDragObject> dragObjects = new List<OTDragObject>();
+	static Dictionary<int,OTDragObject> fingerLookup = new Dictionary<int, OTDragObject>();
+	static Dictionary<OTObject,OTDragObject> objectLookup = new Dictionary<OTObject, OTDragObject>();
+	
+	int _finger = -1;
+	OTObject _dragObject = null;
+	Vector2 _position;
+	
+	public static OTDragObject New(int finger)
+	{
+		OTDragObject o = new OTDragObject();
+		o.finger = finger;
+		dragObjects.Add(o);
+		return o;
+	}
+
+	public static OTDragObject New(OTObject dragObject)
+	{
+		Clear();
+		OTDragObject o = new OTDragObject();
+		o.dragObject = dragObject;
+		dragObjects.Add(o);
+		return o;
+	}
+		
+	public static void Clear()
+	{
+		dragObjects.Clear();	
+		fingerLookup.Clear();
+		objectLookup.Clear();			
+	}
+	
+	public static OTDragObject ByFinger(int fingerId)
+	{
+		if (fingerLookup.ContainsKey(fingerId))
+			return fingerLookup[fingerId];
+		else
+			return null;
+	}
+	
+	public static OTDragObject ByObject(OTObject dragObject)
+	{
+		if (objectLookup.ContainsKey(dragObject))
+			return objectLookup[dragObject];
+		else
+			return null;
+	}
+	
+	public static bool Dragging(OTObject dragObject)
+	{
+		OTDragObject o = ByObject(dragObject);
+		return (o!= null && o.dragging);
+	}
+	
+	public static void Remove(OTDragObject o)
+	{
+		if (objectLookup.ContainsKey(o.dragObject))
+			objectLookup.Remove(o.dragObject);
+		if (o.finger!=-1 && fingerLookup.ContainsKey(o.finger))
+			fingerLookup.Remove(o.finger);
+		
+		if (dragObjects.Contains(o))
+			dragObjects.Remove(o);
+	}
+	
+}
+
+
+/// <summary>
+/// OT debug class
+/// </summary>
+/// <remarks>
+/// This class is used to send debug messages to the Orthello framework. These
+/// message can be viewed using normal GUI by toggling the messages on/off
+/// The Key-code for the toggle or the doubleTap-location for a mobile device 
+/// can be configured.
+/// </remarks>
+public class OTDebug
+{
+
+	/// <summary>
+	/// Message type enumeration
+	/// </summary>
+	public enum MessageType
+	{
+		Error, Warning, Message
+	}	
+
+	/// <summary>
+	/// Gets or sets the key to toggle the debug info
+	/// </summary>
+	public static string toggleKey
+	{
+		get
+		{
+			return _toggleKey;			
+		}
+		set
+		{
+			_toggleKey = value;
+			keys = new string[]{};
+		}
+	}
+
+	static List<OTDebug> debugs
+	{
+		get
+		{
+			return _debugs;
+		}
+	}
+	
+	/// <summary>
+	/// Gets or sets the maximum number of lines of debug info that will be kept
+	/// </summary>
+	public static int maxLines
+	{
+		get
+		{
+			return _maxLines;
+		}
+		set
+		{
+			_maxLines = value;
+			while (debugs.Count>_maxLines)
+				debugs.RemoveAt(debugs.Count-1);				
+		}
+	}
+	
+	/// <summary>
+	/// Gets a value indicating whether the debug info is showing.
+	/// </summary>
+	public static bool showing
+	{
+		get
+		{
+			return _showing;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the number of fingers that will toggle
+	/// the debug info on a mobile device
+	/// </summary>
+	public static int touchCount
+	{
+		get
+		{
+			return _touchCount;
+		}
+		set
+		{
+			_touchCount = value;
+		}
+	}
+	
+	/// <summary>
+	/// Gets or sets the number of seconds then fingers
+	/// must touch the screen before the debug info will be toggled
+	/// </summary>
+	public static string messageGroup
+	{
+		get
+		{
+			return _messageGroup;
+		}
+		set
+		{
+			_messageGroup = value;
+			if (value!="")
+				_messageGroups = new List<string>(_messageGroup.Split(','));
+			else
+				_messageGroups = new List<string>();							
+		}
+	}
+	
+	/// <summary>
+	/// Gets or sets the number of seconds then fingers
+	/// must touch the screen before the debug info will be toggled
+	/// </summary>
+	public static float touchTime
+	{
+		get
+		{
+			return _touchTime;
+		}
+		set
+		{
+			_touchTime = value;
+		}
+	}
+		
+	static List<OTDebug> _debugs = new List<OTDebug>();
+	static int _maxLines = 150;
+	static string _toggleKey = "shift+d";
+	static int _touchCount = 2;
+	static float _touchTime = .5f;
+	static bool _showing = false;
+	static string _messageGroup = "";
+	static List<string> _messageGroups = new List<string>();
+	
+	public System.DateTime time ;
+	public MessageType messageType = MessageType.Message;
+	public string message = "";
+		
+	static void _Debug(MessageType messageType, string message)
+	{
+		OTDebug d = new OTDebug();		
+		d.time = System.DateTime.Now;
+		d.message = message;
+		d.messageType = messageType;
+		
+		debugs.Insert(0,d);
+		
+		while (debugs.Count>_maxLines)
+			debugs.RemoveAt(debugs.Count-1);				
+	}
+	
+	
+	public static void Show()
+	{
+		_showing = true;
+	}
+	
+	public static void Hide()
+	{
+		_showing = true;
+	}
+
+	static string[] keys = new string[]{};
+	static bool ToggleKey()
+	{
+		if (!Input.anyKeyDown && !Input.anyKey)
+			return false;
+		
+		if (keys.Length == 0)
+			keys = toggleKey.ToLower().Split('+');
+		
+		bool toggle = false;
+		for (int k=0; k<keys.Length; k++)
+		{
+			if (keys[k] == "ctrl")
+			{
+				if (keys.Length == 1)
+				  toggle = (Input.GetKeyDown(KeyCode.LeftControl)||Input.GetKeyDown(KeyCode.RightControl));
+				else
+				  toggle = (Input.GetKey(KeyCode.LeftControl)||Input.GetKey(KeyCode.RightControl));
+			}
+			else
+			if (keys[k] == "alt")
+			{
+				if (keys.Length == 1)
+				  toggle = (Input.GetKeyDown(KeyCode.LeftAlt)||Input.GetKeyDown(KeyCode.RightAlt));
+				else
+				  toggle = (Input.GetKey(KeyCode.LeftAlt)||Input.GetKey(KeyCode.RightAlt));
+			}
+			else
+			if (keys[k] == "shift")
+			{
+				if (keys.Length == 1)
+				  toggle = (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift));
+				else
+				  toggle = (Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
+			}
+			else
+			{
+				if (k == keys.Length-1)
+					toggle = Input.GetKeyDown(keys[k]);
+				else
+					toggle = Input.GetKey(keys[k]);
+			}
+			
+
+			if (!toggle) 
+				return false;
+		}
+		return toggle;
+	}
+	
+	static bool canTouch = true;
+	static float touchTimer = 0;
+	public static void Update()
+	{
+		if (!OT.debug) return;
+		
+		if (OT.mobile)
+		{
+			if (Input.touches.Length==touchCount && canTouch)
+			{
+				touchTimer += Time.deltaTime;
+				if (touchTimer > touchTime)
+				{
+					_showing = !_showing;				
+					canTouch = false;
+				}
+			}
+			else
+			{
+				if (Input.touches.Length == 0)
+				{
+					canTouch = true;
+					touchTimer = 0;
+				}
+			}
+		}
+		else
+		{
+			if (ToggleKey())
+				_showing = !showing;
+		}						
+	}
+	
+	public static void Message(string message, string group)
+	{
+		if (!OT.debug) return;
+		if (group == "" || _messageGroups.Contains(group))
+		{
+			if (Application.isEditor)
+				Debug.Log(message);
+			OTDebug._Debug(MessageType.Message,message);
+		}
+	}
+	public static void Message(string message)
+	{
+		Message(message,"");
+	}
+	
+	public static void Error(string message)
+	{
+		if (!OT.debug) return;
+		if (Application.isEditor)
+			Debug.LogError(message);
+		OTDebug._Debug(MessageType.Error,message);
+	}
+	public static void Warning(string message)
+	{
+		if (!OT.debug) return;
+		if (Application.isEditor)
+			Debug.LogWarning(message);
+		OTDebug._Debug(MessageType.Warning,message);
+	}
+	
+	public static void Clear()
+	{
+		debugs.Clear();
+	}
+	
+	static Vector2 scrollPos = Vector2.zero;
+	public static void DisplayGUI()
+	{
+		GUI.skin.label.normal.textColor = new Color(.9f,.5f,.2f);
+		GUIStyle label = new GUIStyle(GUI.skin.label);
+		label.normal.textColor = Color.yellow;
+		GUI.Box(new Rect(10,10,Screen.width/2, Screen.height-20),"Orthello - Debug - Messages");
+		GUI.Box(new Rect(15,35,(Screen.width/2)-10, Screen.height-80),"");
+		int py = 40;
+		scrollPos = GUI.BeginScrollView(new Rect(15,40,(Screen.width/2)-10, Screen.height - 90),scrollPos, new Rect(15,40,(Screen.width/2)-30 , debugs.Count * 20));
+		for (int m=0; m<debugs.Count; m++)
+		{
+			GUI.Label(new Rect(20,py,(Screen.width/2)-20,25), debugs[m].time.ToString("H:mm:ss")+" - ");
+			if (debugs[m].message.IndexOf("@")==0)
+				GUI.Label(new Rect(120,py,(Screen.width/2)-20,25), debugs[m].message, label);
+			else
+				GUI.Label(new Rect(120,py,(Screen.width/2)-20,25), debugs[m].message);
+			py+=20;
+		}
+		GUI.EndScrollView();
+		if (GUI.Button(new Rect(20,Screen.height-40,50,20),"Clear"))
+			OTDebug.Clear();
+		
+		GUI.Label(new Rect(80,Screen.height-40,100,20),"Time scale :", label);
+		Time.timeScale = GUI.HorizontalSlider(new Rect(165,Screen.height-34,100,20),Time.timeScale,0f,10f);
+		string ts = GUI.TextField(new Rect(272,Screen.height-40,40,20),""+(int)Time.timeScale);
+		try{
+			Time.timeScale = (int)System.Convert.ToDecimal(ts);
+		}
+		catch(System.Exception)
+		{
+		}		
+		GUI.Label(new Rect(320,Screen.height-40,100,20),"OTObjects :", label);
+		GUI.Label(new Rect(395,Screen.height-40,100,20),""+OT.objectCount);
+		GUI.Label(new Rect(420,Screen.height-40,100,20),"FPS :", label);
+		GUI.Label(new Rect(460,Screen.height-40,100,20),""+(int)OT.fps);
+			
+	}
+		
 }

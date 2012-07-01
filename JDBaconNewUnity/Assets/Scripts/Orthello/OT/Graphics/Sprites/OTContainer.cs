@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
  
 /// <summary>
 /// Provides base functionality to handle textures with multiple image frames.
@@ -7,12 +8,11 @@ using System.Collections;
 [ExecuteInEditMode]
 public class OTContainer : MonoBehaviour
 {
-    /// <exclude />
+    
     public string _name = "";
     bool registered = false;
-    /// <exclude />    
-    protected bool dirtyContainer = true;
-    /// <exclude />
+	        		
+    protected bool dirtyContainer = true;    
     protected string _name_ = "";	
 
     /// <summary>
@@ -49,7 +49,7 @@ public class OTContainer : MonoBehaviour
         /// </summary>
         public Vector3[] vertices;
     }
-
+			
     Frame[] frames = { };
 
     /// <summary>
@@ -113,6 +113,7 @@ public class OTContainer : MonoBehaviour
     {
         return new Frame[] { };
     }
+		
 
     /// <summary>
     /// Return the frame number by its name or -1 if it doesn't exist. 
@@ -130,6 +131,7 @@ public class OTContainer : MonoBehaviour
         return -1;
     }
 	
+	
 	protected void Awake()
 	{
 #if UNITY_EDITOR
@@ -139,7 +141,7 @@ public class OTContainer : MonoBehaviour
 	}
 
     // Use this for initialization
-    /// <exclude />
+    
     protected void Start()
     {
         // initialize attributes
@@ -178,7 +180,7 @@ public class OTContainer : MonoBehaviour
             throw new System.IndexOutOfRangeException("Frame index out of bounds ["+index+"]");
         }
     }
-
+	
     void RegisterContainer()
     {
         if (OT.ContainerByName(name) == null)
@@ -204,10 +206,18 @@ public class OTContainer : MonoBehaviour
 				UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
 #endif		
        }
-    }
-
+    }	
+		
+	Dictionary<string, Frame> frameByName = new Dictionary<string, Frame>();
+	public Frame FrameByName(string frameName)
+	{
+		if (frameByName.ContainsKey(frameName))
+			return frameByName[frameName];
+		return new Frame();
+	}
+	
     // Update is called once per frame
-    /// <exclude />
+    
     protected void Update()
     {
 
@@ -222,6 +232,19 @@ public class OTContainer : MonoBehaviour
         if (dirtyContainer || !isReady)
         {
             frames = GetFrames();
+			frameByName.Clear();
+			for (int f=0; f<frames.Length; f++)
+			{
+				if (!frameByName.ContainsKey(frames[f].name))
+					frameByName.Add(frames[f].name,frames[f]);
+			}
+			
+			// remove all cached materials for this container
+			OT.ClearMaterials("spc:"+name.ToLower());
+			List<OTSprite> sprites = OT.ContainerSprites(this);
+			for (int s=0; s<sprites.Count; s++)
+				sprites[s].GetMat();
+					
             dirtyContainer = false;
         }
     }
@@ -231,5 +254,11 @@ public class OTContainer : MonoBehaviour
         if (OT.isValid)
             OT.RemoveContainer(this);
     }
+	
+	public virtual void Reset()
+	{
+		dirtyContainer = true;
+		Update();
+	}
 
 }

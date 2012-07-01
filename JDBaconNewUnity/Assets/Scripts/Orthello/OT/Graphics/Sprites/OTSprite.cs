@@ -5,7 +5,7 @@ using System.Collections;
 /// Provides functionality to use static sprites (images) to your scenes.
 /// </summary>
 public class OTSprite : OTObject
-{
+{		
     //-----------------------------------------------------------------------------
     // Editor settings
     //-----------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public class OTSprite : OTObject
     
     public int _frameIndex = 0;
     
-    public OTContainer _spriteContainer;
+    public OTContainer _spriteContainer;	
 
     //-----------------------------------------------------------------------------
     // public attributes (get/set)
@@ -82,7 +82,7 @@ public class OTSprite : OTObject
         set
         {
             _transparent = value;
-            Clean();
+			Clean();
         }
     }
     /// <summary>
@@ -97,7 +97,7 @@ public class OTSprite : OTObject
         set
         {
             _additive = value;
-            Clean();
+			Clean();
         }
     }
 
@@ -127,7 +127,7 @@ public class OTSprite : OTObject
         set
         {
             _image = value;
-            Clean();
+			Clean();
         }
     }
 
@@ -143,7 +143,8 @@ public class OTSprite : OTObject
         set
         {
             _spriteContainer = value;
-            Clean();
+			_containerName = "";
+			Clean();
         }
     }
     /// <summary>
@@ -158,7 +159,7 @@ public class OTSprite : OTObject
         set
         {
             _frameIndex = value;
-            Clean();
+			Clean();
         }
     }
 
@@ -194,7 +195,7 @@ public class OTSprite : OTObject
         set
         {
             _materialReference = value;
-            Clean();
+			Clean();
         }
     }
 
@@ -213,7 +214,7 @@ public class OTSprite : OTObject
         set
         {
             _tintColor = value;
-            Clean();
+			Clean();
         }
     }
     /// <summary>
@@ -231,7 +232,7 @@ public class OTSprite : OTObject
         set
         {
             _alpha = value;
-            Clean();
+			Clean();
         }
     }
 	
@@ -242,7 +243,7 @@ public class OTSprite : OTObject
     //-----------------------------------------------------------------------------
     // protected and private  fields
     //-----------------------------------------------------------------------------
-    OTContainer _spriteContainer_ = null;
+    protected OTContainer _spriteContainer_ = null;
     int _frameIndex_ = 0;
     bool _flipHorizontal_ = false;
     bool _flipVertical_ = false;
@@ -257,11 +258,7 @@ public class OTSprite : OTObject
     OTMatRef mr;
     bool assignedMaterial = false;
 	bool spriteInvalid  = false;
-
-    
-    protected bool useUV = true;
-
-
+	
     //-----------------------------------------------------------------------------
     // public methods
     //-----------------------------------------------------------------------------
@@ -289,11 +286,13 @@ public class OTSprite : OTObject
     public override void StartUp()
     {
         isDirty = true;
-        Material mat = LookupMaterial();
+        lastMatName = GetMatName();
+        Material mat = OT.LookupMaterial(lastMatName);				
+		lastMat = mat;		
         if (mat != null)
         {
             renderer.material = mat;
-            HandleUV(mat);
+            HandleUV();
         }
         base.StartUp();
     }
@@ -316,21 +315,13 @@ public class OTSprite : OTObject
 	
 	protected Vector2 _meshsize_ = Vector2.one;
 	
-	protected Mesh initMesh()
+	protected Mesh InitMesh()
 	{
         Mesh mesh = new Mesh();		
         _meshsize_ = Vector2.one;
 
-        if (objectParent)
-        {
-            _meshsize_ = size;
-            _pivotPoint = Vector2.Scale(_pivotPoint, size);
-        }
-        else
-        {
-            _meshsize_ = Vector2.one;
-            _pivotPoint = pivotPoint;
-        }
+        _meshsize_ = Vector2.one;
+        _pivotPoint = pivotPoint;
 
 		float dx = (_meshsize_.x/2);
 		float dy = (_meshsize_.y/2);
@@ -351,7 +342,7 @@ public class OTSprite : OTObject
     
     protected override Mesh GetMesh()
     {
-		Mesh mesh = initMesh();
+		Mesh mesh = InitMesh();
 		
         mesh.vertices = new Vector3[] { 
                 new Vector3(mLeft, mTop, 0),		// topleft
@@ -386,9 +377,6 @@ public class OTSprite : OTObject
         }
 
         mesh.uv = meshUV;
-
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
 		
         return mesh;
     }
@@ -407,20 +395,14 @@ public class OTSprite : OTObject
         size = _size;
         _frameIndex_ = -1;
         isDirty = true;
-    }
-
-    
+    }	
+	
     public virtual string GetMatName()
     {
         string matName = "";
 
         if (spriteContainer != null)
-        {
-            if (!useUV)
-                matName += "spc:" + spriteContainer.name + ":" + frameIndex + ":" + materialReference;
-            else
-                matName += "spc:" + spriteContainer.name + ":" + materialReference;
-        }
+           matName += "spc:" + spriteContainer.name + ":" + materialReference;
         else
             if (image != null)
                 matName += "img:" + _image.GetInstanceID() + " : " +
@@ -434,18 +416,7 @@ public class OTSprite : OTObject
             if (mr.fieldAlphaChannel != "" || mr.fieldAlphaColor != "")
                 matName += " : " + alpha;
         }
-        lastMatName = matName;
         return matName;
-    }
-
-    Material LookupMaterial()
-    {
-        return OT.LookupMaterial(GetMatName());
-    }
-
-    void RegisterMaterial()
-    {
-        OT.RegisterMaterial(GetMatName(), material);
     }
 
     private void SetMatReference()
@@ -467,7 +438,7 @@ public class OTSprite : OTObject
         if (spriteContainer != null)
         {
             if (spriteContainer.isReady)
-            {
+            {				
                 if (_spriteContainer_ != spriteContainer || _frameIndex_ != frameIndex)
                     isDirty = true;
             }
@@ -628,13 +599,11 @@ public class OTSprite : OTObject
 	}
 		
 	
-    protected virtual void HandleUV(Material mat)
-    {
-        if (useUV && spriteContainer != null && spriteContainer.isReady)
-        {			
-            OTContainer.Frame frame = spriteContainer.GetFrame(frameIndex);
-            mat.mainTextureScale = new Vector2(1, 1);
-            mat.mainTextureOffset = new Vector2(0, 0);
+    protected virtual void HandleUV()
+    {		
+        if (spriteContainer != null && spriteContainer.isReady)
+        {								
+            OTContainer.Frame frame = spriteContainer.GetFrame(frameIndex);						
             // adjust this sprites UV coords
             if (frame.uv != null && mesh != null)
             {
@@ -664,73 +633,96 @@ public class OTSprite : OTObject
 
     
     protected virtual Material InitMaterial()
-    {
+    {		
+		OTDebug.Message("@-->InitMaterial-In()","ot-mat");			
+		
         if (spriteContainer != null && !spriteContainer.isReady)
         {
-            lastMat = material;
+			// if we have a non-ready sprite container
+			// lets use the current assigned and scene saved material 												
+            lastMat = material;			
             assignedMaterial = false;
-            RegisterMaterial();
+			isDirty = true;
             return lastMat;
         }
 		
+		// Get the new material base instance
         Material spMat = OT.GetMaterial(_materialReference, tintColor, alpha);
+		// If we couldn't generate the material lets take our 'default' transparent
         if (spMat == null) spMat = OT.materialTransparent;
         if (spMat == null) return null;
+		// lets create a unique material instance belonging to this
+		// material name. This will be cached so other sprites that use
+		// the same material name will use the same and will get batched 
+		// automaticly
         Material mat = new Material(spMat);
-
+				
         if (spriteContainer != null && spriteContainer.isReady)
         {
+			// setup the sprite material hooked to the sprite container
             Texture tex = spriteContainer.GetTexture();
             if (mat.mainTexture != tex)
                 mat.mainTexture = tex;
-            HandleUV(mat);
+            mat.mainTextureScale = Vector2.one;
+           	mat.mainTextureOffset = Vector2.zero;
+            HandleUV();
         }
         else
-            if (image != null)
+        if (image != null)
+        {
+			// setup the sprite material hooked to the image texture
+            if (mat != null)
             {
-                if (mat != null)
-                {
-                    mat.mainTexture = image;
-                    mat.mainTextureScale = Vector2.one;
-                    mat.mainTextureOffset = Vector3.zero;
-                }
+                mat.mainTexture = image;
+                mat.mainTextureScale = Vector2.one;
+                mat.mainTextureOffset = Vector3.zero;
             }
+        }
 
         if (mat != null)
         {
+			// if we had a previous created material assigned we have to decrease
+			// the material cache count
             if (lastMatName != "" && lastMat != null)
-                OT.MatDec(lastMat, lastMatName);
-
-            if (lastMat == null && !assignedMaterial)
+                OT.MatDec(lastMat, lastMatName);				
+			
+			// because we are recreating the material the first time
+			// we will have to destroy the current material or it
+			// will start floating
+            if (lastMat == null && !assignedMaterial && !isCopy)
             {
-                if (!isCopy)
-                {
-                    if (!Application.isPlaying)
-                        DestroyImmediate(renderer.sharedMaterial, true);
-                    else
-                        Destroy(renderer.material);
-                }
+				if (renderer!=null)
+				{
+	                if (!Application.isPlaying)
+	                    DestroyImmediate(renderer.sharedMaterial, true);
+	                else
+	                    Destroy(renderer.material);
+				}
             }
-
-            if (Application.isPlaying)
-                renderer.material = mat;
+			
+			// assign the new material to the renderer
+            if (Application.isPlaying) 
+				renderer.material = mat;
             else
                 renderer.sharedMaterial = mat;
 
+			// store this material as the last material
             lastMat = mat;
+			lastMatName = GetMatName();
+
+			// we created/cached this material so it was not assigned
             assignedMaterial = false;
-            RegisterMaterial();
         }
+		OTDebug.Message("@<--InitMaterial()","ot-mat");			
         return mat;
     }
 
-    
-    [HideInInspector]
+	protected bool adjustFrameSize = true;
     protected override void Clean()
     {
-        if (!OT.isValid) return;
-        base.Clean();
-
+        if (!OT.isValid || mesh == null) return;
+        base.Clean();	
+						
         if (_spriteContainer_ != spriteContainer ||
             _frameIndex_ != frameIndex ||
             _image_ != image ||
@@ -739,81 +731,100 @@ public class OTSprite : OTObject
             _materialReference_ != _materialReference ||
             isCopy)
         {
-
             if (spriteContainer != null && spriteContainer.isReady)
             {
                 if (frameIndex < 0) _frameIndex = 0;
                 if (frameIndex > spriteContainer.frameCount - 1) _frameIndex = spriteContainer.frameCount - 1;
                 if (spriteContainer is OTSpriteAtlas)
                 {
-                    OTContainer.Frame fr = CurrentFrame();
-                    if ((spriteContainer as OTSpriteAtlas).offsetSizing)
-                    {
-                        if (Vector2.Equals(oSize, Vector2.zero))
-                        {
-                            oSize = fr.size * OT.view.sizeFactor;
-                            Vector2 nOffset = fr.offset * OT.view.sizeFactor;
-                            if (_baseOffset.x != nOffset.x || _baseOffset.y != nOffset.y)
-                            {
-                                offset = nOffset;
-                                position = _position;
-                                imageSize = fr.imageSize * OT.view.sizeFactor;
-                            }
-                        }
-                        if (_frameIndex_ != frameIndex || _spriteContainer_ != spriteContainer)
-                        {
-                            Vector2 sc = new Vector2((size.x / oSize.x) * fr.size.x * OT.view.sizeFactor, (size.y / oSize.y) * fr.size.y * OT.view.sizeFactor);
-                            Vector3 sc3 = new Vector3(sc.x, sc.y, 1);
-
-                            _size = sc;
-                            if (!Vector3.Equals(transform.localScale, sc3))
-                               transform.localScale = sc3;
-                            oSize = fr.size * OT.view.sizeFactor;
-                            imageSize = fr.imageSize * OT.view.sizeFactor;
-                            Vector2 nOffset = fr.offset * OT.view.sizeFactor;
-                            if (_baseOffset.x != nOffset.x || _baseOffset.y != nOffset.y)
-                            {
-                                offset = nOffset;
-                                position = _position;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Vector3[] verts = fr.vertices.Clone() as Vector3[];
-                        verts[0] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
-                        verts[1] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
-                        verts[2] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
-                        verts[3] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
-                        mesh.vertices = verts;
-
-                        _size = fr.size;
-                        Vector3 sc3 = new Vector3(_size.x, _size.y, 1);
-                        if (!Vector3.Equals(transform.localScale, sc3))
-                            transform.localScale = sc3;
-                    }
+					if (adjustFrameSize)
+					{
+	                    OTContainer.Frame fr = CurrentFrame();
+	                    if ((spriteContainer as OTSpriteAtlas).offsetSizing)
+	                    {
+	                        if (Vector2.Equals(oSize, Vector2.zero))
+	                        {
+	                            oSize = fr.size * OT.view.sizeFactor;
+	                            Vector2 nOffset = fr.offset * OT.view.sizeFactor;
+	                            if (_baseOffset.x != nOffset.x || _baseOffset.y != nOffset.y)
+	                            {
+	                                offset = nOffset;
+	                                position = _position;
+	                                imageSize = fr.imageSize * OT.view.sizeFactor;
+	                            }
+	                        }
+	                        if (_frameIndex_ != frameIndex || _spriteContainer_ != spriteContainer)
+	                        {
+	                            Vector2 sc = new Vector2((size.x / oSize.x) * fr.size.x * OT.view.sizeFactor, (size.y / oSize.y) * fr.size.y * OT.view.sizeFactor);
+	                            Vector3 sc3 = new Vector3(sc.x, sc.y, 1);
+	
+	                            _size = sc;
+	                            if (!Vector3.Equals(transform.localScale, sc3))
+	                               transform.localScale = sc3;
+	                            oSize = fr.size * OT.view.sizeFactor;
+	                            imageSize = fr.imageSize * OT.view.sizeFactor;
+	                            Vector2 nOffset = fr.offset * OT.view.sizeFactor;
+	                            if (_baseOffset.x != nOffset.x || _baseOffset.y != nOffset.y)
+	                            {
+	                                offset = nOffset;
+	                                position = _position;
+	                            }
+	                        }
+	                    }
+	                    else
+	                    {
+	                        Vector3[] verts = fr.vertices.Clone() as Vector3[];
+	                        verts[0] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
+	                        verts[1] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
+	                        verts[2] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
+	                        verts[3] -= new Vector3(pivotPoint.x, pivotPoint.y, 0);
+	                        mesh.vertices = verts;
+	
+	                        _size = fr.size;
+	                        Vector3 sc3 = new Vector3(_size.x, _size.y, 1);
+	                        if (!Vector3.Equals(transform.localScale, sc3))
+	                            transform.localScale = sc3;
+	                    }
+					}
                 }
             }
 			
-            Material mat = LookupMaterial();
-            if (mat == null)
-            {
-                mat = InitMaterial();
-            }
-            else
-            {
-                renderer.material = mat;
-                HandleUV(mat);
-            }
-            OT.MatInc(mat);
-
-            _spriteContainer_ = spriteContainer;
-            _materialReference_ = materialReference;
-            _frameIndex_ = frameIndex;
-            _image_ = image;
-            _tintColor_ = tintColor;
-            _alpha_ = alpha;
-        }
+			// keep old and get new material name								
+			string cMatName = GetMatName();															
+			if (lastMatName!=cMatName)
+			{														
+				// material name has changed to look it up
+	            Material mat = OT.LookupMaterial(cMatName);				
+				// if we could not find the material let create a new one
+	            if (mat == null)
+	                mat = InitMaterial();					
+	            else
+	            {
+					// if we had a previous generated material lets
+					// decrease its use
+					if (lastMat!=null && lastMatName!="")
+						OT.MatDec(lastMat,lastMatName);
+	                renderer.material = mat;
+	                HandleUV();					
+					lastMat = mat;
+					lastMatName = cMatName;
+	            }							
+				// increase the current material's use
+	           	OT.MatInc(mat, cMatName);				
+			}
+			else
+			{
+				if (_frameIndex_ != frameIndex)
+	               HandleUV();
+			}									
+			
+	        _spriteContainer_ = spriteContainer;
+	        _materialReference_ = materialReference;
+	        _frameIndex_ = frameIndex;
+	        _image_ = image;
+	        _tintColor_ = tintColor;
+	        _alpha_ = alpha;				
+		}
 
         isDirty = false;
         if (spriteContainer != null && !spriteContainer.isReady)
@@ -823,7 +834,7 @@ public class OTSprite : OTObject
 		if (!Application.isPlaying)
 			UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
 #endif			
-		
+				
     }
 
     
@@ -864,7 +875,7 @@ public class OTSprite : OTObject
 					// set basesize to current frame size if we just had a lookup from a prefab					
 					baseSize = fr.size;
 				}								
-                if (_spriteContainer_ != spriteContainer)
+                if (_spriteContainer_ != spriteContainer && adjustFrameSize)
 				{											
 					if (!baseSize.Equals(Vector2.zero))							
                        size =  new Vector2 (size.x * (fr.size.x / baseSize.x) , size.y * (fr.size.y / baseSize.y) ) * OT.view.sizeFactor;
@@ -875,6 +886,9 @@ public class OTSprite : OTObject
             }
             else
             {
+				if (_spriteContainer_ != null && _spriteContainer == null)
+					_containerName = "";
+				
                 if (_image_ != image)
                     size = new Vector2(image.width, image.height) * OT.view.sizeFactor;
             }
@@ -907,36 +921,39 @@ public class OTSprite : OTObject
     }
 
 
-    
-    protected override void Start()
-    {
-        base.Start();
-        mr = OT.GetMatRef(materialReference);
-        if (Application.isPlaying)
+    public Material GetMat()
+	{
+        Material mat = OT.LookupMaterial(lastMatName);
+		if (mat != null)
         {
-            if (!assignedMaterial)
-            {
-                Material mat = LookupMaterial();
-                if (mat != null)
-                {
-                    renderer.material = mat;
-                    HandleUV(mat);
-                }
-                else
-                    mat = InitMaterial();
-
-                OT.MatInc(mat);
-            }
+			OTDebug.Message("GetMat -> Found","ot-mat");			
+            renderer.material = mat;
+            HandleUV();
         }
         else
-        {
-            Material mat = InitMaterial();
-            OT.MatInc(mat);
-        }
+		{
+			OTDebug.Message("GetMat -> Not Found","ot-mat");						
+            mat = InitMaterial();
+		}
+		
+		OTDebug.Message("@OT.MatInc - GetMat()","ot-mat");
+        OT.MatInc(mat, lastMatName);
+				
+		lastMat = mat;					
+		return mat;
+	}
+	
+	
+    protected override void Start()
+    {
+        mr = OT.GetMatRef(materialReference);
+		lastMatName = GetMatName();
+        base.Start();
+        if (!Application.isPlaying || (Application.isPlaying && !assignedMaterial))
+			material = GetMat();
 
         if (Application.isPlaying)
             _frameIndex_ = -1;
-
     }
 	
 	
@@ -962,14 +979,12 @@ public class OTSprite : OTObject
 	}
 		
     // Update is called once per frame
-    
     protected override void Update()
-    {
-		
+    {			
         if (!OT.isValid) return;
 		
 		SpriteValid();		
-		if (image == null && spriteContainer == null)
+		if (image == null && _spriteContainer_ == null)
 		{
 			if (_containerName!="")
 			{
@@ -991,7 +1006,9 @@ public class OTSprite : OTObject
             }	
 			
         }
+		
         base.Update();
+						
     }
 
 }

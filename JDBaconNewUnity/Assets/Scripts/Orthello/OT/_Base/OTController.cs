@@ -38,23 +38,30 @@ public class OTController {
             return _time;
         }
     }
+	/// <summary>
+	/// Gets the owner of this controller
+	/// </summary>
+    public Object owner
+    {
+        get
+        {
+            return _owner;
+        }
+    }
 
-    /// <exclude />
-    protected Object owner;
-    /// <exclude />
+    
+    protected Object _owner;
+    
     protected string _name;
-    /// <exclude />
+    
     protected float deltaTime;
-    /// <exlude />
     protected float _time;
 
     List<Component> callBackTargets = new List<Component>();
 
-    /// <exclude />
+    
     protected bool CallBack(string handler, object[] param)
     {
-#if UNITY_FLASH
-#else
         for (int t = 0; t < callBackTargets.Count; t++)
         {
             MethodInfo mi = callBackTargets[t].GetType().GetMethod(handler);
@@ -64,7 +71,6 @@ public class OTController {
                 return true;
             }
         }
-#endif
         return false;
     }
 
@@ -77,7 +83,7 @@ public class OTController {
     /// <param name="name">controller name</param>
     public OTController(Object owner, string name)
     {
-        this.owner = owner;
+        this._owner = owner;
         this._name = name.ToLower();
     }
 
@@ -87,7 +93,7 @@ public class OTController {
     /// <param name="owner"></param>
     public virtual void SetOwner(Object owner)
     {
-        this.owner = owner;
+        this._owner = owner;
     }
 
     /// <summary>
@@ -106,7 +112,7 @@ public class OTController {
     /// <param name="name">controller name</param>
     public OTController(string name)
     {
-        this.owner = null;
+        this._owner = null;
         this._name = name.ToLower();
     }
 
@@ -115,7 +121,7 @@ public class OTController {
     /// </summary>
     public OTController()
     {
-        this.owner = null;
+        this._owner = null;
         this._name = "OTController" + (++indexer);
     }
 
@@ -142,7 +148,7 @@ public class OTController {
     {
     }
 
-    /// <exclude />
+    
     public void Update(float pDeltaTime)
     {
         if (!initialized)

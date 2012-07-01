@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
 // DEPRECATED
-public class OTPB : MonoBehaviour {	
+[ExecuteInEditMode]
+public class OTPB : MonoBehaviour {		
 }

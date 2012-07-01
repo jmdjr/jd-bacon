@@ -24,12 +24,10 @@
 using UnityEngine;
 using System.Collections;
 
-/// <exclude />
 public class OTEaseBackInOut : OTEase {
 
     float s = 1.70158f;
 
-    /// <exclude />
     public override float ease(float t, float b, float c, float d)
     {
         if ((t /= d / 2) < 1) 
@@ -37,12 +35,10 @@ public class OTEaseBackInOut : OTEase {
         return c / 2 * ((t -= 2) * t * (((s *= (1.525f)) + 1) * t + s) + 2) + b;
     }
 
-    /// <exclude />
     public OTEaseBackInOut()
     {
     }
 
-    /// <exclude />
     public OTEaseBackInOut(float s)
     {
         this.s = s;

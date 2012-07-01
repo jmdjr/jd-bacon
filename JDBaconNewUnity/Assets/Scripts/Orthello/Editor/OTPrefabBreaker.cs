@@ -4,6 +4,6 @@ using UnityEditor;
 using System.Collections;
 // DEPRECATED
 public class OTPrefabBreaker : Editor
-{	
+{		
 }
 #endif

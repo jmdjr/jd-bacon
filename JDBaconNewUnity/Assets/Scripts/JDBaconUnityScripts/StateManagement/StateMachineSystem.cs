@@ -14,6 +14,10 @@ using System.Collections.Generic;
 
 public class StateMachineSystem : MonoBehaviour
 {
+    // If all stateMachines are in a dead state, then this is true.
+    public bool IsDead { get { return this.MachineList.TrueForAll(m => !m.IsAlive); } }
+    
+    
     protected List<StateMachine> MachineList = new List<StateMachine>();
 
     // Override in child class and load MachineList with machines.
@@ -26,11 +30,9 @@ public class StateMachineSystem : MonoBehaviour
 
     public void Awake()
     {
-        Debug.Log("StateMachineSystem Boot Up.");
         InitializeStateManager();
         foreach (StateMachine machine in MachineList)
         {
-            Debug.Log("starting Machine: " + machine.Name);
             machine.Start();
         }
     }
@@ -40,13 +42,12 @@ public class StateMachineSystem : MonoBehaviour
         // borrowing the 
         public delegate Coroutine StartCoroutine(IEnumerator func);
 
-        public bool IsAlive { get { return isAlive; } }
-        private GameObjectState currentState = null;
-        private bool isAlive = false;
+        public bool IsAlive { get { return this.currentState.IsDeadState; } }
+        private State currentState = null;
         private uint timesActionPerformed = 0;
         public string Name { get; private set; }
 
-        public StateMachine(string Name, GameObjectState state = null)
+        public StateMachine(string Name, State state = null)
         {
             this.Name = Name;
             this.SetInitialState(state);
@@ -54,19 +55,18 @@ public class StateMachineSystem : MonoBehaviour
 
         public static StartCoroutine CoroutineDelegate = null;
 
-        public void SetInitialState(GameObjectState state)
+        public void SetInitialState(State state)
         {
             currentState = state;
         }
 
         private IEnumerator Run()
         {
-            Debug.Log(this.Name + ": Running Machine");
             if (currentState != null)
             {
                 do
                 {
-                    GameObjectState ToState = currentState.RunTests();
+                    State ToState = currentState.RunTests();
 
                     if (ToState != null)
                     {
@@ -95,7 +95,7 @@ public class StateMachineSystem : MonoBehaviour
                         yield return 0;
                     }
 
-                } while (!currentState.DeadState || currentState.RepeateIfDead);
+                } while (!currentState.IsDeadState || currentState.RepeateIfDead);
             }
             else
             {
@@ -105,12 +105,11 @@ public class StateMachineSystem : MonoBehaviour
 
         public void Start()
         {
-            isAlive = true;
-            Debug.Log(this.Name + ": Start Entered");
             CoroutineDelegate(Run());
         }
     }
-    protected sealed class GameObjectState
+
+    protected sealed class State
     {
         public delegate IEnumerator ActionDelegate();
 
@@ -119,7 +118,7 @@ public class StateMachineSystem : MonoBehaviour
         private string name;
 
         // This state is dead if it doesn't have any exit conditions, meanning it doesn't go anywhere past this action.
-        public bool DeadState { get { return exitConditionList.Count == 0; } }
+        public bool IsDeadState { get { return exitConditionList.Count == 0; } }
         public bool RepeateIfDead { get; set; }
         public uint RepeatActionCount { get; set; }
 
@@ -133,7 +132,7 @@ public class StateMachineSystem : MonoBehaviour
         public IList ExitConditionList { get { return exitConditionList.AsReadOnly(); } }
         private List<ExitStateCondition> exitConditionList = new List<ExitStateCondition>();
 
-        public GameObjectState(string name)
+        public State(string name)
         {
             this.name = name;
             this.RepeateIfDead = false;
@@ -161,7 +160,7 @@ public class StateMachineSystem : MonoBehaviour
             return false;
         }
 
-        public GameObjectState RunTests()
+        public State RunTests()
         {
             foreach (ExitStateCondition condition in exitConditionList)
             {
@@ -183,9 +182,9 @@ public class StateMachineSystem : MonoBehaviour
     {
         public delegate bool ExitCondition();
         public ExitCondition ExitTest;
-        public GameObjectState ToState;
+        public State ToState;
 
-        public ExitStateCondition(ExitCondition test, GameObjectState state)
+        public ExitStateCondition(ExitCondition test, State state)
         {
             ExitTest = test;
             ToState = state;

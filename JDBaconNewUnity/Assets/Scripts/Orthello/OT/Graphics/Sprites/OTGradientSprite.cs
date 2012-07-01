@@ -2,24 +2,41 @@ using UnityEngine;
 using System.Collections;
  
 /// <summary>
-/// Provides functionality to use sprites in your scenes that are filled with a pattern image.
+/// Provides functionality to use sprites in your scenes that display a multi-coloured gradient
 /// </summary>
 public class OTGradientSprite : OTSprite
 {
-	public enum GradientOrientation { Vertical, Horizontal }
+	/// <summary>
+	/// Gradient orientation enumeration
+	/// </summary>
+	public enum GradientOrientation { 
+		/// <summary>
+		/// Vertical gradient orientation
+		/// </summary>
+		Vertical, 
+		/// <summary>
+		/// Horizontal gradient orientation
+		/// </summary>
+		Horizontal 
+	}
 	
     //-----------------------------------------------------------------------------
     // Editor settings
     //-----------------------------------------------------------------------------
+	
 	public GradientOrientation _gradientOrientation = GradientOrientation.Vertical;
-	/// <summary>
-	/// Gradient position (0-100) and colors RGBA
-	/// </summary>
+	
     public OTGradientSpriteColor[] _gradientColors;
 	
     //-----------------------------------------------------------------------------
     // public attributes (get/set)
     //-----------------------------------------------------------------------------
+	/// <summary>
+	/// Gets or sets the gradient orientation.
+	/// </summary>
+	/// <value>
+	/// The gradient orientation.
+	/// </value>
     public GradientOrientation gradientOrientation
 	{
 		get
@@ -32,10 +49,17 @@ public class OTGradientSprite : OTSprite
 			{
 				_gradientOrientation = value;			
 				meshDirty = true;
+
 				isDirty = true;
 			}
 		}
 	}
+	/// <summary>
+	/// Gets or sets the gradient colors.
+	/// </summary>
+	/// <value>
+	/// An array with OTGradientSpriteColor elements
+	/// </value>
     public OTGradientSpriteColor[] gradientColors
 	{
 		get
@@ -45,7 +69,7 @@ public class OTGradientSprite : OTSprite
 		set
 		{
 			_gradientColors = value;			
-			meshDirty = true;
+			meshDirty = true;			
 			isDirty = true;
 		}
 	}
@@ -53,66 +77,40 @@ public class OTGradientSprite : OTSprite
     private OTGradientSpriteColor[] _gradientColors_;
 	private GradientOrientation _gradientOrientation_ = GradientOrientation.Vertical;
 		
+	void GradientVerts(int vr, int vp, int pos)
+	{
+		if (_gradientOrientation == GradientOrientation.Horizontal)
+		{
+			float dd = (_meshsize_.x/100) * (_gradientColors[vr].position + pos);							
+			verts[vp * 2] = new Vector3(mLeft + dd, mTop , 0); 	// top
+			verts[(vp * 2) +1] = new Vector3(mLeft + dd, mBottom , 0);		// bottom
+		}
+		else
+		{
+			float dd = (_meshsize_.y/100) * (_gradientColors[vr].position + pos);
+			verts[vp * 2] = new Vector3(mLeft, mTop - dd , 0); 	// left
+			verts[(vp * 2) +1] = new Vector3(mRight, mTop - dd , 0);		// right
+		}
+	}
+	
+	Vector3[] verts = new Vector3[]{};
+	/// <exclude/>
     protected override Mesh GetMesh()
-    {
-        Mesh mesh = new Mesh();
-
-        Vector2 _meshsize_ = Vector2.one;
-
-        if (objectParent)
-        {
-            _meshsize_ = size;
-            _pivotPoint = Vector2.Scale(_pivotPoint, size);
-        }
-        else
-        {
-            _meshsize_ = Vector2.one;
-            _pivotPoint = pivotPoint;
-        }
-		
+    {		
+		Mesh mesh = InitMesh();
+				
 		int count = _gradientColors.Length;		
 		for (int vr=0; vr<_gradientColors.Length; vr++)
 			if (_gradientColors[vr].size>0)
 				count++;
-										
-		float dx = (_meshsize_.x/2);
-		float dy = (_meshsize_.y/2);
-		float px =  _pivotPoint.x;
-		float py =  _pivotPoint.y;		
-		
-		Vector3[] verts = new Vector3[count * 2];
+				
+		verts = new Vector3[count * 2];
 		int vp = 0;
 		for (int vr=0; vr<_gradientColors.Length; vr++)
 		{
-			if (_gradientOrientation == GradientOrientation.Horizontal)
-			{
-				float dd = (_meshsize_.x/100) * _gradientColors[vr].position;							
-				verts[vp * 2] = new Vector3(-dx - px + dd, dy - py , 0); 	// top
-				verts[(vp * 2) +1] = new Vector3(-dx - px + dd, -dy - py , 0);		// bottom
-			}
-			else
-			{
-				float dd = (_meshsize_.y/100) * _gradientColors[vr].position;
-				verts[vp * 2] = new Vector3(-dx - px, dy - py - dd , 0); 	// left
-				verts[(vp * 2) +1] = new Vector3(dx - px, dy - py - dd , 0);		// right
-			}
-			vp++;	
+			GradientVerts(vr,vp++,0);
 			if (_gradientColors[vr].size>0)
-			{
-				if (_gradientOrientation == GradientOrientation.Horizontal)
-				{
-					float dd = (_meshsize_.x/100) * (_gradientColors[vr].position+_gradientColors[vr].size);
-					verts[vp * 2] = new Vector3(-dx - px + dd, dy - py , 0); 	// top
-					verts[(vp * 2) +1] = new Vector3(-dx - px + dd, -dy - py , 0);		// bottom
-				}
-				else
-				{
-					float dd = (_meshsize_.y/100) * (_gradientColors[vr].position + _gradientColors[vr].size);
-					verts[vp * 2] = new Vector3(-dx - px, dy - py - dd , 0); 	// left
-					verts[(vp * 2) +1] = new Vector3(dx - px, dy - py - dd , 0);		// right
-				}
-				vp++;
-			}
+				GradientVerts(vr,vp++,_gradientColors[vr].size);
 		}		
         mesh.vertices = verts;
 
@@ -151,9 +149,6 @@ public class OTGradientSprite : OTSprite
 			new Vector2[] { 
 				new Vector2(0,1), new Vector2(1,1), new Vector2(1,0), new Vector2(0,0)
 			},gradientPositions, _gradientOrientation == GradientOrientation.Horizontal);
-
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
 		
         return mesh;
     }
@@ -174,47 +169,37 @@ public class OTGradientSprite : OTSprite
     //-----------------------------------------------------------------------------
     // overridden subclass methods
     //-----------------------------------------------------------------------------	
-    /// <exclude />
-    protected override void CheckSettings()
+    
+    protected override void CheckDirty()
     {
-        base.CheckSettings();
-		
-		
-		if (_gradientColors.Length<2)
-		{
-			System.Array.Resize(ref _gradientColors,2);
-		}
-		_gradientColors[0].position = 0;
-		_gradientColors[_gradientColors.Length-1].position = 100;			
+		base.CheckDirty();
 		
 		if (_gradientColors.Length!=_gradientColors_.Length || GradientMeshChanged() || _gradientOrientation_ != _gradientOrientation)
-			meshDirty = true;
+			meshDirty = true;			
 		else
 		if (GradientColorChanged())
-		{
 			isDirty = true;
-		}
-		
-		if (meshDirty || isDirty)
-		{
-			CloneGradientColors();
-			_gradientOrientation_ = _gradientOrientation;
-		}
+	}
+	
+	protected override void CheckSettings()
+    {
+        base.CheckSettings();
+				
+		if (_gradientColors.Length<2)
+			System.Array.Resize(ref _gradientColors,2);
     }
-
-    /// <exclude />
+	    
     protected override string GetTypeName()
     {
         return "Gradient";
     }
 			
-    protected override void HandleUV(Material mat)
+	/// <exclude/>
+    protected override void HandleUV()
     {
-        if (useUV && spriteContainer != null && spriteContainer.isReady)
+        if (spriteContainer != null && spriteContainer.isReady)
         {
             OTContainer.Frame frame = spriteContainer.GetFrame(frameIndex);
-            mat.mainTextureScale = new Vector2(1, 1);
-            mat.mainTextureOffset = new Vector2(0, 0);
             // adjust this sprites UV coords
             if (frame.uv != null && mesh != null)
             {								
@@ -242,10 +227,17 @@ public class OTGradientSprite : OTSprite
         }
     }
 	
+	/// <exclude/>
 	protected override void Clean()
 	{
 		base.Clean();
-
+		if (mesh == null) return;
+		
+		_gradientColors[0].position = 0;
+		_gradientColors[_gradientColors.Length-1].position = 100-_gradientColors[_gradientColors.Length-1].size;					
+		CloneGradientColors();
+		_gradientOrientation_ = _gradientOrientation;
+		
 		var colors = new Color[mesh.vertexCount];
 		int vp = 0;
 		for (int c=0; c<_gradientColors.Length; c++)
@@ -263,9 +255,8 @@ public class OTGradientSprite : OTSprite
 				vp++;
 			}			
 		}
-				
-        MeshFilter mf = GetComponent<MeshFilter>();
-		mf.sharedMesh.colors = colors;
+					
+		mesh.colors = colors;
 		
 	}
 
@@ -281,7 +272,9 @@ public class OTGradientSprite : OTSprite
 			if (_gradientColors[c].position > 100) _gradientColors[c].position = 100;
 			if (_gradientColors[c].size < 0) _gradientColors[c].size = 0;
 			if (_gradientColors[c].size > 100) _gradientColors[c].size = 100;
-			if (_gradientColors[c].position+_gradientColors[c].size > 100) _gradientColors[c].position = 100-_gradientColors[c].size;
+			if (_gradientColors[c].position+_gradientColors[c].size > 100) 
+				_gradientColors[c].position = 100-_gradientColors[c].size;
+			
 			if (_gradientColors[c].position!=_gradientColors_[c].position || _gradientColors[c].size!=_gradientColors_[c].size)
 				res = true;			
 		}
@@ -300,7 +293,7 @@ public class OTGradientSprite : OTSprite
 		return false;	
 	}
 		
-    /// <exclude />
+    
     protected override void Awake()
     {
 		CloneGradientColors();
@@ -321,10 +314,22 @@ public class OTGradientSprite : OTSprite
     }
 }
 
+/// <summary>
+/// OT gradient sprite color element
+/// </summary>
 [System.Serializable]
 public class OTGradientSpriteColor
 {
+	/// <summary>
+	/// The position of the color (0-100)
+	/// </summary>
 	public int position = 0;
+	/// <summary>
+	/// The size of solid color area (0-100)
+	/// </summary>
 	public int size = 0;
+	/// <summary>
+	/// The color of this element
+	/// </summary>
 	public Color color = Color.white;
 }

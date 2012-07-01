@@ -21,9 +21,9 @@ public class PlayerController : StateMachineSystem
     #region Walking
     private StateMachine WalkingSM;
     #region States
-    private GameObjectState IdleWalking = new GameObjectState("Idle Walking");
-    private GameObjectState WalkingRight = new GameObjectState("Walking to the Right");
-    private GameObjectState WalkingLeft = new GameObjectState("Walking to the Left");
+    private State IdleWalking = new State("Idle Walking");
+    private State WalkingRight = new State("Walking to the Right");
+    private State WalkingLeft = new State("Walking to the Left");
     #endregion
     #region Actions
     private IEnumerator IdleWalkingAction()
@@ -74,9 +74,9 @@ public class PlayerController : StateMachineSystem
     #region Jumping
     private StateMachine JumpingSM;
     #region States
-    private GameObjectState IdleJumping = new GameObjectState("Idle Jumping");
-    private GameObjectState JumpingUp = new GameObjectState("Jumping into the Air");
-    private GameObjectState DoubleJumpingUp = new GameObjectState("2nd Jumping into the Air");
+    private State IdleJumping = new State("Idle Jumping");
+    private State JumpingUp = new State("Jumping into the Air");
+    private State DoubleJumpingUp = new State("2nd Jumping into the Air");
     #endregion
     #region Actions
     private IEnumerator IdleJumpingAction()

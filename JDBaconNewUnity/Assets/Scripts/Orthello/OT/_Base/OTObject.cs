@@ -109,7 +109,7 @@ public class OTObject : MonoBehaviour
     public Pivot _pivot = Pivot.Center;
     
     public Vector2 _pivotPoint = Vector2.zero;
-    
+		    
     public bool _registerInput = false;
     
     public int _depth = 0;
@@ -163,7 +163,7 @@ public class OTObject : MonoBehaviour
         set
         {
             _worldBounds = value;
-            Update();
+			position += new Vector2(0,0.00001f);
         }
     }
 
@@ -188,7 +188,90 @@ public class OTObject : MonoBehaviour
             _dirtyChecks = value;
         }
     }
+		
+	Touch _dragTouch;
+	/// <summary>
+	/// Gets a value indicating whether this <see cref="OTObject"/> is dragging.
+	/// </summary>
+	/// <value>
+	/// <c>true</c> if is dragging; otherwise, <c>false</c>.
+	/// </value>
+	public Touch dragTouch
+	{
+		get
+		{
+			return _dragTouch;
+		}
+		set
+		{
+			_dragTouch = value;
+		}
+	}
 
+	/// <summary>
+	/// Gets or sets the depth at which this object will be dragged
+	/// </summary>
+	/// <value>
+	/// The drag depth.
+	/// </value>	
+	public int dragDepth
+	{
+		get
+		{
+			return _dragDepth;
+		}
+		set
+		{
+			_dragDepth = value;
+		}
+	}
+	
+	/// <summary>
+	/// Gets the y (up) vector for this sprite
+	/// </summary>
+	public Vector2 yVector
+	{
+		get
+		{
+			Vector2 _upVector = transform.up;
+			if (OT.world == OT.World.WorldTopDown2D)
+				_upVector = new Vector2(transform.up.x,transform.up.z);
+			return _upVector;
+		}
+	}
+	
+	/// <summary>
+	/// Gets the x (right) vector for this sprite
+	/// </summary>
+	public Vector2 xVector
+	{
+		get
+		{
+			Vector2 _upVector = transform.right;
+			if (OT.world == OT.World.WorldTopDown2D)
+				_upVector = new Vector2(transform.right.x,transform.right.z);
+			return _upVector;
+		}
+	}
+	
+	/// <summary>
+	/// Gets or sets the alpha value with which this object will be dragged
+	/// </summary>
+	/// <value>
+	/// The drag alpha value
+	/// </value>	
+	public float dragAlpha
+	{
+		get
+		{
+			return _dragAlpha;
+		}
+		set
+		{
+			_dragAlpha = value;
+		}
+	}
+		
     //-----------------------------------------------------------------------------
     // Fields
     //-----------------------------------------------------------------------------
@@ -199,9 +282,6 @@ public class OTObject : MonoBehaviour
     [HideInInspector]
     public string baseName = "";
     
-    [HideInInspector]
-    public bool _isPrefab = false;
-
     //-----------------------------------------------------------------------------
     // Delegates
     //-----------------------------------------------------------------------------
@@ -281,6 +361,14 @@ public class OTObject : MonoBehaviour
     /// To drag an object you must set <see cref="draggable" /> to true on the object that you want to drag.
     /// <see cref="dropTarget" /> will contain the sprite where this one was dropped upon.
     /// </remarks>
+    public ObjectDelegate onDragging = null;
+    /// <summary>
+    /// Is called when user is dragging an object
+    /// </summary>
+    /// <remarks>
+    /// To drag an object you must set <see cref="draggable" /> to true on the object that you want to drag.
+    /// <see cref="dropTarget" /> will contain the sprite where this one was dropped upon.
+    /// </remarks>
     public ObjectDelegate onDragEnd = null;
     /// <summary>
     /// Is called when another object is drag'n dropped on this object
@@ -334,7 +422,7 @@ public class OTObject : MonoBehaviour
     ///  this OTObject is overlapping another 'collidable' OTObject. 
     /// </remarks>
     public ObjectDelegate onStay = null;
-
+	
     //-----------------------------------------------------------------------------
     // public attributes (get/set)
     //-----------------------------------------------------------------------------
@@ -363,7 +451,7 @@ public class OTObject : MonoBehaviour
             }
         }
     }
-
+		
     /// <summary>
     /// Display depth of this object. -1000 (=front) to 1000 (=back)
     /// </summary>
@@ -380,9 +468,27 @@ public class OTObject : MonoBehaviour
         set
         {
             _depth = value;
-            _paintingDepth = depth + (position.y / 1000) + (position.x / 10000);
-            transform.position = new Vector3(transform.position.x, transform.position.y, _paintingDepth);
-            SetCollider();
+			if (OT.world2D)
+			{
+				_paintingDepth = (OT.world == OT.World.WorldTopDown2D)?-depth:depth;
+				if (OT.painterAlgorithm)
+            		_paintingDepth += (position.y / 1000) + (position.x / 10000);
+				if (transform.parent!=null)
+				{
+					if (OT.world == OT.World.WorldSide2D)
+		            	transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, _paintingDepth);
+					else			
+		            	transform.localPosition = new Vector3(transform.localPosition.x, _paintingDepth, transform.localPosition.z);
+				}
+				else
+				{
+					if (OT.world == OT.World.WorldSide2D)
+		            	transform.position = new Vector3(transform.position.x, transform.position.y, _paintingDepth);
+					else			
+		            	transform.position = new Vector3(transform.position.x, _paintingDepth, transform.position.z);
+				}
+	            SetCollider();
+			}
         }
     }
 
@@ -516,9 +622,9 @@ public class OTObject : MonoBehaviour
         {
             Rect r = new Rect(
                 renderer.bounds.center.x - (size.x / 2),
-                renderer.bounds.center.y + (size.y / 2),
+                ((OT.world == OT.World.WorldSide2D)?renderer.bounds.center.y:renderer.bounds.center.z) - (size.y / 2),
                 size.x,
-                size.y * -1);
+                size.y);
             return r;
         }
     }
@@ -611,6 +717,75 @@ public class OTObject : MonoBehaviour
         }
     }
 	
+	int restoreDepth;
+	float restoreAlpha;
+	public void HandleDrag(string dragCommand, OTObject dropped)
+	{
+		switch(dragCommand)
+		{
+			case "start":
+				_dropTarget = null;
+		        if (onDragStart != null)
+		            onDragStart(this);
+		        if (!CallBack("onDragStart", callBackParams))
+		            CallBack("OnDragStart", callBackParams);						
+			
+				// change depth and alpha
+				if (dragDepth>-1000 && dragDepth<1000)
+				{
+					restoreDepth = depth;
+					depth = dragDepth;
+				}		
+				if (this is OTSprite)
+				{
+					restoreAlpha = (this as OTSprite).alpha;
+					(this as OTSprite).alpha = dragAlpha;
+				}
+			
+			break;
+			
+			case "end":
+			
+				_dropTarget = OT.ObjectUnderPoint(Input.mousePosition, new OTObject[]{}, new OTObject[]{this} );								
+				if (_dropTarget==null)
+					_dropTarget = OT.ObjectUnderPoint(OT.view.camera.WorldToScreenPoint(transform.position), new OTObject[]{}, new OTObject[]{this} );								
+			
+	            if (onDragEnd != null)
+	                onDragEnd(this);
+	            if (!CallBack("onDragEnd", callBackParams))
+	                CallBack("OnDragEnd", callBackParams);				
+			
+				
+				if (_dropTarget!=null && _dropTarget.onReceiveDrop!=null)
+					_dropTarget.HandleDrag("receive", this);
+			
+				// restore depth and alpha
+				if (dragDepth>-1000 && dragDepth<1000)
+					depth = restoreDepth;
+				if (this is OTSprite)
+					(this as OTSprite).alpha = restoreAlpha;
+			
+			break;
+
+			case "receive":
+				_dropTarget = dropped;			
+	            if (onReceiveDrop != null)
+	                onReceiveDrop(this);
+	            if (!CallBack("onReceiveDrop", callBackParams))
+	                CallBack("OnReceiveDrop", callBackParams);				
+			break;
+			
+			
+			case "drag":
+	            if (onDragging != null)
+	                onDragging(this);					
+	            if (!CallBack("onDragging", callBackParams))
+	                CallBack("OnDragging", callBackParams);							
+			break;
+			
+		}
+	}
+	
     /// <summary>
     /// Current collision
     /// </summary>
@@ -668,7 +843,12 @@ public class OTObject : MonoBehaviour
         get
         {
             if (transform != null)
-                return new Vector2(transform.position.x - offset.x, transform.position.y + offset.y);
+			{
+				if (transform.parent!=null)
+                	return new Vector2(transform.localPosition.x - offset.x, (OT.world == OT.World.WorldTopDown2D)?transform.localPosition.z - offset.y:transform.localPosition.y + offset.y);
+				else
+                	return new Vector2(transform.position.x - offset.x, (OT.world == OT.World.WorldTopDown2D)?transform.position.z - offset.y:transform.position.y + offset.y);
+			}
             else
                 return Vector2.zero;
         }
@@ -684,8 +864,25 @@ public class OTObject : MonoBehaviour
                 pos.x = Mathf.Clamp(pos.x, minX, maxX);
                 pos.y = Mathf.Clamp(pos.y, minY, maxY);
             }
-            _paintingDepth = depth + (pos.y / 1000) + (pos.x / 10000);
-            transform.position = new Vector3(pos.x + offset.x, pos.y - offset.y, _paintingDepth);
+			
+			_paintingDepth = (OT.world == OT.World.WorldTopDown2D)?-depth:depth;
+			if (OT.painterAlgorithm && OT.world2D)
+        		_paintingDepth += (position.y / 1000) + (position.x / 10000);
+						
+			if (transform.parent!=null)
+			{
+				if (OT.world == OT.World.WorldTopDown2D)
+	            	transform.localPosition = new Vector3(pos.x + offset.x, _paintingDepth, pos.y - offset.y);
+				else
+	            	transform.localPosition = new Vector3(pos.x + offset.x, pos.y - offset.y, _paintingDepth);
+			}
+			else
+			{
+				if (OT.world == OT.World.WorldTopDown2D)
+	            	transform.position = new Vector3(pos.x + offset.x, _paintingDepth, pos.y - offset.y);
+				else
+	            	transform.position = new Vector3(pos.x + offset.x, pos.y - offset.y, _paintingDepth);
+			}
             _position = pos;
             _position_ = pos;
         }
@@ -698,13 +895,10 @@ public class OTObject : MonoBehaviour
     {
         get
         {
-            if (transform != null && !objectParent)
-                return new Vector2(transform.localScale.x, transform.localScale.y);
+            if (transform != null)
+               	return new Vector2(transform.localScale.x, transform.localScale.y);
             else
-                if (objectParent)
-                    return _size;
-                else
-                    return Vector2.zero;
+              return Vector2.zero;
         }
         set
         {
@@ -717,17 +911,15 @@ public class OTObject : MonoBehaviour
                     value = new Vector2((x <= 0) ? 1 : x, (y <= 0) ? 1 : y);
                 }
             }
-            if (!objectParent)
-                transform.localScale = new Vector3(value.x, value.y, 1 * OT.view.sizeFactor);
-            else
-                meshDirty = true;
+           	transform.localScale = new Vector3(value.x, value.y, 1 );
             _size = value;
             _size_ = value;
-            oSize = _size;
+			if (oSize.Equals(Vector2.zero))
+            	oSize = _size;
             Clean();
         }
     }
-
+	
     /// <summary>
     /// Rotation in degrees
     /// </summary>
@@ -741,9 +933,10 @@ public class OTObject : MonoBehaviour
         {
             if (transform != null)
             {
-                float val = transform.rotation.eulerAngles.z - offsetRotation;
-                //if (val < 0.001f) val = 0;
-                return val;
+				if (OT.world == OT.World.WorldTopDown2D)
+					return transform.rotation.eulerAngles.y - offsetRotation;
+				else
+					return transform.rotation.eulerAngles.z - offsetRotation;
             }
             else
                 return 0;
@@ -755,7 +948,10 @@ public class OTObject : MonoBehaviour
             if (val < 0) val += 360.0f;
             else
                 if (val >= 360) val -= 360.0f;
-            transform.rotation = Quaternion.Euler(0, 0, val + offsetRotation);
+			if (OT.world == OT.World.WorldTopDown2D)
+            	transform.rotation = Quaternion.Euler(90, val + offsetRotation, 0);
+			else
+            	transform.rotation = Quaternion.Euler(0, 0, val + offsetRotation);
             _rotation = val;
         }
     }
@@ -812,7 +1008,7 @@ public class OTObject : MonoBehaviour
             }
         }
     }
-
+	
     //-----------------------------------------------------------------------------
     // private and protected fields
     //-----------------------------------------------------------------------------
@@ -823,7 +1019,6 @@ public class OTObject : MonoBehaviour
     
     protected string _name_ = "";
     
-    protected bool objectParent = false;
     bool _registerInput_ = false;
     bool _collidable_ = false;
     Physics _physics_ = Physics.Trigger;
@@ -836,9 +1031,10 @@ public class OTObject : MonoBehaviour
     
     [HideInInspector]
     public Vector2 oSize;
-
     
     Vector2 _position_ = Vector2.zero;
+	int _dragDepth = 9999;
+	float _dragAlpha = 1;
     
     protected Vector2 _size_ = new Vector2(100, 100);
     
@@ -846,8 +1042,7 @@ public class OTObject : MonoBehaviour
     float _paintingDepth = 0;
     
     protected object[] callBackParams;
-
-    
+	    
     [HideInInspector]
     public Vector2 imageSize = Vector2.zero;
     
@@ -900,7 +1095,6 @@ public class OTObject : MonoBehaviour
     protected bool isDirty = false;
     
     protected OTObject _dropTarget = null;
-    bool isDragging = false;
 
     Vector2 _hitPoint;
     OTObject _collisionObject = null;
@@ -968,6 +1162,7 @@ public class OTObject : MonoBehaviour
                     else
                         b.size = new Vector3(b.size.x, b.size.y, 0);
                     b.center = pivotPoint * -1;
+                    b.center += new Vector3(0, 0, collisionDepth - depth);
                     b.isTrigger = false;
                 }
             }
@@ -984,8 +1179,7 @@ public class OTObject : MonoBehaviour
                 {
                     s.center = (pivotPoint * -1);
                     s.center += new Vector3(0, 0, collisionDepth - depth);
-                    s.isTrigger = true;
-
+                    s.isTrigger = true;	
                     if (physics == Physics.Trigger)
                         s.isTrigger = true;
                     else
@@ -1105,7 +1299,7 @@ public class OTObject : MonoBehaviour
     /// Overridable virtual method that will check object's editor settings
     /// </summary>
     protected virtual void CheckSettings()
-    {
+    {		
         if (collidable != _collidable_ && !collidable)
         {
             if (_physics != Physics.Custom)
@@ -1148,16 +1342,27 @@ public class OTObject : MonoBehaviour
             _colliderType_ = colliderType;
             CheckInputCollidable();
         }
+		
+		if (OT.world2D)
+		{
+	        if (depth < -1000) depth = -1000;
+	        if (depth > 1000) depth = 1000;
 
-        if (depth < -1000) depth = -1000;
-        if (depth > 1000) depth = 1000;
-
+	        if (_depth_ != depth)
+	        {
+	            _depth_ = depth;
+				_paintingDepth = (OT.world == OT.World.WorldTopDown2D)?-depth:depth;
+				if (OT.painterAlgorithm)
+	        		_paintingDepth += (position.y / 1000) + (position.x / 10000);								
+	        }
+		}
+		else
         if (_depth_ != depth)
         {
             _depth_ = depth;
-            _paintingDepth = depth + (position.y / 1000) + (position.x / 10000);
+            _paintingDepth = depth;
         }
-
+								
         if (size.x < 0 || size.y < 0)
             size = new Vector2((size.x < 0) ? 0 : size.x, (size.y < 0) ? 0 : size.y);
 
@@ -1180,9 +1385,9 @@ public class OTObject : MonoBehaviour
 					UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
 #endif		
             }
-						
+		
         if (!Vector2.Equals(_size_, _size) || !Vector2.Equals(_position_, _position) || _rotation_ != _rotation)
-        {
+        {								
             Vector2 pos = _position;
             if (worldBounds.width != 0)
             {
@@ -1223,9 +1428,10 @@ public class OTObject : MonoBehaviour
                 _rotation_ = _rotation;
             }
         }
-
+		
         if (!Vector2.Equals(size, _size) || !Vector2.Equals(position, _position) || rotation != _rotation)
         {
+			
             Vector2 pos = position;
             if (worldBounds.width != 0)
             {
@@ -1257,13 +1463,47 @@ public class OTObject : MonoBehaviour
 			if (!Application.isPlaying)
 				UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
 #endif		
-            _paintingDepth = depth + (position.y / 1000) + (position.x / 10000);
-        }
-
-        if (transform.position.z != _paintingDepth)
-            transform.position = new Vector3(transform.position.x, transform.position.y, _paintingDepth);
-
-    }
+        }				
+		
+		if (OT.world2D)
+		{
+			_paintingDepth = (OT.world == OT.World.WorldTopDown2D)?-depth:depth;
+			if (OT.painterAlgorithm)
+        		_paintingDepth += (position.y / 1000) + (position.x / 10000);
+			if (OT.world == OT.World.WorldSide2D)
+			{
+		        if (transform.localPosition.z != _paintingDepth)
+				{
+					if (transform.parent==null)
+		            	transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y, _paintingDepth);	
+					else
+		            	transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, _paintingDepth);	
+				}
+			}
+			else
+			{
+		        if (transform.localPosition.y != _paintingDepth)
+				{
+					if (transform.parent==null)
+		            	transform.position = new Vector3(transform.localPosition.x, _paintingDepth, transform.localPosition.z);	
+					else							
+		            	transform.localPosition = new Vector3(transform.localPosition.x, _paintingDepth, transform.localPosition.z);	
+				}
+			}
+		}
+		else
+		{
+        	_paintingDepth = transform.localPosition.z;
+	        if (transform.localPosition.z != _paintingDepth)
+			{
+				if (transform.parent==null)
+	            	transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y, _paintingDepth);	
+				else
+	            	transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, _paintingDepth);	
+			}
+		}
+		
+	}
 
     /// <summary>
     /// Overridable virtual method that will check Objects mesh settings
@@ -1281,7 +1521,7 @@ public class OTObject : MonoBehaviour
             meshDirty = true;
         }
     }
-
+	
     /// <summary>
     /// Overridable virtual method that will clean the dirty object
     /// </summary>
@@ -1295,6 +1535,7 @@ public class OTObject : MonoBehaviour
         rotation = protoType.rotation;
         position = protoType.position;
         size = protoType.size;
+        oSize = protoType.oSize;
         if (pivot != protoType.pivot || pivotPoint != protoType.pivotPoint)
         {
             pivot = protoType.pivot;
@@ -1309,14 +1550,21 @@ public class OTObject : MonoBehaviour
     protected virtual void AfterMesh()
     {
         size = _size;
+		//position = _position;
+		
+		if (OT.world == OT.World.WorldTopDown2D)
+			transform.localRotation = Quaternion.Euler( new Vector3(90,rotation,0));
+		else
+		if (OT.world == OT.World.WorldSide2D)
+			transform.localRotation = Quaternion.Euler( new Vector3(0,0,rotation));
+				
         SetCollider();
     }
-
-    
+		
     public virtual void OnInput(Vector2 hitPoint)
     {
         _hitPoint = hitPoint - position;
-
+								
         if (onInput != null)
             onInput(this);
         if (!CallBack("onInput", callBackParams))
@@ -1348,45 +1596,7 @@ public class OTObject : MonoBehaviour
 
         return;
     }
-    
-    public virtual void OnMouseDrag()
-    {
-        if (!draggable) return;
-        if (!Input.GetMouseButton(dragButton)) return;
-
-        if (!isDragging)
-        {
-            if (onDragStart != null)
-                onDragStart(this);
-            if (!CallBack("onDragStart", callBackParams))
-                CallBack("OnDragStart", callBackParams);
-            isDragging = true;
-            _hitPoint = OT.view.mouseWorldPosition - position;
-        }
-        position = OT.view.mouseWorldPosition - _hitPoint;
-    }
-
-    
-    public virtual void OnMouseUp()
-    {
-        if (isDragging)
-        {
-            if (onDragEnd != null)
-                onDragEnd(this);
-            if (!CallBack("onDragEnd", callBackParams))
-                CallBack("OnDragEnd", callBackParams);
-
-            _dropTarget = OT.ObjectUnderPoint(Input.mousePosition, new OTObject[] { }, new OTObject[] { this });
-            if (_dropTarget != null)
-            {
-                _dropTarget.SetDropped(this);
-                if (_dropTarget.onReceiveDrop != null)
-                    _dropTarget.onReceiveDrop(_dropTarget);
-            }
-            isDragging = false;
-        }
-    }
-    
+        
     public virtual void OnMouseExit()
     {
         _hitPoint = OT.view.mouseWorldPosition - position;
@@ -1418,9 +1628,25 @@ public class OTObject : MonoBehaviour
     public void RotateTowards(Vector2 toPosition)
     {
         Vector2 upVector = toPosition - position;
-        transform.up = upVector.normalized;
+		transform.up = upVector.normalized;								
+		if (OT.world == OT.World.WorldTopDown2D)
+		{
+			if (transform.up.Equals(new Vector3(0,-1.0f,0)))
+				rotation = 180;
+			else				
+				transform.rotation = Quaternion.Euler(90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+		}		
         _rotation = rotation;
         _rotation_ = _rotation;
+    }
+	
+    /// <summary>
+    /// Rotate so we are heading (up vector) to a specific object
+    /// </summary>
+    /// <param name="target">Target object that we will be heading to.</param>
+    public void RotateTowards(OTObject target)
+    {
+		RotateTowards(target.position);
     }
 
     
@@ -1564,7 +1790,26 @@ public class OTObject : MonoBehaviour
         _collisionDepth_ = collisionDepth;
         _collisionSize_ = collisionSize;
         _physics_ = physics;
-        _paintingDepth = depth + (position.y / 1000) + (position.x / 10000);				
+		if (OT.world2D)
+		{
+			_paintingDepth = (OT.world == OT.World.WorldTopDown2D)?-depth:depth;
+			if (OT.painterAlgorithm)
+        		_paintingDepth += (position.y / 1000) + (position.x / 10000);
+		}
+		else
+		{
+			if (transform.parent!=null)
+				_paintingDepth = transform.localPosition.z;
+			else
+				_paintingDepth = transform.position.z;
+		}
+						
+		if (transform.parent!=null)
+			_position = position;			
+		
+		if (OT.world == OT.World.WorldTopDown2D)
+			transform.localRotation = Quaternion.Euler( new Vector3(90,rotation,0));
+		
     }
 
     // -----------------------------------------------------------------
@@ -1586,9 +1831,9 @@ public class OTObject : MonoBehaviour
         if (isCopy)
             copyObject = OT.ObjectByName(name);
 				
-        if (_name == "" || isCopy || _isPrefab)
+        if (_name == "" || isCopy )
         {
-            if (copyObject != null || _isPrefab)
+            if (copyObject != null )
             {
 				if (copyObject !=null)
 				{
@@ -1616,7 +1861,6 @@ public class OTObject : MonoBehaviour
 					UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
 #endif											
 			}
-			_isPrefab = false;
         }
 
         // check if we have a meshfilter
@@ -1659,9 +1903,7 @@ public class OTObject : MonoBehaviour
             OT.Register(this);
 
         CheckInputCollidable();
-        if (Application.isPlaying)
-            oSize = Vector2.zero;
-        else
+        if (!Application.isPlaying)
         {
             if (init)
             {
@@ -1671,22 +1913,37 @@ public class OTObject : MonoBehaviour
             }
         }
     }
+	
+	/// <summary>
+	/// Worldbounds of this object to the area of the provided orthello object
+	/// </summary>
+	public void BoundBy(OTObject o, Vector2 expand)
+	{
+		Rect rect = o.rect;
+		float dx = size.x/2;
+		float dy = size.y/2;
 		
-    
+		// set world bounds
+		worldBounds = new Rect(rect.xMin + dx - expand.x, rect.yMin + dy - expand.y, rect.width - size.x + (expand.x*2), Mathf.Abs(rect.height) - size.y + (expand.y*2));
+		
+	}			
+	public void BoundBy(OTObject o)
+	{
+		BoundBy(o, Vector2.zero);
+	}	
+	    
     public void ForceUpdate()
     {
         Update();
     }
 	
-    // Update is called once per frame
-    
-    /// 
+    // Update is called once per frame	
+	int dirtyUpdateCycles = 0;					// lets always check all settings the first 5 cycles
     protected virtual void Update()
     {
-        if (!OT.isValid || transform == null || gameObject == null) return;
-
-		
-        if (!Application.isPlaying || dirtyChecks || OT.dirtyChecks)
+        if (!OT.isValid || transform == null || gameObject == null || OT.view == null ) return;
+						
+        if (!Application.isPlaying || dirtyChecks || OT.dirtyChecks || (dirtyUpdateCycles++<5))
         {
             if (registerInput != _registerInput_ && !registerInput && draggable)
                 draggable = false;
@@ -1700,44 +1957,37 @@ public class OTObject : MonoBehaviour
                 CheckDirty();
             }			
         }
-
+		
         if (meshDirty)
         {						
+			isDirty = true;
             transform.localScale = Vector3.one;
 
             MeshFilter mf = GetComponent<MeshFilter>();
-            Mesh m = null;
-            if (Application.isPlaying)
+			Mesh newMesh = GetMesh();			
+            if (mesh != null && !isCopy)
             {
-                m = mf.mesh;
-                mesh = GetMesh();
-                if (mesh != null)
-                    mf.mesh = mesh;
-            }
-            else
-            {
-                m = mf.sharedMesh;
-                mesh = GetMesh();
-                if (mesh != null)
-                    mf.sharedMesh = mesh;
-            }
-            if (mesh != null)
-            {
-                if (m != null && !isCopy)
-                {
-                    if (Application.isPlaying)
-                        Destroy(m);
-                    else
-                        DestroyImmediate(m);
-                }
-                meshDirty = false;
+                if (Application.isPlaying)
+                    DestroyImmediate(mesh);
+                else
+                    DestroyImmediate(mesh);
+            }			
+            if (newMesh != null)
+			{		
+				mesh = newMesh;
+				if (Application.isPlaying)
+					mf.mesh = mesh;
+				else
+					mf.sharedMesh = mesh;
+		        mesh.RecalculateBounds();
+		        mesh.RecalculateNormals();								
                 AfterMesh();
-            }
+			}						
+            meshDirty = false;
         }
-
+		
         if (isDirty)
             Clean();
-
 
         if (isCopy)
             isCopy = false;
@@ -1851,6 +2101,14 @@ public class OTObject : MonoBehaviour
         while (controllers.Count > 0)
             RemoveController(controllers[0]);
     }
+	
+	protected void Alert(string message)
+	{
+		if (OT.debug)
+			OTDebug.Message(message);
+		else
+			Debug.Log(message);
+	}
 		
 	public virtual void Dispose()
 	{
@@ -1867,5 +2125,17 @@ public class OTObject : MonoBehaviour
             OT.RemoveObject(this);
 
     }
+	
+	public virtual void Reset()
+	{
+		meshDirty = true;
+		isDirty = true;		
+		
+		if (!position.Equals(_position))
+			position = _position;
+		
+		CheckInputCollidable();
+		Update();
+	}
 
 }

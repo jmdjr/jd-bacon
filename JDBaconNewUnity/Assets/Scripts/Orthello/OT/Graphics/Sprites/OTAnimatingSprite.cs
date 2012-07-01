@@ -10,21 +10,21 @@ public class OTAnimatingSprite : OTSprite
     //-----------------------------------------------------------------------------
     // Editor settings
     //-----------------------------------------------------------------------------
-    /// <exclude />
+    
     public OTAnimation _animation;
-    /// <exclude />
+    
     public string _animationFrameset = "";
-    /// <exclude />
+    
     public float _speed = 1;
-    /// <exclude />
+    
     public bool _looping = true;
-    /// <exclude />
+    
     public int _numberOfPlays = -1;
-    /// <exclude />
+    
     public bool _playOnStart = true;
-    /// <exclude />
+    
     public bool _startAtRandomFrame = false;
-    /// <exclude />
+    
     public bool _destroyWhenFinished = false;
     /// <summary>
     /// Animation editor preview progress manipulator.
@@ -36,8 +36,8 @@ public class OTAnimatingSprite : OTSprite
     /// </remarks>
     public int animationPreview = 0;
 
+	
 	[HideInInspector]
-    /// <exclude />
 	public string _animationName = "";
 
     //-----------------------------------------------------------------------------
@@ -254,6 +254,18 @@ public class OTAnimatingSprite : OTSprite
             return (_playing && direction == -1);
         }
     }
+	
+	/// <summary>
+	/// Reverse the animation. 
+	/// </summary>
+	public void Reverse()
+	{
+		if (animation!=null)
+		{
+			direction *= -1 ;
+			time = animation.GetDuration(frameset)-time;
+		}		
+	}
 
     //-----------------------------------------------------------------------------
     // private and protected fields
@@ -277,7 +289,7 @@ public class OTAnimatingSprite : OTSprite
     //-----------------------------------------------------------------------------
     // public methods
     //-----------------------------------------------------------------------------
-    /// <exclude />
+    
     public override void StartUp()
     {
         if (Application.isPlaying && playOnStart) Play();
@@ -668,10 +680,10 @@ public class OTAnimatingSprite : OTSprite
             CallBack("OnAnimationFinish", callBackParams);
 
         if (destroyWhenFinished)
-            OT.Destroy(this);
+            OT.DestroyObject(this);
     }
 
-    /// <exclude />
+    
     protected override Material InitMaterial()
     {
         if (spriteContainer == null && animation != null) return null;
@@ -701,12 +713,13 @@ public class OTAnimatingSprite : OTSprite
     //-----------------------------------------------------------------------------
     // class methods
     //-----------------------------------------------------------------------------
-    /// <exclude />
+    
     protected override string GetTypeName()
     {
         return "Animating Sprite";
     }
 
+	
     override protected void CheckSettings()
     {
         base.CheckSettings();
@@ -717,7 +730,7 @@ public class OTAnimatingSprite : OTSprite
 		}
 	}
 
-    /// <exclude />
+    
     protected override void Start()
     {
         base.Start();
@@ -786,7 +799,7 @@ public class OTAnimatingSprite : OTSprite
 
 
     // Update is called once per frame
-    /// <exclude />
+    
     protected override void Update()
     {
 		

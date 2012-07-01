@@ -6,11 +6,11 @@ using System.Collections;
 /// </summary>
 public class OTSpriteSheet : OTContainer
 {
-    /// <exclude />
+    
     public Vector2 _framesXY = Vector2.one;
-    /// <exclude />
+    
     public Vector2 _sheetSize = Vector2.zero;
-    /// <exclude />
+    
     public Vector2 _frameSize = Vector2.zero;
     /// <summary>
     /// Spritesheet's texture
@@ -20,6 +20,7 @@ public class OTSpriteSheet : OTContainer
     Vector2 _framesXY_ = Vector2.one;
     Vector2 _sheetSize_ = Vector2.zero;
     Vector2 _frameSize_ = Vector2.zero;
+	Texture _texture;
 
     /// <summary>
     /// Number of frames horizontally (x) and vertically (y)
@@ -94,13 +95,13 @@ public class OTSpriteSheet : OTContainer
         }
     }
 
-    /// <exclude />
+    
     override public Texture GetTexture()
     {
         return texture;
     }
 
-    /// <exclude />
+    
     override protected Frame[] GetFrames()
     {
         if (framesXY.x == 0 || framesXY.y == 0)
@@ -155,16 +156,17 @@ public class OTSpriteSheet : OTContainer
     }
 
 
-    /// <exclude />
+    
     new protected void Start()
     {
         _framesXY_ = framesXY;
         _sheetSize_ = sheetSize;
         _frameSize_ = frameSize;
+		_texture = texture;
         base.Start();
     }
 
-    /// <exclude />
+    
     new protected void Update()
     {
         if (!Vector2.Equals(_framesXY, _framesXY_))
@@ -182,6 +184,11 @@ public class OTSpriteSheet : OTContainer
             _frameSize_ = _frameSize;
             dirtyContainer = true;
         }
+		if (_texture != texture)
+		{
+			_texture = texture;
+            dirtyContainer = true;			
+		}		
         base.Update();
     }
 

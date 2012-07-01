@@ -3,16 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
  
 /// <summary>
-/// Will store animation data in the form of one of more <see cref="OTAnimationFrameset" />s.
+/// To store one animations
 /// </summary>
+/// <remarks>
+/// This object can hold one or more animations, contained in OTAnimationFramesets. 
+/// Using an OTAnimatingSprite, you can play the entire animation or just one animation frameset.
+/// 
+/// Because of its multi frameset character, this object can hold many animations that can span across 
+/// multiple spritesheets/atlases.
+/// </remarks>
 [ExecuteInEditMode]
 public class OTAnimation : MonoBehaviour
 {
-    /// <exclude />
+    
     public string _name = "";
-    /// <exclude />
+    
     public float _fps = 30;
-    /// <exclude />
+    
     public float _duration = 1;
     /// <summary>
     /// Array with animation frameset data.
@@ -36,7 +43,7 @@ public class OTAnimation : MonoBehaviour
     float _duration_ = 1;
     float _framesetSize = 0;
 
-    /// <exclude />
+    
     protected string _name_ = "";
 
     /// <summary>
@@ -122,7 +129,7 @@ public class OTAnimation : MonoBehaviour
         }
     }
 
-    /// <exclude />
+    
     public OTAnimationFrameset GetFrameset(string pName)
     {
         if (pName == "") return null;
@@ -134,7 +141,7 @@ public class OTAnimation : MonoBehaviour
         return null;
     }
 
-    /// <exclude />
+    
     public float GetDuration(OTAnimationFrameset frameset)
     {
         if (frameset != null)
@@ -183,7 +190,7 @@ public class OTAnimation : MonoBehaviour
         if (direction == -1) index = fc - 1 - index;
         return index;
     }
-
+	
     /// <summary>
     /// Retrieve the animation frame that is active at a specific time.
     /// </summary>
@@ -209,6 +216,7 @@ public class OTAnimation : MonoBehaviour
 			}
         }
     }
+	
 	
 	protected void Awake()
 	{
@@ -237,7 +245,7 @@ public class OTAnimation : MonoBehaviour
         RegisterAnimation();
     }
 
-    /// <exclude />
+    
     protected Frame[] GetFrames()
     {
         List<Frame> frames = new List<Frame>();
@@ -449,6 +457,12 @@ public class OTAnimation : MonoBehaviour
             }
         }
     }
+	
+	public virtual void Reset()
+	{
+		dirtyAnimation=true;
+		Update();		
+	}
 
     void OnDestroy()
     {

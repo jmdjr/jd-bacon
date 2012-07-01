@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Linq.Expressions;
 
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
@@ -84,34 +85,13 @@ public class SLerpTransitions : MonoBehaviour
                 positionList.Add(obj.transform.GetChild(iterator));
                 ++iterator;
             }
+
+            positionList.Sort((x, y) => string.Compare(x.name, y.name));
         }
 
         StartCoroutine(FollowTransitions());
     }
-
-    //public void Update()
-    //{
-    //}
-
-    //public void MoveToNextLocation()
-    //{
-    //    if (curTransform == pos0)
-    //    {
-    //        Debug.Log("Switched to Pos 1");
-    //        curTransform = pos1;
-    //    }
-    //    else if (curTransform == pos1)
-    //    {
-    //        Debug.Log("Switched to Pos 2");
-    //        curTransform = pos2;
-    //    }
-    //    else if (curTransform == pos2)
-    //    {
-    //        Debug.Log("Switched to Pos 0");
-    //        curTransform = pos0;
-    //    }
-    //}
-
+    
     IEnumerator MoveToNextLocationList()
     {
         if (RestartWhenDone && atEndOfPositionList)

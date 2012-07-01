@@ -165,10 +165,10 @@ public class OTAnimationFrameset
         }
     }
 
-    /// <exclude />
+    
     [HideInInspector]
     public int startIndex = 0;
-	 /// <exclude />
+	 
     [HideInInspector]
     public string _containerName = "";
 

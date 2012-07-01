@@ -10,9 +10,9 @@ public class OTFilledSprite : OTSprite
     // Editor settings
     //-----------------------------------------------------------------------------
 
-    /// <exclude />
+    
     public Vector2 _fillSize = new Vector2(0, 0);
-    /// <exclude />
+    
     public Vector2 _scrollSpeed = new Vector2(0, 0);
 
     //-----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ public class OTFilledSprite : OTSprite
     //-----------------------------------------------------------------------------
     // overridden subclass methods
     //-----------------------------------------------------------------------------
-    /// <exclude />
+    
     protected override void CheckSettings()
     {
         base.CheckSettings();
@@ -76,13 +76,13 @@ public class OTFilledSprite : OTSprite
         Clean();
     }
 
-    /// <exclude />
+    
     protected override string GetTypeName()
     {
         return "Filled Sprite";
     }
 
-    /// <exclude />
+    
     public override string GetMatName()
     {
        return base.GetMatName() + "-fill:" + fillSize.ToString();
@@ -101,7 +101,7 @@ public class OTFilledSprite : OTSprite
         }
     }
 
-    /// <exclude />
+    
     protected override Material InitMaterial()
     {
         Material mat = base.InitMaterial();
@@ -109,7 +109,7 @@ public class OTFilledSprite : OTSprite
         return mat;
     }
 
-    /// <exclude />
+    
     protected override void Clean()
     {
         base.Clean();
@@ -120,7 +120,7 @@ public class OTFilledSprite : OTSprite
     // class methods
     //-----------------------------------------------------------------------------
 
-    /// <exclude />
+    
     protected override void Awake()
     {
         _fillSize_ = fillSize;
@@ -130,21 +130,20 @@ public class OTFilledSprite : OTSprite
 
     new void Start()
     {
-        useUV = false;
         base.Start();
     }
-    // Update is called once per frame
-    new void Update()
+	
+ 	new void Update()
     {
         base.Update();
-
-        // scroll background
+			
+		// scroll background
         if (!scrollSpeed.Equals(Vector2.zero))
         {
             Material mat = material;
-            float dx = (1 / mat.mainTextureScale.x) * scrollSpeed.x * Time.deltaTime;
-            float dy = (1 / mat.mainTextureScale.y) * scrollSpeed.y * Time.deltaTime;
-
+            float dx = ((1 / mat.mainTextureScale.x) * (size.x / fillSize.x / 10)) * scrollSpeed.x * Time.deltaTime;
+            float dy = ((1 / mat.mainTextureScale.y) * (size.y / fillSize.y / 10)) * scrollSpeed.y * Time.deltaTime;
+			
             float nx = mat.mainTextureOffset.x + dx;
             float ny = mat.mainTextureOffset.y + dy;
             if (dx < 0 && nx < 0) nx += 1;
@@ -154,6 +153,6 @@ public class OTFilledSprite : OTSprite
 
             mat.mainTextureOffset = new Vector2(nx, ny);
         }
-
+			
     }
 }

@@ -1,9 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using System.Text;
+﻿using System.IO;
+using UnityEngine;
 
 /// <summary>
 /// Found at the following URL: http://www.unifycommunity.com/wiki/index.php?title=Save_and_Load_from_XML
@@ -39,6 +35,9 @@ public class _GameSaveLoad : MonoBehaviour
         _LoadMSG = new Rect(10, 140, 400, 40);
 
         // Where we want to save and load to and from 
+        //Debug.Log(Application.persistentDataPath); // location good for save game location
+        //Debug.Log(Application.dataPath);            // For testing purposes
+
         _FileLocation = Application.dataPath;
 
         // we need soemthing to store the information into 
@@ -59,14 +58,19 @@ public class _GameSaveLoad : MonoBehaviour
 
             GUI.Label(_LoadMSG, "Loading from: " + _FileLocation);
             // Load our UserData into myData 
-            LoadXML();
+
+            _data = JDGameUtilz.LoadXML(_FileLocation + "\\Animations\\JD Bacon SpriteAts\\Sparrowv1Grenade.xml");
+            //LoadXML(_FileLocation + "\\" + myData._iUser.PlayerName + ".xml");
+
             if (_data.ToString() != "")
             {
                 // notice how I use a reference to type (UserData) here, you need this 
                 // so that the returned object is converted into the correct type 
-                myData = (UserData)DeserializeObject(_data);
-
-                Debug.Log(myData._iUser.PlayerName);
+                Debug.Log(_data);
+                var obj = (JDSpriteAtlas.TextureList)JDGameUtilz
+                    .DeserializeObject(_data, "TextureAtlas", typeof(JDSpriteAtlas.TextureList), JDGameUtilz.EncodingType.UTF8);
+                Debug.Log(obj.imagePath);
+                Debug.Log(obj.items[0].name + " " + obj.items[0].height + " " + obj.items[0].width);
             }
 
         }
@@ -77,78 +81,20 @@ public class _GameSaveLoad : MonoBehaviour
         if (GUI.Button(_Save, "Save"))
         {
             GUI.Label(_SaveMSG, "Saving to: " + _FileLocation);
-
-            // Time to creat our XML! 
-            _data = SerializeObject(myData);
+            //JDSpriteAtlas.TextureAtlas = new JDSpriteAtlas.TextureList();
+            //JDSpriteAtlas.TextureAtlas.imagePath = "stuffs.png";
+            //JDSpriteAtlas.TextureAtlas.items.Add(new JDSpriteAtlas.SubTexture() 
+            //{
+            //   height = 0, y = 0, x = 0, width = 0, name = "test"
+            //});
+            
+            //    // Time to creat our XML! 
+            //_data = JDGameUtilz.SerializeObject(JDSpriteAtlas.TextureAtlas, "TextureAtlas", typeof(JDSpriteAtlas.TextureList));
             // This is the final resulting XML from the serialization process 
-            CreateXML();
-            Debug.Log(_FileLocation);
+            JDGameUtilz.CreateXML(JDGameUtilz._AnimationzLocationz + @"\JD Bacon SpriteAts\Testing.xml", this._data);
         }
 
 
     }
 
-    /* The following metods came from the referenced URL */
-    string UTF8ByteArrayToString(byte[] characters)
-    {
-        UTF8Encoding encoding = new UTF8Encoding();
-        string constructedString = encoding.GetString(characters);
-        return (constructedString);
-    }
-
-    byte[] StringToUTF8ByteArray(string pXmlString)
-    {
-        UTF8Encoding encoding = new UTF8Encoding();
-        byte[] byteArray = encoding.GetBytes(pXmlString);
-        return byteArray;
-    }
-
-    // Here we serialize our UserData object of myData 
-    string SerializeObject(object pObject)
-    {
-        string XmlizedString = null;
-        MemoryStream memoryStream = new MemoryStream();
-        XmlSerializer xs = new XmlSerializer(typeof(UserData));
-        XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-        xs.Serialize(xmlTextWriter, pObject);
-        memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
-        XmlizedString = UTF8ByteArrayToString(memoryStream.ToArray());
-        return XmlizedString;
-    }
-
-    // Here we deserialize it back into its original form 
-    object DeserializeObject(string pXmlizedString)
-    {
-        XmlSerializer xs = new XmlSerializer(typeof(UserData));
-        MemoryStream memoryStream = new MemoryStream(StringToUTF8ByteArray(pXmlizedString));
-        return xs.Deserialize(memoryStream);
-    }
-
-    // Finally our save and load methods for the file itself 
-    void CreateXML()
-    {
-        StreamWriter writer;
-        FileInfo t = new FileInfo(_FileLocation + "\\" + myData._iUser.PlayerName + ".xml");
-        if (!t.Exists)
-        {
-            writer = t.CreateText();
-        }
-        else
-        {
-            t.Delete();
-            writer = t.CreateText();
-        }
-        writer.Write(_data);
-        writer.Close();
-        Debug.Log("File written.");
-    }
-
-    void LoadXML()
-    {
-        StreamReader r = File.OpenText(_FileLocation + "\\" + myData._iUser.PlayerName + ".xml");
-        string _info = r.ReadToEnd();
-        r.Close();
-        _data = _info;
-        Debug.Log("File Read");
-    }
 }

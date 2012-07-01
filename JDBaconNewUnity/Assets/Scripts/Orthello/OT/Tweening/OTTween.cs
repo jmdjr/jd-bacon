@@ -1,18 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-#if UNITY_FLASH
-#else
 using System.Reflection;
-#endif
 
 /// <summary>
 /// Use this class to tween properties of objects
 /// </summary>
 public class OTTween
 {
-		
     /// <summary>
     /// Tween notification delegate
     /// </summary>
@@ -33,6 +28,14 @@ public class OTTween
             return _running;
         }
     }
+	
+	public object target
+	{
+		get
+		{
+			return _target;
+		}		
+	}
 
     List<string> vars = new List<string>();
     List<OTEase> easings = new List<OTEase>();
@@ -40,11 +43,11 @@ public class OTTween
     List<object> fromValues = new List<object>();
     List<object> toValues = new List<object>();
     List<FieldInfo> fields = new List<FieldInfo>();
-    List<PropertyInfo> props = new List<PropertyInfo>();	
+    List<PropertyInfo> props = new List<PropertyInfo>();
     List<Component> callBackTargets = new List<Component>();
 
     OTEase easing;
-    object owner;
+    object _target;
     float duration;
     float time = 0;
     float waitTime = 0;
@@ -77,12 +80,12 @@ public class OTTween
     /// <summary>
     /// OTTween constructor
     /// </summary>
-    /// <param name="owner">Object on which to tween properties</param>
+    /// <param name="target">Object on which to tween properties</param>
     /// <param name="duration">Tween duration</param>
     /// <param name="easing">Tween 'default' easing function</param>
-    public OTTween(object owner, float duration, OTEase easing)
+    public OTTween(object target, float duration, OTEase easing)
     {
-        this.owner = owner;
+        this._target = target;
         this.duration = duration;
         this.easing = easing;
         CheckController();
@@ -92,11 +95,11 @@ public class OTTween
     /// <summary>
     /// OTTween constructor (easing Linear)
     /// </summary>
-    /// <param name="owner">Object on which to tween properties</param>
+    /// <param name="target">Object on which to tween properties</param>
     /// <param name="duration">Tween duration</param>
-    public OTTween(object owner, float duration)
+    public OTTween(object target, float duration)
     {
-        this.owner = owner;
+        this._target = target;
         this.duration = duration;
         this.easing = OTEasing.Linear;
         CheckController();
@@ -117,24 +120,21 @@ public class OTTween
 
     private void SetVar(string name)
     {
-#if UNITY_FLASH
-#else
-		
-        if (owner != null)
+        if (target != null)
         {
-            FieldInfo field = owner.GetType().GetField(name);
+            FieldInfo field = target.GetType().GetField(name);
             if (field != null)
             {
-                fromValues.Add(field.GetValue(owner));
+                fromValues.Add(field.GetValue(target));
                 fields.Add(field);
                 props.Add(null);
             }
             else
             {
-                PropertyInfo prop = owner.GetType().GetProperty(name);
+                PropertyInfo prop = target.GetType().GetProperty(name);
                 if (prop != null)
                 {
-                    fromValues.Add(prop.GetValue(owner, null));
+                    fromValues.Add(prop.GetValue(target, null));
                     props.Add(prop);
                     fields.Add(null);
                 }
@@ -146,21 +146,16 @@ public class OTTween
                 }
             }
         }
-#endif
     }
 
     private void TweenVar(object fromValue, object toValue, OTEase easing, FieldInfo field, PropertyInfo prop)
     {
-		
-#if UNITY_FLASH
-#else
-		
         object value = null;
         if (toValue == null || fromValue == null) return;
 
         switch (fromValue.GetType().Name.ToLower())
         {
-            case "single":												
+            case "single":
                 if (!(toValue is float))
                     toValue = System.Convert.ToSingle(toValue);
                 value = easing.ease(time, (float)fromValue, (float)toValue - (float)fromValue, duration);
@@ -226,29 +221,27 @@ public class OTTween
                 value = new Color(r, g, b, a);
                 break;
         }
+
 		try
 		{
 	        if (field != null)
-	            field.SetValue(owner, value);
+	            field.SetValue(target, value);
 	        else
 	            if (prop != null)
-	                prop.SetValue(owner, value, null);
+	                prop.SetValue(target, value, null);
 		}
 		catch(System.Exception)
 		{
 			
 			_doStop = true;
 			return;
-		}
-#endif
-		
+		};
+
     }
 
-    /// <exclude />
+    
     protected bool CallBack(string handler, object[] param)
     {
-#if UNITY_FLASH
-#else
         for (int t = 0; t < callBackTargets.Count; t++)
         {
             MethodInfo mi = callBackTargets[t].GetType().GetMethod(handler);
@@ -258,11 +251,10 @@ public class OTTween
                 return true;
             }
         }
-#endif
         return false;
     }
 
-    /// <exclude />
+    
     public bool Update(float deltaTime)
     {
         if (_doStop)
@@ -313,7 +305,7 @@ public class OTTween
     }
 
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="fromValue">From value</param>
@@ -330,16 +322,11 @@ public class OTTween
             object fv = fromValues[fromValues.Count - 1];
             if (fv != null)
             {
-#if UNITY_FLASH
-                if (fv is float && fromValue is int)
-					ActionScript.Statement("$fromValue = Number($fromValue);");
-#else
                 if (fv is float && fromValue is int)
                     fromValue = System.Convert.ToSingle(fromValue);
                 else
                     if (fv is double && fromValue is int)
                         fromValue = System.Convert.ToDouble(fromValue);
-#endif
             }
             fromValues[fromValues.Count - 1] = fromValue;
         }
@@ -350,7 +337,7 @@ public class OTTween
     }
 
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="fromValue">From value</param>
@@ -362,7 +349,7 @@ public class OTTween
         return Tween(var, fromValue, toValue, easing, null);
     }
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="fromValue">From value</param>
@@ -373,7 +360,7 @@ public class OTTween
         return Tween(var, fromValue, toValue, null, null);
     }
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="toValue">To value</param>
@@ -385,7 +372,7 @@ public class OTTween
         return Tween(var, null, toValue, easing, pongEasing);
     }
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="toValue">To value</param>
@@ -396,7 +383,7 @@ public class OTTween
         return Tween(var, null, toValue, easing, null);
     }
     /// <summary>
-    /// Tween a 'public' property of the tween's owner object
+    /// Tween a 'public' property of the tween's target object
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="toValue">To value</param>
@@ -407,7 +394,7 @@ public class OTTween
     }
 
     /// <summary>
-    /// Tween a 'public' property, adding a value, of the tween's owner object.
+    /// Tween a 'public' property, adding a value, of the tween's target object.
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="addValue">Value to add</param>
@@ -416,9 +403,6 @@ public class OTTween
     /// <returns>Tween object</returns>
     public OTTween TweenAdd(string var, object addValue, OTEase easing, OTEase pongEasing)
     {
-		
-#if UNITY_FLASH
-#else 
         vars.Add(var);
         SetVar(var);
         easings.Add(easing);
@@ -470,11 +454,10 @@ public class OTTween
             case "vector3": toValues.Add((Vector3)fromValue + (Vector3)addValue); break;
             default: toValues.Add(null); break;
         }
-#endif
         return this;
     }
     /// <summary>
-    /// Tween a 'public' property, adding a value, of the tween's owner object.
+    /// Tween a 'public' property, adding a value, of the tween's target object.
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="addValue">Value to add</param>
@@ -485,7 +468,7 @@ public class OTTween
         return TweenAdd(var, addValue, easing, null);
     }
     /// <summary>
-    /// Tween a 'public' property, adding a value, of the tween's owner object.
+    /// Tween a 'public' property, adding a value, of the tween's target object.
     /// </summary>
     /// <param name="var">Property name</param>
     /// <param name="addValue">Value to add</param>
@@ -505,14 +488,3 @@ public class OTTween
     }
 
 }
-
-#if UNITY_FLASH
-class FieldInfo
-{
-}
-class PropertyInfo
-{
-}
-#endif
-
-
