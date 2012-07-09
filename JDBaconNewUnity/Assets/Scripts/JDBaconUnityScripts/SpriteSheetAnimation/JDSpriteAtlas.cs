@@ -16,9 +16,9 @@ using System.Runtime.Serialization;
 public class JDSpriteAtlas : MonoBehaviour
 {
     public Object AtlasDocument;
-
+    
     // to read in from the animations xml file.
-    private TextureList TextureAtlas;
+    private TextureList TextureAtlas = null;
     private Dictionary<string, TextureFrameSet> FrameSets = new Dictionary<string,TextureFrameSet>();
 
     public void Awake()
@@ -28,21 +28,34 @@ public class JDSpriteAtlas : MonoBehaviour
         if (_data.IndexOf("<TextureAtlas") == -1)
         {
             Debug.LogError("Selected Atlas Document for: " + this.name + " is not properly formatted");
+            var texture = new Texture2D(23, 23);
+            texture.SetPixels(
             return;
         }
 
-        // Add in some key string parts to xml to make it parseable.
-        _data.Insert(_data.IndexOf("<SubTexture"), "<items>");
-        _data.Insert(_data.LastIndexOf("/>") + "/>".Length, "</items>");
-
-        this.TextureAtlas = (TextureList)JDGameUtilz.DeserializeObject(_data, "TextureAtlas", typeof(TextureList), JDGameUtilz.EncodingType.UTF8);
+        ParseTextureAtlas(_data);
 
         if(this.TextureAtlas == null)
         {
             Debug.LogError("Failed to generate TextureAtlas for: " + this.name + ".");
             return;
         }
+        
+        GenerateFrameSets();
 
+        
+    }
+
+    private void ParseTextureAtlas(string _data)
+    {
+        // Add in some key string parts to xml to make it parseable.
+        _data.Insert(_data.IndexOf("<SubTexture"), "<items>");
+        _data.Insert(_data.LastIndexOf("/>") + "/>".Length, "</items>");
+
+        this.TextureAtlas = (TextureList)JDGameUtilz.DeserializeObject(_data, "TextureAtlas", typeof(TextureList), JDGameUtilz.EncodingType.UTF8);
+    }
+    private void GenerateFrameSets()
+    {
         foreach (SubTexture st in this.TextureAtlas.items)
         {
             string frameName = st.name;
@@ -51,7 +64,7 @@ public class JDSpriteAtlas : MonoBehaviour
 
             if (!hasFrameSet)
             {
-                this.FrameSets.Add(setName, new TextureFrameSet() 
+                this.FrameSets.Add(setName, new TextureFrameSet()
                 {
                     Name = setName,
                     height = st.height,
@@ -94,7 +107,6 @@ public class JDSpriteAtlas : MonoBehaviour
         [XmlAttribute("w")]
         public int width;
     }
-
     public class TextureFrameSet
     {
         public string Name;
