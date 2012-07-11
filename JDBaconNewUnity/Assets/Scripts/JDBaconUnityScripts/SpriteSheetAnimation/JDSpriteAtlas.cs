@@ -29,7 +29,6 @@ public class JDSpriteAtlas : MonoBehaviour
         {
             Debug.LogError("Selected Atlas Document for: " + this.name + " is not properly formatted");
             var texture = new Texture2D(23, 23);
-            texture.SetPixels(
             return;
         }
 

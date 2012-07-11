@@ -47,7 +47,7 @@ public class StateMachineSystem : MonoBehaviour
         private uint timesActionPerformed = 0;
         public string Name { get; private set; }
 
-        public StateMachine(string Name, State state = null)
+        public StateMachine(string Name, State state)
         {
             this.Name = Name;
             this.SetInitialState(state);
