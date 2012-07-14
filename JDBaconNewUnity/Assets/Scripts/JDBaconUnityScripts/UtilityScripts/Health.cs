@@ -5,9 +5,9 @@ using System.Collections;
 public class Health
 {
     #region Variables
-	public int totalHealth = 0;
-	public int currentHealth = 0;
-	public bool isAlive = true;
+	private int totalHealth = 0;
+	private int currentHealth = 0;
+	private bool isAlive = true;
     #endregion
 	
 	#region Getters and Setters
@@ -28,7 +28,7 @@ public class Health
 	public void ChangeCurrentHealth(int variable)
 	{
 		currentHealth = currentHealth + variable > totalHealth 
-						? totalHealth : currentHealth + variable;
+						? totalHealth : (currentHealth + variable);
 		if(currentHealth <= 0)
 			isAlive = false;
 	}
@@ -99,7 +99,13 @@ public class Health
 		isAlive = false;	
 	}
 	#endregion
-
+	
+	public Health(int health)
+	{
+		totalHealth = health;
+		currentHealth = health;
+		isAlive = true;
+	}
 	
 }
 
