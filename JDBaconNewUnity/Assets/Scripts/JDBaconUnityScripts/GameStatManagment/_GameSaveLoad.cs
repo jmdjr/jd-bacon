@@ -66,11 +66,11 @@ public class _GameSaveLoad : MonoBehaviour
             {
                 // notice how I use a reference to type (UserData) here, you need this 
                 // so that the returned object is converted into the correct type 
-                Debug.Log(_data);
-                var obj = (JDSpriteAtlas.TextureList)JDGameUtilz
-                    .DeserializeObject(_data, "TextureAtlas", typeof(JDSpriteAtlas.TextureList), JDGameUtilz.EncodingType.UTF8);
-                Debug.Log(obj.imagePath);
-                Debug.Log(obj.items[0].name + " " + obj.items[0].height + " " + obj.items[0].width);
+                //Debug.Log(_data);
+                //var obj = (JDSpriteAtlas.TextureList)JDGameUtilz
+                //    .DeserializeObject(_data, "TextureAtlas", typeof(JDSpriteAtlas.TextureList), JDGameUtilz.EncodingType.UTF8);
+                //Debug.Log(obj.imagePath);
+                //Debug.Log(obj.items[0].name + " " + obj.items[0].height + " " + obj.items[0].width);
             }
 
         }

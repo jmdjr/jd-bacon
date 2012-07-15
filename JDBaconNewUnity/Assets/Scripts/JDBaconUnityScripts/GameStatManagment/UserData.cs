@@ -15,7 +15,7 @@ public class UserData
     // Default constructor doesn't really do anything at the moment 
     public UserData() 
     {
-        _iUser.GeneralStatsNames = new List<JDSpriteAtlas.SubTexture>();
+        _iUser.GeneralStatsNames = new ArrayList();
         _iUser.GeneralStatsData = new ArrayList();
         _iUser.CollectionItemIDs = new ArrayList();
     }
@@ -25,7 +25,7 @@ public class UserData
     {
         [XmlAttribute]
         public string PlayerName;
-        public List<JDSpriteAtlas.SubTexture> GeneralStatsNames;
+        public ArrayList GeneralStatsNames;
         public ArrayList GeneralStatsData;
         public ArrayList CollectionItemIDs;
     }

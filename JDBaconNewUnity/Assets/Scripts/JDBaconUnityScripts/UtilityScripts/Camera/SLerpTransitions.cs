@@ -8,7 +8,24 @@ using System.Collections.Generic;
 
 public class SLerpTransitions : MonoBehaviour
 {
+    public enum TransitionModeStates
+    {
+        CameraRigging,
+        ManualRigging,
+        Player
+    }
+    [System.Serializable]
+    public class ManualTransitionObject
+    {
+        public Transform Position;
+        public float IdleTime;
+        public float TransitioningToTime;
+    }
+
+    public TransitionModeStates TransitionMode;
     public Object CameraRig;
+
+    public List<ManualTransitionObject> ManualRigging = new List<ManualTransitionObject>();
     public float TransitionDuration = 2.5f;
 
     // Amound of time between each transition.
@@ -24,12 +41,47 @@ public class SLerpTransitions : MonoBehaviour
     {
         get { return curTransformIndex == positionList.Count - 1; }
     }
+    public void Awake()
+    {
+        curTransformIndex = 0;
+        positionList = new List<Transform>();
+        GameObject obj = CameraRig as GameObject;
+
+        if(obj != null)
+        {
+            int childCount = obj.transform.GetChildCount();
+            int iterator = 0;
+
+            while (iterator < childCount)
+            {
+                positionList.Add(obj.transform.GetChild(iterator));
+                ++iterator;
+            }
+
+            positionList.Sort((x, y) => string.Compare(x.name, y.name));
+        }
+
+        switch (this.TransitionMode)
+        {
+            case SLerpTransitions.TransitionModeStates.ManualRigging:
+
+                break;
+
+            case SLerpTransitions.TransitionModeStates.Player:
+
+                break;
+
+            case SLerpTransitions.TransitionModeStates.CameraRigging:
+            default:
+                StartCoroutine(FollowTransitions());
+                break;
+        }
+    }
 
     IEnumerator IdleForSeconds(float time)
     {
         yield return new WaitForSeconds(time);
     }
-
     IEnumerator FollowTransitions()
     {
         while (RestartWhenDone || !atEndOfPositionList)
@@ -38,6 +90,20 @@ public class SLerpTransitions : MonoBehaviour
             yield return StartCoroutine(TransitionTo(curTransform));
             yield return StartCoroutine(IdleForSeconds(IdleDuration));
         }
+    }
+    IEnumerator FollowManualTransitions()
+    {
+        if (RestartWhenDone && atEndOfPositionList)
+        {
+            curTransformIndex = 0;
+        }
+        else
+        {
+            ++curTransformIndex;
+        }
+
+        //curTransform = ManualRigging[curTransformIndex].Position;
+        yield return 0;
     }
     IEnumerator TransitionTo(Transform positionOrientation)
     {
@@ -68,30 +134,6 @@ public class SLerpTransitions : MonoBehaviour
             }
         }
     }
-
-    public void Awake()
-    {
-        curTransformIndex = 0;
-        positionList = new List<Transform>();
-        GameObject obj = CameraRig as GameObject;
-
-        if(obj != null)
-        {
-            int childCount = obj.transform.GetChildCount();
-            int iterator = 0;
-
-            while (iterator < childCount)
-            {
-                positionList.Add(obj.transform.GetChild(iterator));
-                ++iterator;
-            }
-
-            positionList.Sort((x, y) => string.Compare(x.name, y.name));
-        }
-
-        StartCoroutine(FollowTransitions());
-    }
-    
     IEnumerator MoveToNextLocationList()
     {
         if (RestartWhenDone && atEndOfPositionList)
