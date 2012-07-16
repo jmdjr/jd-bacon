@@ -9,7 +9,6 @@ public class EnemyZombie : MonoBehaviour
 	
 	public void OnCollisionEnter(Collision collision)
     {
-        ContactPoint point = collision.contacts[0];
         if (collision.collider.transform.tag == "Player")
         {
 			ZombieHealth.ChangeCurrentHealth(-5);

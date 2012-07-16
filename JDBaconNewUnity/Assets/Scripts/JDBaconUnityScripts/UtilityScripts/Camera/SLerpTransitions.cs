@@ -6,106 +6,9 @@ using System.Linq.Expressions;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
-public class SLerpTransitions : MonoBehaviour
+public static class SLerpTransitions
 {
-    public enum TransitionModeStates
-    {
-        CameraRigging,
-        ManualRigging,
-        Player
-    }
-    [System.Serializable]
-    public class ManualTransitionObject
-    {
-        public Transform Position;
-        public float IdleTime;
-        public float TransitioningToTime;
-    }
-
-    public TransitionModeStates TransitionMode;
-    public Object CameraRig;
-
-    public List<ManualTransitionObject> ManualRigging = new List<ManualTransitionObject>();
-    public float TransitionDuration = 2.5f;
-
-    // Amound of time between each transition.
-    public float IdleDuration = 1.0f;
-    public bool RestartWhenDone = false;
-    
-    public Array stuffs;
-    private List<Transform> positionList;
-    private Transform curTransform;
-    private int curTransformIndex;
-
-    private bool atEndOfPositionList
-    {
-        get { return curTransformIndex == positionList.Count - 1; }
-    }
-    public void Awake()
-    {
-        curTransformIndex = 0;
-        positionList = new List<Transform>();
-        GameObject obj = CameraRig as GameObject;
-
-        if(obj != null)
-        {
-            int childCount = obj.transform.GetChildCount();
-            int iterator = 0;
-
-            while (iterator < childCount)
-            {
-                positionList.Add(obj.transform.GetChild(iterator));
-                ++iterator;
-            }
-
-            positionList.Sort((x, y) => string.Compare(x.name, y.name));
-        }
-
-        switch (this.TransitionMode)
-        {
-            case SLerpTransitions.TransitionModeStates.ManualRigging:
-
-                break;
-
-            case SLerpTransitions.TransitionModeStates.Player:
-
-                break;
-
-            case SLerpTransitions.TransitionModeStates.CameraRigging:
-            default:
-                StartCoroutine(FollowTransitions());
-                break;
-        }
-    }
-
-    IEnumerator IdleForSeconds(float time)
-    {
-        yield return new WaitForSeconds(time);
-    }
-    IEnumerator FollowTransitions()
-    {
-        while (RestartWhenDone || !atEndOfPositionList)
-        {
-            yield return StartCoroutine(MoveToNextLocationList());
-            yield return StartCoroutine(TransitionTo(curTransform));
-            yield return StartCoroutine(IdleForSeconds(IdleDuration));
-        }
-    }
-    IEnumerator FollowManualTransitions()
-    {
-        if (RestartWhenDone && atEndOfPositionList)
-        {
-            curTransformIndex = 0;
-        }
-        else
-        {
-            ++curTransformIndex;
-        }
-
-        //curTransform = ManualRigging[curTransformIndex].Position;
-        yield return 0;
-    }
-    IEnumerator TransitionTo(Transform positionOrientation)
+    public static IEnumerator MoveWithConstantTimeTo(this Transform transform, Transform positionOrientation, float TransitionDuration)
     {
         float t = 0.0f;
         Vector3 startingPos = transform.position;
@@ -134,18 +37,87 @@ public class SLerpTransitions : MonoBehaviour
             }
         }
     }
-    IEnumerator MoveToNextLocationList()
+    public static IEnumerator MoveWithConstantTimeTo(this Transform transform, Vector3 position, Quaternion orientation, float TransitionDuration)
     {
-        if (RestartWhenDone && atEndOfPositionList)
-        {
-            curTransformIndex = 0;
-        }
-        else
-        {
-            ++curTransformIndex;
-        }
+        float t = 0.0f;
+        Vector3 startingPos = transform.position;
+        Quaternion startingOri = transform.rotation;
 
-        curTransform = positionList[curTransformIndex];
-        yield return 0;
+        if (position != Vector3.zero || orientation != Quaternion.identity)
+        {
+            while (t < 1.0f)
+            {
+                t += Time.deltaTime * (Time.timeScale / TransitionDuration);
+
+                if (position != Vector3.zero)
+                {
+                    transform.position = Vector3.Lerp(startingPos, position, t);
+                }
+
+                if (orientation != Quaternion.identity)
+                {
+                    transform.rotation = Quaternion.Slerp(startingOri, orientation, t);
+                }
+
+                yield return 0;
+            }
+        }
+    }
+    public static IEnumerator MoveWithConstantSpeedTo(this Transform transform, Transform positionOrientation, float speed)
+    {
+        Vector3 startingPos = transform.position;
+        Quaternion startingOri = transform.rotation;
+
+
+        if (positionOrientation.position != Vector3.zero || positionOrientation.rotation != Quaternion.identity)
+        {
+            float i = 0.0f;
+            while (i < 1.0f)
+            {
+                Vector3 endingPos = positionOrientation.position;
+                Quaternion endingOri = positionOrientation.rotation;
+                float distance = Vector3.Distance(startingPos, endingPos);
+                i += (speed * Time.deltaTime) / distance;
+
+                if (endingPos != Vector3.zero)
+                {
+                    transform.position = Vector3.Lerp(startingPos, endingPos, i);
+                }
+
+                if (endingOri != Quaternion.identity)
+                {
+                    transform.rotation = Quaternion.Slerp(startingOri, endingOri, i);
+                }
+
+                yield return 0;
+            }
+        }
+    }
+    public static IEnumerator MoveWithConstantSpeedTo(this Transform transform, Vector3 endingPos, Quaternion endingOri, float speed)
+    {
+        Vector3 startingPos = transform.position;
+        Quaternion startingOri = transform.rotation;
+
+        if (endingPos != Vector3.zero || endingOri != Quaternion.identity)
+        {
+            float i = 0.0f;
+            while (i < 1.0f)
+            {
+                float distance = Vector3.Distance(startingPos, endingPos);
+                i += (speed * Time.deltaTime) / distance;
+
+                if (endingPos != Vector3.zero)
+                {
+                    transform.position = Vector3.Lerp(startingPos, endingPos, i);
+                }
+
+                if (endingOri != Quaternion.identity)
+                {
+                    transform.rotation = Quaternion.Slerp(startingOri, endingOri, i);
+                }
+
+                yield return 0;
+            }
+        }
     }
 }

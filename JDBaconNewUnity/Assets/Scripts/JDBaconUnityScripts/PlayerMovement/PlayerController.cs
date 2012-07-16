@@ -163,7 +163,6 @@ public class PlayerController : StateMachineSystem
     }
     public void OnCollisionEnter(Collision collision)
     {
-        ContactPoint point = collision.contacts[0];
         if (collision.collider.transform.tag == "LevelTerrain")
         {
             this.airborne = false;

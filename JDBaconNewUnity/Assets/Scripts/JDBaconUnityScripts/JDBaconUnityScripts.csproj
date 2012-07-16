@@ -44,15 +44,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnemyScripts\EnemyMovement.cs" />
+    <Compile Include="EnemyScripts\EnemyZombie.cs" />
     <Compile Include="GameStatManagment\IReportStats.cs" />
     <Compile Include="GameStatManagment\UserData.cs" />
     <Compile Include="GeneralScripts\ApplyExternalForces.cs" />
     <Compile Include="JDBaconMain.cs" />
-    <Compile Include="GeneralScripts\UserData.cs" />
     <Compile Include="PlayerMovement\PlayerController.cs" />
     <Compile Include="StateManagement\StateMachineSystem.cs" />
     <Compile Include="UtilityScripts\ActivateTrigger.cs" />
-    <Compile Include="UtilityScripts\Camera\FollowTarget.cs" />
+    <Compile Include="UtilityScripts\Camera\CameraController.cs" />
     <Compile Include="UtilityScripts\Camera\Inspector_DrawPathBetweenChildren.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,7 +68,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SpriteSheetAnimation\" />
+    <None Include="EnemyScripts\EnemyMovement.cs.meta" />
+    <None Include="EnemyScripts\EnemyZombie.cs.meta" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

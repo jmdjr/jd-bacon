@@ -32,7 +32,6 @@ public class EnemyMovement : StateMachineSystem
     #region Actions
     private IEnumerator IdleWaitingAction()
     {
-		Vector3 NewMotion = Vector3.zero;
         this.rigidbody.velocity = Vector3.zero;
         yield return 0;
     }
