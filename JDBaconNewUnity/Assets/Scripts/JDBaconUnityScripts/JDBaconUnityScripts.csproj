@@ -63,6 +63,7 @@
     <Compile Include="UtilityScripts\MeshCombineUtility.cs" />
     <Compile Include="GameStatManagment\_GameSaveLoad.cs" />
     <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs" />
+    <Compile Include="UtilityScripts\ZeroZoneScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
