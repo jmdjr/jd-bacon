@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(PlayerController))]
-public class Health : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
     #region Variables
-	private int totalHealth = 0;
-	private int currentHealth = 0;
+	private int totalHealth = 100;
+	private int currentHealth = 100;
 	private bool isAlive = true;
     #endregion
 	
@@ -101,13 +101,6 @@ public class Health : MonoBehaviour
 	}
 	#endregion
 	
-	public Health(int health)
-	{
-		
-		totalHealth = health;
-		currentHealth = health;
-		isAlive = true;
-	}
 	
 	// Display Character Health
 	void OnGUI()
@@ -117,4 +110,5 @@ public class Health : MonoBehaviour
 	
 	
 }
+
 

@@ -1,15 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
-using SmoothMoves;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : StateMachineSystem
+public class PlayerMovement : StateMachineSystem
 {
     #region Variables
-    public BoneAnimation BoneAnimation;
-    public float WalkingSpeed = 1f;
-    public float MaxWalkSpeed = 10.0f;
+    public float WalkingSpeed = .5f;
+	public float RunningSpeed = 1f;
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
     public float JumpStrength = 1.0f;
     public float AntiGravityJumpFactor = -0.4f;
@@ -27,50 +25,23 @@ public class PlayerController : StateMachineSystem
     private State WalkingRight = new State("Walking to the Right");
     private State WalkingLeft = new State("Walking to the Left");
     #endregion
-    #region Start Action
-    private IEnumerator StartWalkingLeftAction()
-    {
-        this.BoneAnimation.CrossFade("Walk");
-        yield return 0;
-    }
-    private IEnumerator StartWalkingRightAction()
-    {
-        this.BoneAnimation.CrossFade("Walk");
-        yield return 0;
-    }
-    private IEnumerator StartIdleWalkAction()
-    {
-        this.BoneAnimation.CrossFade("Stand");
-        yield return 0;
-    }
-    #endregion
     #region Actions
     private IEnumerator IdleWalkingAction()
     {
+        Vector3 NewMotion = Vector3.zero;
+        this.rigidbody.velocity = Vector3.zero;
         yield return 0;
     }
     private IEnumerator WalkingLeftAction()
     {
-        Vector3 NewMotion = WalkingSpeed * Vector3.left;
-        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
-        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
-        {
-            NewMotion.Normalize();
-            NewMotion *= this.MaxWalkSpeed;
-        }
-            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+		Vector3 NewMotion = WalkingSpeed * Vector3.left;
+        this.rigidbody.velocity = NewMotion;
         yield return 0;
     }
     private IEnumerator WalkingRightAction()
     {
         Vector3 NewMotion = WalkingSpeed * Vector3.right;
-        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
-        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
-        {
-            NewMotion.Normalize();
-            NewMotion *= this.MaxWalkSpeed;
-        }
-        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        this.rigidbody.velocity = NewMotion;
         yield return 0;
     }
     #endregion
@@ -134,18 +105,15 @@ public class PlayerController : StateMachineSystem
         ExitStateCondition ToWalkingLeft = new ExitStateCondition(ToWalkingLeftCondition, WalkingLeft);
         ExitStateCondition ToWalkingRight = new ExitStateCondition(ToWalkingRightCondition, WalkingRight);
 
-        IdleWalking.Entering = StartIdleWalkAction;
         IdleWalking.Action = IdleWalkingAction;
         IdleWalking.AddExitCondition(ToWalkingLeft);
         IdleWalking.AddExitCondition(ToWalkingRight);
 
-        WalkingLeft.Entering = StartWalkingLeftAction;
         WalkingLeft.Action = WalkingLeftAction;
         WalkingLeft.RepeatActionCount = 0;
         WalkingLeft.AddExitCondition(ToWalkingRight);
         WalkingLeft.AddExitCondition(ToIdleWalk);
 
-        WalkingRight.Entering = StartWalkingRightAction;
         WalkingRight.Action = WalkingRightAction;
         WalkingRight.RepeatActionCount = 0;
         WalkingRight.AddExitCondition(ToWalkingLeft);
@@ -183,23 +151,12 @@ public class PlayerController : StateMachineSystem
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
-	
-
     public void OnCollisionEnter(Collision collision)
     {
+        ContactPoint point = collision.contacts[0];
         if (collision.collider.transform.tag == "LevelTerrain")
         {
             this.airborne = false;
         }
-		else if (collision.collider.transform.tag == "Enemy")
-		{
-			PlayerHealth PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
-			PlayerHealth.ChangeCurrentHealth(-3);
-			if(!PlayerHealth.IsAlive())
-			{
-				PlayerHealth.Dead();
-				Destroy (gameObject);
-			}
-		}
     }
 }

@@ -141,7 +141,7 @@ public class CameraController : MonoBehaviour
     /// Starts the camera's motion, based on a TransitionModeState.
     /// </summary>
     /// <param name="state">The state that determines how the camera will move.</param>
-    public void StartCameraMotion(TransitionModeStates state = TransitionModeStates.CameraRiggingAuto)
+    public void StartCameraMotion(TransitionModeStates state)
     {
         this.TransitionMode = state;
         this.isDirty = true;
@@ -151,7 +151,7 @@ public class CameraController : MonoBehaviour
     /// Requests the camera to move to a new transition. if a known name is provided, camera will move to that transform.
     /// </summary>
     /// <param name="name">a name of a transform</param>
-    public void RequestCameraMotion(string name = "")
+    public void RequestCameraMotion(string name)
     {
         switch (this.TransitionMode)
         {
