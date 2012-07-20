@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SmoothMoves_Runtime">
+      <HintPath>..\..\SmoothMoves\Plugins\SmoothMoves\SmoothMoves_Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="UnityEngine">
@@ -71,6 +74,9 @@
   <ItemGroup>
     <None Include="EnemyScripts\EnemyMovement.cs.meta" />
     <None Include="EnemyScripts\EnemyZombie.cs.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using SmoothMoves;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : StateMachineSystem
 {
     #region Variables
+    public BoneAnimation BoneAnimation;
     public float WalkingSpeed = 1f;
     public float MaxWalkSpeed = 10.0f;
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
@@ -24,6 +26,23 @@ public class PlayerController : StateMachineSystem
     private State IdleWalking = new State("Idle Walking");
     private State WalkingRight = new State("Walking to the Right");
     private State WalkingLeft = new State("Walking to the Left");
+    #endregion
+    #region Start Action
+    private IEnumerator StartWalkingLeftAction()
+    {
+        this.BoneAnimation.CrossFade("Walk");
+        yield return 0;
+    }
+    private IEnumerator StartWalkingRightAction()
+    {
+        this.BoneAnimation.CrossFade("Walk");
+        yield return 0;
+    }
+    private IEnumerator StartIdleWalkAction()
+    {
+        this.BoneAnimation.CrossFade("Stand");
+        yield return 0;
+    }
     #endregion
     #region Actions
     private IEnumerator IdleWalkingAction()
@@ -115,15 +134,18 @@ public class PlayerController : StateMachineSystem
         ExitStateCondition ToWalkingLeft = new ExitStateCondition(ToWalkingLeftCondition, WalkingLeft);
         ExitStateCondition ToWalkingRight = new ExitStateCondition(ToWalkingRightCondition, WalkingRight);
 
+        IdleWalking.Entering = StartIdleWalkAction;
         IdleWalking.Action = IdleWalkingAction;
         IdleWalking.AddExitCondition(ToWalkingLeft);
         IdleWalking.AddExitCondition(ToWalkingRight);
 
+        WalkingLeft.Entering = StartWalkingLeftAction;
         WalkingLeft.Action = WalkingLeftAction;
         WalkingLeft.RepeatActionCount = 0;
         WalkingLeft.AddExitCondition(ToWalkingRight);
         WalkingLeft.AddExitCondition(ToIdleWalk);
 
+        WalkingRight.Entering = StartWalkingRightAction;
         WalkingRight.Action = WalkingRightAction;
         WalkingRight.RepeatActionCount = 0;
         WalkingRight.AddExitCondition(ToWalkingLeft);
