@@ -47,39 +47,68 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnemyScripts\EnemyMovement.cs" />
-    <Compile Include="EnemyScripts\EnemyZombie.cs" />
-    <Compile Include="GameStatManagment\IReportStats.cs" />
-    <Compile Include="GameStatManagment\UserData.cs" />
-    <Compile Include="GeneralScripts\ApplyExternalForces.cs" />
-    <Compile Include="GeneralScripts\JDGame.cs" />
+    <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
+    <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
+    <Compile Include="CharacterScripts\Player\PlayerController.cs" />
+    <Compile Include="CharacterScripts\Player\PlayerHealth.cs" />
+    <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
+    <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
+    <Compile Include="EnvironmentScripts\ZeroZoneScript.cs" />
+    <Compile Include="InspectorScripts\Inspector_DrawPathBetweenChildren.cs" />
     <Compile Include="JDBaconMain.cs" />
-    <Compile Include="PlayerMovement\PlayerController.cs" />
-    <Compile Include="PlayerMovement\PlayerHealth.cs" />
-    <Compile Include="PlayerMovement\PlayerMovement.cs" />
-    <Compile Include="StateManagement\StateMachineSystem.cs" />
-    <Compile Include="UtilityScripts\ActivateTrigger.cs" />
-    <Compile Include="UtilityScripts\Camera\CameraController.cs" />
-    <Compile Include="UtilityScripts\Camera\Inspector_DrawPathBetweenChildren.cs">
+    <Compile Include="StateManagement\StateMachineSystem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtilityScripts\CombineChildren.cs" />
-    <Compile Include="UtilityScripts\GrimReaper.cs" />
-    <Compile Include="UtilityScripts\Health.cs" />
-    <Compile Include="UtilityScripts\JDGameUtilz.cs" />
-    <Compile Include="UtilityScripts\MeshCombineUtility.cs" />
-    <Compile Include="GameStatManagment\_GameSaveLoad.cs" />
-    <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs" />
-    <Compile Include="UtilityScripts\ZeroZoneScript.cs" />
+    <Compile Include="StatisticsManagement\GeneralGameData\IReportStats.cs" />
+    <Compile Include="StatisticsManagement\GeneralGameData\UserData.cs" />
+    <Compile Include="StatisticsManagement\GeneralGameData\_GameSaveLoad.cs" />
+    <Compile Include="StatisticsManagement\GrimReaper.cs" />
+    <Compile Include="StatisticsManagement\Health.cs" />
+    <Compile Include="StatisticsManagement\JDGame.cs" />
+    <Compile Include="UtilityScripts\Camera\CameraController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UtilityScripts\JDGameUtilz.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EnemyScripts\EnemyMovement.cs.meta" />
-    <None Include="EnemyScripts\EnemyZombie.cs.meta" />
+    <None Include="CharacterScripts\Enemies.meta" />
+    <None Include="CharacterScripts\Enemies\Zombie.meta" />
+    <None Include="CharacterScripts\Enemies\Zombie\Health.meta" />
+    <None Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs.meta" />
+    <None Include="CharacterScripts\Enemies\Zombie\Movement.meta" />
+    <None Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs.meta" />
+    <None Include="CharacterScripts\Player.meta" />
+    <None Include="CharacterScripts\Player\PlayerController.cs.meta" />
+    <None Include="CharacterScripts\Player\PlayerHealth.cs.meta" />
+    <None Include="EnvironmentScripts\ActivateTrigger.cs.meta" />
+    <None Include="EnvironmentScripts\ApplyExternalForces.cs.meta" />
+    <None Include="EnvironmentScripts\ZeroZoneScript.cs.meta" />
+    <None Include="InspectorScripts\Inspector_DrawPathBetweenChildren.cs.meta" />
+    <None Include="StateManagement\StateMachineSystem.cs.meta" />
+    <None Include="StatisticsManagement\GeneralGameData.meta" />
+    <None Include="StatisticsManagement\GeneralGameData\IReportStats.cs.meta" />
+    <None Include="StatisticsManagement\GeneralGameData\UserData.cs.meta" />
+    <None Include="StatisticsManagement\GeneralGameData\_GameSaveLoad.cs.meta" />
+    <None Include="StatisticsManagement\GrimReaper.cs.meta" />
+    <None Include="StatisticsManagement\Health.cs.meta" />
+    <None Include="StatisticsManagement\JDGame.cs.meta" />
+    <None Include="UtilityScripts\Camera.meta" />
+    <None Include="UtilityScripts\Camera\CameraController.cs.meta" />
+    <None Include="UtilityScripts\Camera\SLerpTransitions.cs.meta" />
+    <None Include="UtilityScripts\JDGameUtilz.cs.meta" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CollectableScripts\" />
+    <Folder Include="WeaponScripts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
