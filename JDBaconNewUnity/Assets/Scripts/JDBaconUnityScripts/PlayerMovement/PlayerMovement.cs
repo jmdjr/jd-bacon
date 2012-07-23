@@ -28,7 +28,6 @@ public class PlayerMovement : StateMachineSystem
     #region Actions
     private IEnumerator IdleWalkingAction()
     {
-        Vector3 NewMotion = Vector3.zero;
         this.rigidbody.velocity = Vector3.zero;
         yield return 0;
     }
@@ -153,7 +152,6 @@ public class PlayerMovement : StateMachineSystem
     }
     public void OnCollisionEnter(Collision collision)
     {
-        ContactPoint point = collision.contacts[0];
         if (collision.collider.transform.tag == "LevelTerrain")
         {
             this.airborne = false;

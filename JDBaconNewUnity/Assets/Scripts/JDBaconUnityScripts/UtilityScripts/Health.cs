@@ -2,13 +2,12 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerController))]
 public class Health : MonoBehaviour
 {
     #region Variables
-	private int totalHealth = 0;
-	private int currentHealth = 0;
-	private bool isAlive = true;
+	protected int totalHealth = 5;
+	public int currentHealth = 5;
+	protected bool isAlive = true;
     #endregion
 	
 	#region Getters and Setters
@@ -100,21 +99,5 @@ public class Health : MonoBehaviour
 		isAlive = false;	
 	}
 	#endregion
-	
-	public Health(int health)
-	{
-		
-		totalHealth = health;
-		currentHealth = health;
-		isAlive = true;
-	}
-	
-	// Display Character Health
-	void OnGUI()
-	{
-		GUI.Label(new Rect(50, 50, 100, 100), "Health: "+currentHealth);
-	}
-	
-	
 }
 

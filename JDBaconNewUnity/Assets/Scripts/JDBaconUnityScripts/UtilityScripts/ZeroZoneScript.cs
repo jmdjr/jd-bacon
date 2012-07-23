@@ -15,11 +15,11 @@ public class ZeroZoneScript : MonoBehaviour
             other.gameObject.rigidbody.useGravity = false;
             other.gameObject.renderer.enabled = false;
             other.gameObject.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            Debug.Log("hit zero zone");
+            Application.LoadLevel(Application.loadedLevel); // Resets level...
         }
         else
         {
-            Destroy(other);
+            JDGame.GrimReaper.Kill(other.gameObject);
         }
 
     }

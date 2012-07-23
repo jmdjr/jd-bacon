@@ -198,7 +198,6 @@ public class PlayerController : StateMachineSystem
 			if(!PlayerHealth.IsAlive())
 			{
 				PlayerHealth.Dead();
-				Destroy (gameObject);
 			}
 		}
     }

@@ -2,21 +2,18 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
-public class EnemyZombie : MonoBehaviour
+public class EnemyZombie : Health
 {
-	private Health ZombieHealth = new Health(20);
-	
-	
-	public void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.transform.tag == "Player")
         {
-			ZombieHealth.ChangeCurrentHealth(-5);
-			if(!ZombieHealth.IsAlive())
-			{
-				ZombieHealth.Dead();
-				Destroy (gameObject);
-			}
+            this.ChangeCurrentHealth(-5);
+            if (!this.IsAlive())
+            {
+                this.Dead();
+                JDGame.GrimReaper.Kill(this.gameObject);
+            }
         }
     }
 }

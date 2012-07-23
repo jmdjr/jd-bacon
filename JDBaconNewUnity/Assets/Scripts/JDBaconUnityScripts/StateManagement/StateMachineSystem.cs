@@ -16,8 +16,14 @@ public class StateMachineSystem : MonoBehaviour
 {
     // If all stateMachines are in a dead state, then this is true.
     public bool IsDead { get { return this.MachineList.TrueForAll(m => !m.IsAlive); } }
-    
-    
+
+    public void OnDestroy()
+    {
+        Debug.Log("stopped one: " + this.name);
+        this.StopCoroutine("Run");
+        
+    }
+
     protected List<StateMachine> MachineList = new List<StateMachine>();
 
     // Override in child class and load MachineList with machines.
@@ -25,21 +31,21 @@ public class StateMachineSystem : MonoBehaviour
     //  and switching the states.
     protected virtual void InitializeStateManager()
     {
-        StateMachine.CoroutineDelegate = this.StartCoroutine;
     }
 
     public void Awake()
     {
         InitializeStateManager();
+
         foreach (StateMachine machine in MachineList)
         {
+            machine.CoroutineDelegate = this.StartCoroutine;
             machine.Start();
         }
     }
 
     protected sealed class StateMachine
     {
-        // borrowing the 
         public delegate Coroutine StartCoroutine(IEnumerator func);
 
         public bool IsAlive { get { return this.currentState.IsDeadState; } }
@@ -53,7 +59,7 @@ public class StateMachineSystem : MonoBehaviour
             this.SetInitialState(state);
         }
 
-        public static StartCoroutine CoroutineDelegate = null;
+        public StartCoroutine CoroutineDelegate = null;
 
         public void SetInitialState(State state)
         {
@@ -87,7 +93,11 @@ public class StateMachineSystem : MonoBehaviour
 
                     if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
                     {
-                        yield return CoroutineDelegate(currentState.Action());
+                        if (currentState.Action != null && CoroutineDelegate != null)
+                        {
+                            
+                            yield return CoroutineDelegate(currentState.Action());
+                        }
                         --timesActionPerformed;
                     }
                     else
@@ -192,4 +202,3 @@ public class StateMachineSystem : MonoBehaviour
     }
 
 }
-

@@ -11,6 +11,7 @@ public class EnemyMovement : StateMachineSystem
 		Wait,
 		Player,
 	}
+
     #region Variables
 	public float WaitTime =  3f;
 	public float ElapsedTime = 0f;
@@ -131,12 +132,16 @@ public class EnemyMovement : StateMachineSystem
 	
 	protected void UpdateTimer()
 	{
-		
+        if (player.gameObject == null)
+        {
+            Debug.Log("Game Object has gone missing!");
+        }
+        float distance = Vector3.Distance(this.transform.position, player.transform.position);
 		ElapsedTime += Time.deltaTime;
 		if (WaitTime < ElapsedTime)
 		{
 			ElapsedTime = 0;
-			if (perception > Vector3.Distance(this.transform.position, player.transform.position))
+            if (perception > distance)
 				currentDirection = Direction.Player;
 			else if (currentDirection == Direction.Right)
 				currentDirection = Direction.Left;
@@ -197,7 +202,6 @@ public class EnemyMovement : StateMachineSystem
         DoubleJumpingUp.AddExitCondition(ToIdleJump);
     }
     */
-	
 
     protected override void InitializeStateManager()
     {
