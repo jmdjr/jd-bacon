@@ -8,16 +8,17 @@ public class PlayerController : StateMachineSystem
 {
     #region Variables
     public BoneAnimation BoneAnimation;
-    public float WalkingSpeed = 1f;
-    public float MaxWalkSpeed = 10.0f;
+    public float WalkingSpeed = 50f;
+    public float MaxWalkSpeed = 100.0f;
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
     public float JumpStrength = 1.0f;
-    public float AntiGravityJumpFactor = -0.4f;
-    public float WaitTimeForJump = 0.5f;
+    public float AntiGravityJumpFactor = -0.12f;
+    public float WaitTimeForJump = 0.1f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
 
     private bool airborne = false;
+    private bool hasReleasedJump = false;
     #endregion
 
     #region Walking
@@ -52,25 +53,23 @@ public class PlayerController : StateMachineSystem
     private IEnumerator WalkingLeftAction()
     {
         Vector3 NewMotion = WalkingSpeed * Vector3.left;
-        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
-        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
-        {
-            NewMotion.Normalize();
-            NewMotion *= this.MaxWalkSpeed;
-        }
-            this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        float yComp = this.rigidbody.velocity.y;
+        Vector3 horizontalMotion = Vector3.Cross(this.rigidbody.velocity, Vector3.left) + Vector3.Cross(this.rigidbody.velocity, Vector3.right);
+        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
+
+        this.rigidbody.velocity = new Vector3(horizontalMotion.x, yComp, 0);
         yield return 0;
     }
     private IEnumerator WalkingRightAction()
     {
         Vector3 NewMotion = WalkingSpeed * Vector3.right;
-        Vector3 ResultingVelocity = this.rigidbody.velocity + NewMotion;
-        if (ResultingVelocity.magnitude >= this.MaxWalkSpeed)
-        {
-            NewMotion.Normalize();
-            NewMotion *= this.MaxWalkSpeed;
-        }
         this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        float yComp = this.rigidbody.velocity.y;
+        Vector3 horizontalMotion = Vector3.Cross(this.rigidbody.velocity, Vector3.left) + Vector3.Cross(this.rigidbody.velocity, Vector3.right);
+        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
+
+        this.rigidbody.velocity = new Vector3(horizontalMotion.x, yComp, 0);
         yield return 0;
     }
     #endregion
@@ -107,14 +106,13 @@ public class PlayerController : StateMachineSystem
         Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
         this.rigidbody.AddForce(NewMotion, JumpingForceMode);
         this.airborne = true;
+        hasReleasedJump = false;
         yield return new WaitForSeconds(WaitTimeForJump);
     }
     #endregion
     #region Conditions
     private bool ToIdleJumpingCondition()
     {
-        //ERROR: This is bad logic, the transition condition needs to be changed to 
-        //        properly detect when jumping is no longer occuring.
         return !this.airborne;
     }
     private bool ToJumpCondition()
@@ -123,7 +121,7 @@ public class PlayerController : StateMachineSystem
     }
     private bool ToDoubleJumpCondition()
     {
-        return Input.GetAxis("Jump") > 0 && this.airborne && this.AllowDoubleJump;
+        return hasReleasedJump && Input.GetAxis("Jump") > 0 && this.airborne && this.AllowDoubleJump;
     }
     #endregion
     #endregion
@@ -177,13 +175,24 @@ public class PlayerController : StateMachineSystem
     {
         base.InitializeStateManager();
 
+        this.renderer.enabled = false;
+
         InitializeWalkingSM();
         InitializeJumpingSM();
 
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
-	
+
+    public void Update()
+    {
+        Debug.Log(hasReleasedJump);
+        if (!hasReleasedJump)
+        {
+            
+            hasReleasedJump = Input.GetAxis("Jump") == 0;
+        }
+    }
 
     public void OnCollisionEnter(Collision collision)
     {

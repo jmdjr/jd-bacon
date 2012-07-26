@@ -71,9 +71,11 @@
     <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityScripts\CombineChildren.cs" />
     <Compile Include="UtilityScripts\JDGameUtilz.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityScripts\MeshCombineUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
