@@ -1,9 +1,9 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using System;
+using System.IO;
 using System.Text;
-using System.Xml.Serialization;
 using System.Xml;
-using System;
+using System.Xml.Serialization;
+using UnityEngine;
 
 public static class JDGameUtilz
 {

@@ -71,41 +71,12 @@
     <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtilityScripts\CombineChildren.cs" />
     <Compile Include="UtilityScripts\JDGameUtilz.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtilityScripts\MeshCombineUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CharacterScripts\Enemies.meta" />
-    <None Include="CharacterScripts\Enemies\Zombie.meta" />
-    <None Include="CharacterScripts\Enemies\Zombie\Health.meta" />
-    <None Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs.meta" />
-    <None Include="CharacterScripts\Enemies\Zombie\Movement.meta" />
-    <None Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs.meta" />
-    <None Include="CharacterScripts\Player.meta" />
-    <None Include="CharacterScripts\Player\PlayerController.cs.meta" />
-    <None Include="CharacterScripts\Player\PlayerHealth.cs.meta" />
-    <None Include="EnvironmentScripts\ActivateTrigger.cs.meta" />
-    <None Include="EnvironmentScripts\ApplyExternalForces.cs.meta" />
-    <None Include="EnvironmentScripts\ZeroZoneScript.cs.meta" />
-    <None Include="InspectorScripts\Inspector_DrawPathBetweenChildren.cs.meta" />
-    <None Include="StateManagement\StateMachineSystem.cs.meta" />
-    <None Include="StatisticsManagement\GeneralGameData.meta" />
-    <None Include="StatisticsManagement\GeneralGameData\IReportStats.cs.meta" />
-    <None Include="StatisticsManagement\GeneralGameData\UserData.cs.meta" />
-    <None Include="StatisticsManagement\GeneralGameData\_GameSaveLoad.cs.meta" />
-    <None Include="StatisticsManagement\GrimReaper.cs.meta" />
-    <None Include="StatisticsManagement\Health.cs.meta" />
-    <None Include="StatisticsManagement\JDGame.cs.meta" />
-    <None Include="UtilityScripts\Camera.meta" />
-    <None Include="UtilityScripts\Camera\CameraController.cs.meta" />
-    <None Include="UtilityScripts\Camera\SLerpTransitions.cs.meta" />
-    <None Include="UtilityScripts\JDGameUtilz.cs.meta" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CollectableScripts\" />

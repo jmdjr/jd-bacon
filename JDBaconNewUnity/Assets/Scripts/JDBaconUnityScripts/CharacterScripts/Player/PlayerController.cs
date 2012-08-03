@@ -11,9 +11,9 @@ public class PlayerController : StateMachineSystem
     public float WalkingSpeed = 50f;
     public float MaxWalkSpeed = 100.0f;
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
-    public float JumpStrength = 1.0f;
+    public float JumpStrength = 3.0f;
     public float AntiGravityJumpFactor = -0.12f;
-    public float WaitTimeForJump = 0.1f;
+    public float WaitTimeForJump = 0.25f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
 
@@ -31,7 +31,7 @@ public class PlayerController : StateMachineSystem
     #region Start Action
     private IEnumerator StartWalkingLeftAction()
     {
-        this.BoneAnimation.CrossFade("Walk");
+        this.BoneAnimation.Play("Walk");
         yield return 0;
     }
     private IEnumerator StartWalkingRightAction()
@@ -41,6 +41,7 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator StartIdleWalkAction()
     {
+        this.BoneAnimation.Stop();
         this.BoneAnimation.CrossFade("Stand");
         yield return 0;
     }
@@ -186,10 +187,8 @@ public class PlayerController : StateMachineSystem
 
     public void Update()
     {
-        Debug.Log(hasReleasedJump);
         if (!hasReleasedJump)
         {
-            
             hasReleasedJump = Input.GetAxis("Jump") == 0;
         }
     }

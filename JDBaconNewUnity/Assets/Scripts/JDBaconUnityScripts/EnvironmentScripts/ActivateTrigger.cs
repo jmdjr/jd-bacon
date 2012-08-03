@@ -15,7 +15,8 @@ public class ActivateTrigger : MonoBehaviour {
 
 	/// The game object to affect. If none, the trigger work on this game object
 	public Object target;
-	public GameObject source;
+	public GameObject sourceForReplace;
+    public string CustomTriggerMessage = "DoActivateTrigger";
 	public int triggerCount = 1;
 	public bool repeatTrigger = false;
 	
@@ -31,11 +32,11 @@ public class ActivateTrigger : MonoBehaviour {
 		
 			switch (action) {
 				case Mode.Trigger:
-					targetGameObject.BroadcastMessage ("DoActivateTrigger");
+                    targetGameObject.BroadcastMessage(CustomTriggerMessage);
 					break;
 				case Mode.Replace:
-					if (source != null) {
-						Object.Instantiate (source, targetGameObject.transform.position, targetGameObject.transform.rotation);
+					if (sourceForReplace != null) {
+						Object.Instantiate (sourceForReplace, targetGameObject.transform.position, targetGameObject.transform.rotation);
 						DestroyObject (targetGameObject);
 					}
 					break;
