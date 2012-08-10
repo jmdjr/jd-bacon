@@ -34,8 +34,8 @@ public class PlayerController : StateMachineSystem
     {
         if (!facingLeft)
         {
-            facingLeft = true;
             this.transform.Rotate(Vector3.up, 180.0f);
+            facingLeft = true;
         }
         this.BoneAnimation.Play("Walk");
         yield return 0;
@@ -44,8 +44,8 @@ public class PlayerController : StateMachineSystem
     {
         if (facingLeft)
         {
-            facingLeft = false;
             this.transform.Rotate(Vector3.up, 180.0f);
+            facingLeft = false;
         }
         this.BoneAnimation.CrossFade("Walk");
         yield return 0;
@@ -88,11 +88,11 @@ public class PlayerController : StateMachineSystem
     #region Conditions
     private bool ToWalkingRightCondition()
     {
-        return Input.GetAxis("Horizontal") > 0;
+        return Input.GetAxis("Horizontal") < 0;
     }
     private bool ToWalkingLeftCondition()
     {
-        return Input.GetAxis("Horizontal") < 0;
+        return Input.GetAxis("Horizontal") > 0;
     }
     private bool ToIdleWalkingCondition()
     {
