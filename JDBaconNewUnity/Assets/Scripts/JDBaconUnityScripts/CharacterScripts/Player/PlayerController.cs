@@ -16,6 +16,7 @@ public class PlayerController : StateMachineSystem
     public float WaitTimeForJump = 0.25f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
+    private bool facingLeft = false;
 
     private bool airborne = false;
     private bool hasReleasedJump = false;
@@ -31,11 +32,21 @@ public class PlayerController : StateMachineSystem
     #region Start Action
     private IEnumerator StartWalkingLeftAction()
     {
+        if (!facingLeft)
+        {
+            facingLeft = true;
+            this.transform.Rotate(Vector3.up, 180.0f);
+        }
         this.BoneAnimation.Play("Walk");
         yield return 0;
     }
     private IEnumerator StartWalkingRightAction()
     {
+        if (facingLeft)
+        {
+            facingLeft = false;
+            this.transform.Rotate(Vector3.up, 180.0f);
+        }
         this.BoneAnimation.CrossFade("Walk");
         yield return 0;
     }
@@ -77,11 +88,11 @@ public class PlayerController : StateMachineSystem
     #region Conditions
     private bool ToWalkingRightCondition()
     {
-        return Input.GetAxis("Horizontal") < 0;
+        return Input.GetAxis("Horizontal") > 0;
     }
     private bool ToWalkingLeftCondition()
     {
-        return Input.GetAxis("Horizontal") > 0;
+        return Input.GetAxis("Horizontal") < 0;
     }
     private bool ToIdleWalkingCondition()
     {
