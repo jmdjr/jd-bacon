@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: c159139d1dd75ec458b15fcbf3c31e14
+guid: 81bcc79aa65a0e94eb60280ff8d61415
 ModelImporter:
   fileIDToRecycleName:
-    4300000: Tube01
+    4300000: Cylinder06
   serializedVersion: 10
   materials:
     importMaterials: 1
