@@ -44,6 +44,14 @@ public class StateMachineSystem : MonoBehaviour
         }
     }
 
+    public void PauseStateMachineSystem()
+    {
+        foreach (StateMachine sm in this.MachineList)
+        {
+            sm.isPaused = true;
+        }
+    }
+
     protected sealed class StateMachine
     {
         public delegate Coroutine StartCoroutine(IEnumerator func);
@@ -52,6 +60,7 @@ public class StateMachineSystem : MonoBehaviour
         private State currentState = null;
         private uint timesActionPerformed = 0;
         public string Name { get; private set; }
+        public bool isPaused { get; set; }
 
         public StateMachine(string Name, State state)
         {
@@ -64,6 +73,7 @@ public class StateMachineSystem : MonoBehaviour
         public void SetInitialState(State state)
         {
             currentState = state;
+            this.isPaused = false;
         }
 
         private IEnumerator Run()
@@ -72,37 +82,40 @@ public class StateMachineSystem : MonoBehaviour
             {
                 do
                 {
-                    State ToState = currentState.RunTests();
-
-                    if (ToState != null)
+                    if (!isPaused)
                     {
+                        State ToState = currentState.RunTests();
 
-                        if (currentState.Exiting != null)
+                        if (ToState != null)
                         {
-                            yield return CoroutineDelegate(currentState.Exiting());
-                        }
-                        currentState = ToState;
 
-                        if (currentState.Entering != null)
+                            if (currentState.Exiting != null)
+                            {
+                                yield return CoroutineDelegate(currentState.Exiting());
+                            }
+                            currentState = ToState;
+
+                            if (currentState.Entering != null)
+                            {
+                                yield return CoroutineDelegate(currentState.Entering());
+                            }
+
+                            timesActionPerformed = currentState.RepeatActionCount;
+                        }
+
+                        if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
                         {
-                            yield return CoroutineDelegate(currentState.Entering());
+                            if (currentState.Action != null && CoroutineDelegate != null)
+                            {
+
+                                yield return CoroutineDelegate(currentState.Action());
+                            }
+                            --timesActionPerformed;
                         }
-
-                        timesActionPerformed = currentState.RepeatActionCount;
-                    }
-
-                    if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
-                    {
-                        if (currentState.Action != null && CoroutineDelegate != null)
+                        else
                         {
-                            
-                            yield return CoroutineDelegate(currentState.Action());
+                            yield return 0;
                         }
-                        --timesActionPerformed;
-                    }
-                    else
-                    {
-                        yield return 0;
                     }
 
                 } while (!currentState.IsDeadState || currentState.RepeateIfDead);

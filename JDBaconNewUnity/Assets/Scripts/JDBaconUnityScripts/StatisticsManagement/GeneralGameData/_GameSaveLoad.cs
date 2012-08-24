@@ -64,8 +64,6 @@ public class _GameSaveLoad : MonoBehaviour
 
             if (_data.ToString() != "")
             {
-                // notice how I use a reference to type (UserData) here, you need this 
-                // so that the returned object is converted into the correct type 
                 //Debug.Log(_data);
                 //var obj = (JDSpriteAtlas.TextureList)JDGameUtilz
                 //    .DeserializeObject(_data, "TextureAtlas", typeof(JDSpriteAtlas.TextureList), JDGameUtilz.EncodingType.UTF8);
