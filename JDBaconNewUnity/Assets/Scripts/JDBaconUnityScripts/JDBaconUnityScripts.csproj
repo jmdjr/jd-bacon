@@ -55,6 +55,7 @@
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="CharacterScripts\Player\PlayerHealth.cs" />
+    <Compile Include="CharacterScripts\Player\WeaponSystem.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />

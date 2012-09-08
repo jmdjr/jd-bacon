@@ -153,6 +153,5 @@ public class Level1StateManager : StateMachineSystem
             InitializeCameraSM();
             this.MachineList.Add(CameraSM);
         }
-
     }
 }
