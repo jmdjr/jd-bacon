@@ -39,22 +39,27 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Users\null\Desktop\WarriorCursedByLoneliness_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityScript.Lang">
-      <HintPath>..\..\..\..\..\..\Users\null\Desktop\WarriorCursedByLoneliness_Data\Managed\UnityScript.Lang.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\2.0\UnityScript.Lang.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\CardboardCutoutMovement.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="CharacterScripts\Player\PlayerHealth.cs" />
+    <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
     <Compile Include="EnvironmentScripts\ZeroZoneScript.cs" />
+    <Compile Include="InspectorScripts\BaconDebugProvider.cs" />
     <Compile Include="InspectorScripts\Inspector_DrawPathBetweenChildren.cs" />
     <Compile Include="JDBaconMain.cs" />
     <Compile Include="StateManagement\StateMachineSystem.cs">
@@ -66,10 +71,10 @@
     <Compile Include="StatisticsManagement\GrimReaper.cs" />
     <Compile Include="StatisticsManagement\Health.cs" />
     <Compile Include="StatisticsManagement\JDGame.cs" />
-    <Compile Include="StatisticsManagement\MainGameplayHUD.cs" />
     <Compile Include="UtilityScripts\Camera\CameraController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityScripts\Camera\Level1StateManager.cs" />
     <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -81,6 +86,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CharacterScripts\Enemies\Cardboard Cutout\" />
     <Folder Include="CollectableScripts\" />
     <Folder Include="WeaponScripts\" />
   </ItemGroup>

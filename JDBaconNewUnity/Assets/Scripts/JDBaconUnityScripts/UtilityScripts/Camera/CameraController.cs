@@ -45,7 +45,15 @@ public class CameraController : MonoBehaviour
     {
         while (RestartWhenDone || !atEndOfPositionList)
         {
-            yield return StartCoroutine(MoveToNextCameraRigLocation());
+            if (this.TransitionMode == TransitionModeStates.CameraRiggingManual)
+            {
+                yield return StartCoroutine(IdleTillCameraMoveRequested());
+            }
+            else
+            {
+                yield return StartCoroutine(MoveToNextCameraRigLocation());
+            }
+
             yield return StartCoroutine(this.transform.MoveWithConstantTimeTo(curTransform, TransitionDuration));
             yield return StartCoroutine(IdleForSeconds(IdleDuration));
         }
@@ -94,7 +102,7 @@ public class CameraController : MonoBehaviour
     }
     IEnumerator IdleTillCameraMoveRequested()
     {
-        while (!requestMade) { } // do nothing until a request has been made.
+        while (!requestMade) { yield return new WaitForEndOfFrame(); } // do nothing until a request has been made.
 
         yield return 0;
     }
@@ -108,7 +116,7 @@ public class CameraController : MonoBehaviour
         {
             ++curTransformIndex;
         }
-
+        Debug.Log("Current Position: " + positionList[curTransformIndex].name);
         curTransform = positionList[curTransformIndex];
         yield return 0;
     }
@@ -151,11 +159,12 @@ public class CameraController : MonoBehaviour
     /// Requests the camera to move to a new transition. if a known name is provided, camera will move to that transform.
     /// </summary>
     /// <param name="name">a name of a transform</param>
-    public void RequestCameraMotion(string name)
+    public void RequestCameraMotion(string name = "")
     {
         switch (this.TransitionMode)
         {
             case TransitionModeStates.CameraRiggingManual:
+                this.requestMade = true;
                 if(name == "")
                 {
                     StartCoroutine(this.MoveToNextCameraRigLocation());
@@ -170,10 +179,10 @@ public class CameraController : MonoBehaviour
                     }
                 }
 
-                this.requestMade = true;
                 break;
 
             case TransitionModeStates.ManualRiggingManual:
+                this.requestMade = true;
                 if (name == "")
                 {
                     StartCoroutine(this.MoveToNextManualRigLocation());
@@ -188,9 +197,27 @@ public class CameraController : MonoBehaviour
                     }
                 }
 
-                this.requestMade = true;
                 break;
         }
+    }
+
+    public void TransitionFromRiggingToPlayerMode()
+    {
+        switch (this.TransitionMode)
+        {
+            case TransitionModeStates.CameraRiggingAuto:
+            case TransitionModeStates.CameraRiggingManual:
+                this.OrientationFromPlayer = positionList[curTransformIndex];
+                break;
+
+            case TransitionModeStates.ManualRiggingAuto:
+            case TransitionModeStates.ManualRiggingManual:
+                this.OrientationFromPlayer = ManualRiggingList[curTransformIndex].Position;
+                break;
+        }
+
+        this.StartCameraMotion(TransitionModeStates.Player);
+
     }
     #endregion
 
@@ -230,10 +257,12 @@ public class CameraController : MonoBehaviour
                     break;
 
                 case TransitionModeStates.ManualRiggingAuto:
+                case TransitionModeStates.ManualRiggingManual:
                     StartCoroutine(FollowManualTransitions());
                     break;
 
                 case TransitionModeStates.CameraRiggingAuto:
+                case TransitionModeStates.CameraRiggingManual:
                     StartCoroutine(FollowCameraRigTransitions());
                     break;
                 default:

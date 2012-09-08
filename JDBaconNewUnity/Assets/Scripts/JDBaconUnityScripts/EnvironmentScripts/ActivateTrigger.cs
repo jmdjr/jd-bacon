@@ -32,7 +32,7 @@ public class ActivateTrigger : MonoBehaviour {
 		
 			switch (action) {
 				case Mode.Trigger:
-                    targetGameObject.BroadcastMessage(CustomTriggerMessage);
+                    targetGameObject.BroadcastMessage(CustomTriggerMessage, this.gameObject);
 					break;
 				case Mode.Replace:
 					if (sourceForReplace != null) {
