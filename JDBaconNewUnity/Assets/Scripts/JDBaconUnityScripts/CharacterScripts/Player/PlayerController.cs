@@ -20,6 +20,7 @@ public class PlayerController : StateMachineSystem
 
     private bool airborne = false;
     private bool hasReleasedJump = false;
+    private CharacterAnimationHelper Animator = null;
     #endregion
 
     #region Walking
@@ -37,7 +38,8 @@ public class PlayerController : StateMachineSystem
             this.transform.Rotate(Vector3.up, 180.0f);
             facingLeft = true;
         }
-        this.BoneAnimation.Play("Walk");
+
+        Animator.PlayAnimation(CharacterAnimationType.WALK);
         yield return 0;
     }
     private IEnumerator StartWalkingRightAction()
@@ -47,23 +49,30 @@ public class PlayerController : StateMachineSystem
             this.transform.Rotate(Vector3.up, 180.0f);
             facingLeft = false;
         }
-        this.BoneAnimation.CrossFade("Walk");
+        Animator.PlayAnimation(CharacterAnimationType.WALK);
         yield return 0;
     }
     private IEnumerator StartIdleWalkAction()
     {
-        this.BoneAnimation.Stop();
-        this.BoneAnimation.CrossFade("Stand");
         yield return 0;
     }
     #endregion
     #region Actions
     private IEnumerator IdleWalkingAction()
     {
+        if (!this.airborne && this.Animator.CurrentAnimationCompleted())
+        {
+            Animator.PlayAnimation(CharacterAnimationType.STAND);
+        }
         yield return 0;
     }
     private IEnumerator WalkingLeftAction()
     {
+        if (this.Animator.CurrentAnimationType != CharacterAnimationType.WALK && !this.airborne)
+        {
+            Animator.PlayAnimation(CharacterAnimationType.WALK);
+        }
+
         Vector3 NewMotion = WalkingSpeed * Vector3.left;
         this.rigidbody.AddForce(NewMotion, WalkingForceMode);
         float yComp = this.rigidbody.velocity.y;
@@ -75,6 +84,10 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator WalkingRightAction()
     {
+        if (this.Animator.CurrentAnimationType != CharacterAnimationType.WALK && !this.airborne)
+        {
+            Animator.PlayAnimation(CharacterAnimationType.WALK);
+        }
         Vector3 NewMotion = WalkingSpeed * Vector3.right;
         this.rigidbody.AddForce(NewMotion, WalkingForceMode);
         float yComp = this.rigidbody.velocity.y;
@@ -113,13 +126,21 @@ public class PlayerController : StateMachineSystem
     {
         yield return 0;
     }
+    private IEnumerator JumpingUpEnterAction()
+    {
+        Animator.PlayAnimation(CharacterAnimationType.JUMP);
+        yield return 0;
+    }
     private IEnumerator JumpingUpAction()
     {
         Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
         this.rigidbody.AddForce(NewMotion, JumpingForceMode);
-        this.airborne = true;
         hasReleasedJump = false;
         yield return new WaitForSeconds(WaitTimeForJump);
+    }
+    private IEnumerator JumpingUpExitAction()
+    {
+        yield return 0;
     }
     #endregion
     #region Conditions
@@ -137,6 +158,28 @@ public class PlayerController : StateMachineSystem
     }
     #endregion
     #endregion
+
+    #region Attacking
+    
+    #region States
+
+    #endregion
+    
+    #region Conditions
+    #endregion
+
+    #region Entering Action
+    #endregion
+
+    #region Action
+    #endregion
+
+    #region Exit Action
+    
+    #endregion
+
+    #endregion
+
 
     protected void InitializeWalkingSM()
     {
@@ -174,11 +217,15 @@ public class PlayerController : StateMachineSystem
         IdleJumping.AddExitCondition(ToJumpingUp);
 
         JumpingUp.Action = JumpingUpAction;
+        JumpingUp.Entering = JumpingUpEnterAction;
+        JumpingUp.Exiting = JumpingUpExitAction;
         JumpingUp.RepeatActionCount = 1;
         JumpingUp.AddExitCondition(ToIdleJump);
         JumpingUp.AddExitCondition(ToDoubleJumpingUp);
 
         DoubleJumpingUp.Action = JumpingUpAction;
+        DoubleJumpingUp.Entering = JumpingUpEnterAction;
+        DoubleJumpingUp.Exiting = JumpingUpExitAction;
         DoubleJumpingUp.RepeatActionCount = 1;
         DoubleJumpingUp.AddExitCondition(ToIdleJump);
     }
@@ -186,7 +233,7 @@ public class PlayerController : StateMachineSystem
     protected override void InitializeStateManager()
     {
         base.InitializeStateManager();
-
+        this.Animator = new CharacterAnimationHelper(this.BoneAnimation);
         this.renderer.enabled = false;
 
         InitializeWalkingSM();
@@ -195,29 +242,60 @@ public class PlayerController : StateMachineSystem
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
-
+    private int times = 0;
     public void Update()
     {
         if (!hasReleasedJump)
         {
             hasReleasedJump = Input.GetAxis("Jump") == 0;
         }
+        RaycastHit info;
+        if (Physics.Raycast(this.gameObject.collider.bounds.center, Vector3.down, out info, 0.4f))
+        {
+            if(this.airborne)
+            {
+                Animator.PlayAnimation(CharacterAnimationType.STAND);
+                this.airborne = false;
+            }
+        }
+        else
+        {
+            if (!this.airborne)
+            {
+                Animator.PlayAnimation(CharacterAnimationType.JUMP);
+                this.airborne = true;
+            }
+        }
     }
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform.tag == "LevelTerrain")
+        switch (collision.gameObject.tag)
         {
-            this.airborne = false;
+            case "LevelTerrain":
+                break;
+
+            case "Enemy":
+                PlayerHealth PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
+                PlayerHealth.ChangeCurrentHealth(-3);
+                if (!PlayerHealth.IsAlive())
+                {
+                    PlayerHealth.Dead();
+                }
+                break;
         }
-		else if (collision.collider.transform.tag == "Enemy")
-		{
-			PlayerHealth PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
-			PlayerHealth.ChangeCurrentHealth(-3);
-			if(!PlayerHealth.IsAlive())
-			{
-				PlayerHealth.Dead();
-			}
-		}
     }
+
+    public void OnCollisionLeave(Collision collision)
+    {
+        Debug.Log("Collision Leave");
+        switch (collision.collider.tag)
+        {
+            case "LevelTerrain":
+                break;
+        }
+    }
+
+
+
 }

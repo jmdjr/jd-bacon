@@ -53,9 +53,10 @@
   <ItemGroup>
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
+    <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
+    <Compile Include="CharacterScripts\Player\WeaponSystem.cs" />
     <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="CharacterScripts\Player\PlayerHealth.cs" />
-    <Compile Include="CharacterScripts\Player\WeaponSystem.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="UtilityScripts\Camera\CameraController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtilityScripts\Camera\Level1StateManager.cs" />
+    <Compile Include="StateManagement\Level1\Level1StateManager.cs" />
     <Compile Include="UtilityScripts\Camera\SLerpTransitions.cs">
       <SubType>Code</SubType>
     </Compile>
