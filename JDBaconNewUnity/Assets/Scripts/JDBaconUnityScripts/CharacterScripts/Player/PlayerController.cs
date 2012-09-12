@@ -180,7 +180,6 @@ public class PlayerController : StateMachineSystem
 
     #endregion
 
-
     protected void InitializeWalkingSM()
     {
         ExitStateCondition ToIdleWalk = new ExitStateCondition(ToIdleWalkingCondition, IdleWalking);
@@ -242,13 +241,13 @@ public class PlayerController : StateMachineSystem
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
-    private int times = 0;
     public void Update()
     {
         if (!hasReleasedJump)
         {
             hasReleasedJump = Input.GetAxis("Jump") == 0;
         }
+
         RaycastHit info;
         if (Physics.Raycast(this.gameObject.collider.bounds.center, Vector3.down, out info, 0.4f))
         {
@@ -272,9 +271,6 @@ public class PlayerController : StateMachineSystem
     {
         switch (collision.gameObject.tag)
         {
-            case "LevelTerrain":
-                break;
-
             case "Enemy":
                 PlayerHealth PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
                 PlayerHealth.ChangeCurrentHealth(-3);
@@ -285,17 +281,4 @@ public class PlayerController : StateMachineSystem
                 break;
         }
     }
-
-    public void OnCollisionLeave(Collision collision)
-    {
-        Debug.Log("Collision Leave");
-        switch (collision.collider.tag)
-        {
-            case "LevelTerrain":
-                break;
-        }
-    }
-
-
-
 }
