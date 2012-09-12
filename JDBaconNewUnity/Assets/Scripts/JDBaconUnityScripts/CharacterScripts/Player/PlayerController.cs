@@ -142,6 +142,15 @@ public class PlayerController : StateMachineSystem
     {
         yield return 0;
     }
+    private IEnumerator JumpingUpAgainAction()
+    {
+        Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
+        Vector3 originalV = this.rigidbody.velocity;
+        this.rigidbody.velocity = new Vector3(originalV.x, 0, originalV.z);
+        this.rigidbody.AddForce(NewMotion, JumpingForceMode);
+        hasReleasedJump = false;
+        yield return new WaitForSeconds(WaitTimeForJump);
+    }
     #endregion
     #region Conditions
     private bool ToIdleJumpingCondition()
@@ -222,7 +231,7 @@ public class PlayerController : StateMachineSystem
         JumpingUp.AddExitCondition(ToIdleJump);
         JumpingUp.AddExitCondition(ToDoubleJumpingUp);
 
-        DoubleJumpingUp.Action = JumpingUpAction;
+        DoubleJumpingUp.Action = JumpingUpAgainAction;
         DoubleJumpingUp.Entering = JumpingUpEnterAction;
         DoubleJumpingUp.Exiting = JumpingUpExitAction;
         DoubleJumpingUp.RepeatActionCount = 1;
