@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 84661f27615054b49a29e29ca3a0365c
+guid: 05edb151c8dfd3f42a7ff38e3a1feb5b
 ModelImporter:
   fileIDToRecycleName:
     4300000: Street01
+    4300002: Street Layout Collision
   serializedVersion: 10
   materials:
     importMaterials: 1
