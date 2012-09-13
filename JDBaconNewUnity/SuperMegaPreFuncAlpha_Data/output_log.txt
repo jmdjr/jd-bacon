@@ -1,0 +1,136 @@
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.17.12.9573]
+    Renderer: NVIDIA GeForce GTX 550 Ti
+    Vendor:   NVIDIA
+    VRAM:     992 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 DF24=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+desktop: 1680x1050 60Hz; virtual: 3120x1050 at -1440,0
+<RI> Initializing input.
+<RI> Input initialized.
+Initialize engine version: 3.5.5f3
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\SmoothMoves_Runtime.dll (this message is harmless)
+Loading C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\SmoothMoves_Runtime.dll into Unity Child Domain
+- Completed reload, in  0.232 seconds
+Platform assembly: C:\Projects\JDBaconUnity\SuperMegaPreFuncAlpha_Data\Managed\System.dll (this message is harmless)
+To Next Room Trigger triggered!!!
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Level1StateManager:TriggerToNextRoom(GameObject) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:95)
+UnityEngine.GameObject:BroadcastMessage(String, Object, SendMessageOptions)
+UnityEngine.GameObject:BroadcastMessage(String, Object)
+ActivateTrigger:DoActivateTrigger() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\EnvironmentScripts\ActivateTrigger.cs:35)
+ActivateTrigger:OnTriggerEnter(Collider) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\EnvironmentScripts\ActivateTrigger.cs:61)
+ 
+(Filename: C Line: 0)
+
+To Next Room Condition Called!!!
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Level1StateManager:ToNextRoomCondition() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:104)
+State:RunTests() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:190)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:87)
+ 
+(Filename: C Line: 0)
+
+Request transition
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+<TransitionToNextRoomAction>c__Iterator18:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:60)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:111)
+ 
+(Filename: C Line: 0)
+
+Current Position: CameraPos_1
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+<MoveToNextCameraRigLocation>c__Iterator13:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\CameraController.cs:119)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+CameraController:RequestCameraMotion(String) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\CameraController.cs:170)
+<TransitionToNextRoomAction>c__Iterator18:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:61)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:111)
+ 
+(Filename: C Line: 0)
+
+To Next Room Trigger triggered!!!
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Level1StateManager:TriggerToNextRoom(GameObject) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:95)
+UnityEngine.GameObject:BroadcastMessage(String, Object, SendMessageOptions)
+UnityEngine.GameObject:BroadcastMessage(String, Object)
+ActivateTrigger:DoActivateTrigger() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\EnvironmentScripts\ActivateTrigger.cs:35)
+ActivateTrigger:OnTriggerEnter(Collider) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\EnvironmentScripts\ActivateTrigger.cs:61)
+ 
+(Filename: C Line: 0)
+
+To Next Room Condition Called!!!
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Level1StateManager:ToNextRoomCondition() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:104)
+State:RunTests() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:190)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:87)
+ 
+(Filename: C Line: 0)
+
+Request transition
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+<TransitionToNextRoomAction>c__Iterator18:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:60)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:111)
+ 
+(Filename: C Line: 0)
+
+Current Position: CameraPos_2
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+<MoveToNextCameraRigLocation>c__Iterator13:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\CameraController.cs:119)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+CameraController:RequestCameraMotion(String) (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\CameraController.cs:170)
+<TransitionToNextRoomAction>c__Iterator18:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\UtilityScripts\Camera\Level1StateManager.cs:61)
+UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+<Run>c__Iterator0:MoveNext() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:111)
+ 
+(Filename: C Line: 0)
+
+stopped one: Cardboard Cutout
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StateMachineSystem:OnDestroy() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:22)
+ 
+(Filename: C Line: 0)
+
+stopped one: Cardboard Cutout
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StateMachineSystem:OnDestroy() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:22)
+ 
+(Filename: C Line: 0)
+
+stopped one: __LevelMasterObject
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StateMachineSystem:OnDestroy() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:22)
+ 
+(Filename: C Line: 0)
+
+stopped one: CapsulePlayer
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StateMachineSystem:OnDestroy() (at C:\Projects\JDBacon\Assets\Scripts\JDBaconUnityScripts\StateManagement\StateMachineSystem.cs:22)
+ 
+(Filename: C Line: 0)
+

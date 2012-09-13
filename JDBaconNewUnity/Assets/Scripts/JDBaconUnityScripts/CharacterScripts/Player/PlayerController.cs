@@ -133,9 +133,9 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator JumpingUpAction()
     {
+        hasReleasedJump = false;
         Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
         this.rigidbody.AddForce(NewMotion, JumpingForceMode);
-        hasReleasedJump = false;
         yield return new WaitForSeconds(WaitTimeForJump);
     }
     private IEnumerator JumpingUpExitAction()
@@ -144,12 +144,12 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator JumpingUpAgainAction()
     {
+        hasReleasedJump = false;
         Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
         Vector3 originalV = this.rigidbody.velocity;
         this.rigidbody.velocity = new Vector3(originalV.x, 0, originalV.z);
         this.rigidbody.AddForce(NewMotion, JumpingForceMode);
-        hasReleasedJump = false;
-        yield return new WaitForSeconds(WaitTimeForJump);
+        yield return 0;
     }
     #endregion
     #region Conditions
