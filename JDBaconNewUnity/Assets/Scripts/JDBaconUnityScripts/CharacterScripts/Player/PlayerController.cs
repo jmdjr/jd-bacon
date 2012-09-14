@@ -60,7 +60,7 @@ public class PlayerController : StateMachineSystem
     #region Actions
     private IEnumerator IdleWalkingAction()
     {
-        if (!this.airborne && this.Animator.CurrentAnimationCompleted())
+        if (!this.airborne)
         {
             Animator.PlayAnimation(CharacterAnimationType.STAND);
         }
@@ -68,7 +68,7 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator WalkingLeftAction()
     {
-        if (this.Animator.CurrentAnimationType != CharacterAnimationType.WALK && !this.airborne)
+        if (!this.airborne)
         {
             Animator.PlayAnimation(CharacterAnimationType.WALK);
         }
@@ -84,7 +84,7 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator WalkingRightAction()
     {
-        if (this.Animator.CurrentAnimationType != CharacterAnimationType.WALK && !this.airborne)
+        if (!this.airborne)
         {
             Animator.PlayAnimation(CharacterAnimationType.WALK);
         }
@@ -171,10 +171,31 @@ public class PlayerController : StateMachineSystem
     #region Attacking
     
     #region States
-
+    State IdleCombatState = new State("No Combat");
+    State AttackingState = new State("Attacking");
+    State DamageState = new State("Taking Damage");
+    State SwitchingWeaponsState = new State("Switching between Weapons");
     #endregion
     
     #region Conditions
+    private bool ToSwitchingWeapons()
+    {
+        return true;
+    }
+    private bool ToIdleCombatState()
+    {
+        return true;
+    }
+    private bool ToAttackingState()
+    {
+        // You have pressed the button to attack.
+        return true;
+    }
+    private bool ToDamageState()
+    {
+        // You have been hit by an enemy.
+        return true;
+    }
     #endregion
 
     #region Entering Action
