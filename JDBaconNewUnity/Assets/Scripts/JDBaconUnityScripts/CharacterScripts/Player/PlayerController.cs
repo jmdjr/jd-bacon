@@ -13,7 +13,7 @@ public class PlayerController : StateMachineSystem
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
     public float JumpStrength = 3.0f;
     public float AntiGravityJumpFactor = -0.12f;
-    public float WaitTimeForJump = 0.25f;
+    public float WaitTimeForJump = 0.15f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
     private bool facingLeft = false;
@@ -21,6 +21,10 @@ public class PlayerController : StateMachineSystem
     private bool airborne = false;
     private bool hasReleasedJump = false;
     private CharacterAnimationHelper Animator = null;
+
+    private AnimationType currentStandard = AnimationType.S_STAND;
+    private AnimationType currentWeapon = AnimationType.W_NONE;
+    private AnimationType currentDirection = AnimationType.D_STRAIT;
     #endregion
 
     #region Walking
@@ -38,8 +42,6 @@ public class PlayerController : StateMachineSystem
             this.transform.Rotate(Vector3.up, 180.0f);
             facingLeft = true;
         }
-
-        Animator.PlayAnimation(CharacterAnimationType.WALK);
         yield return 0;
     }
     private IEnumerator StartWalkingRightAction()
@@ -49,7 +51,6 @@ public class PlayerController : StateMachineSystem
             this.transform.Rotate(Vector3.up, 180.0f);
             facingLeft = false;
         }
-        Animator.PlayAnimation(CharacterAnimationType.WALK);
         yield return 0;
     }
     private IEnumerator StartIdleWalkAction()
@@ -62,7 +63,7 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            Animator.PlayAnimation(CharacterAnimationType.STAND);
+            this.UpdateStandardAnimation(AnimationType.S_STAND);
         }
         yield return 0;
     }
@@ -70,31 +71,21 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            Animator.PlayAnimation(CharacterAnimationType.WALK);
+            this.UpdateStandardAnimation(AnimationType.S_WALK);
         }
 
-        Vector3 NewMotion = WalkingSpeed * Vector3.left;
-        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
-        float yComp = this.rigidbody.velocity.y;
-        Vector3 horizontalMotion = Vector3.Cross(this.rigidbody.velocity, Vector3.left) + Vector3.Cross(this.rigidbody.velocity, Vector3.right);
-        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
-
-        this.rigidbody.velocity = new Vector3(horizontalMotion.x, yComp, 0);
+        ApplyWalkingPhysics(Vector3.left);
         yield return 0;
     }
     private IEnumerator WalkingRightAction()
     {
         if (!this.airborne)
         {
-            Animator.PlayAnimation(CharacterAnimationType.WALK);
-        }
-        Vector3 NewMotion = WalkingSpeed * Vector3.right;
-        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
-        float yComp = this.rigidbody.velocity.y;
-        Vector3 horizontalMotion = Vector3.Cross(this.rigidbody.velocity, Vector3.left) + Vector3.Cross(this.rigidbody.velocity, Vector3.right);
-        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
+            this.UpdateStandardAnimation(AnimationType.S_WALK);
+        } 
+        
+        ApplyWalkingPhysics(Vector3.right);
 
-        this.rigidbody.velocity = new Vector3(horizontalMotion.x, yComp, 0);
         yield return 0;
     }
     #endregion
@@ -128,14 +119,13 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator JumpingUpEnterAction()
     {
-        Animator.PlayAnimation(CharacterAnimationType.JUMP);
+        this.UpdateStandardAnimation(AnimationType.S_JUMP);
         yield return 0;
     }
     private IEnumerator JumpingUpAction()
     {
         hasReleasedJump = false;
-        Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
-        this.rigidbody.AddForce(NewMotion, JumpingForceMode);
+        ApplyJumpingPhysics();
         yield return new WaitForSeconds(WaitTimeForJump);
     }
     private IEnumerator JumpingUpExitAction()
@@ -145,12 +135,10 @@ public class PlayerController : StateMachineSystem
     private IEnumerator JumpingUpAgainAction()
     {
         hasReleasedJump = false;
-        Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
-        Vector3 originalV = this.rigidbody.velocity;
-        this.rigidbody.velocity = new Vector3(originalV.x, 0, originalV.z);
-        this.rigidbody.AddForce(NewMotion, JumpingForceMode);
+        ApplyJumpingPhysics();
         yield return 0;
     }
+
     #endregion
     #region Conditions
     private bool ToIdleJumpingCondition()
@@ -271,6 +259,7 @@ public class PlayerController : StateMachineSystem
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
+
     public void Update()
     {
         if (!hasReleasedJump)
@@ -283,7 +272,7 @@ public class PlayerController : StateMachineSystem
         {
             if(this.airborne)
             {
-                Animator.PlayAnimation(CharacterAnimationType.STAND);
+                this.UpdateStandardAnimation(AnimationType.S_STAND);
                 this.airborne = false;
             }
         }
@@ -291,7 +280,7 @@ public class PlayerController : StateMachineSystem
         {
             if (!this.airborne)
             {
-                Animator.PlayAnimation(CharacterAnimationType.JUMP);
+                this.UpdateStandardAnimation(AnimationType.S_JUMP);
                 this.airborne = true;
             }
         }
@@ -311,4 +300,46 @@ public class PlayerController : StateMachineSystem
                 break;
         }
     }
+    
+    #region Helper Functions
+    private void UpdateWeaponAnimation(AnimationType weaponType)
+    {
+        this.currentWeapon = weaponType.TypeToWeapon();
+        this.UpdateAnimation();
+    }
+    private void UpdateStandardAnimation(AnimationType standardType)
+    {
+        this.currentStandard = standardType.TypeToStandard();
+        this.UpdateAnimation();
+    }
+    private void UpdateDirectionAnimation(AnimationType directionType)
+    {
+        this.currentDirection = directionType.TypeToDirection();
+        this.UpdateAnimation();
+    }
+
+    private void UpdateAnimation()
+    {
+        this.Animator.PlayAnimation(this.currentStandard | this.currentWeapon | this.currentDirection);
+    }
+    private void ApplyWalkingPhysics(Vector3 Direction)
+    {
+        Vector3 NewMotion = WalkingSpeed * Direction;
+
+        this.rigidbody.AddForce(NewMotion, WalkingForceMode);
+        
+        Vector3 myVelocity = this.rigidbody.velocity;
+        Vector3 horizontalMotion = Vector3.Cross(myVelocity, Vector3.left) + Vector3.Cross(myVelocity, Vector3.right);
+        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
+
+        this.rigidbody.velocity = new Vector3(horizontalMotion.x, myVelocity.y, 0);
+    }
+    private void ApplyJumpingPhysics()
+    {
+        Vector3 NewMotion = this.rigidbody.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
+        Vector3 originalV = this.rigidbody.velocity;
+        this.rigidbody.velocity = new Vector3(originalV.x, 0, 0);
+        this.rigidbody.AddForce(NewMotion, JumpingForceMode);
+    }
+    #endregion
 }
