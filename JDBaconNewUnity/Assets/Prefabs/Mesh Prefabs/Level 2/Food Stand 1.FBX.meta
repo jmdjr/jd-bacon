@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 475cd0be583e7a44fb4ebf2df8ed0da1
+guid: eb82b76b2945a394ca9f4a3473f931e3
 ModelImporter:
   fileIDToRecycleName:
     4300000: Box01
@@ -44,66 +44,14 @@ ModelImporter:
     //RootNode:
       data:
         first: 1
-        second: a4860100
-      data:
-        first: 4
-        second: 841a0600
-      data:
-        first: 111
-        second: 605fa900
-    Box01:
-      data:
-        first: 1
-        second: a8860100
-      data:
-        first: 4
-        second: 881a0600
-      data:
-        first: 23
-        second: 66182300
-      data:
-        first: 33
-        second: a65a3200
-    Box02:
-      data:
-        first: 1
-        second: a2860100
-      data:
-        first: 4
-        second: 821a0600
-      data:
-        first: 23
-        second: 62182300
-      data:
-        first: 33
-        second: a25a3200
-    Box03:
-      data:
-        first: 1
         second: a6860100
       data:
         first: 4
         second: 861a0600
       data:
-        first: 23
-        second: 64182300
-      data:
-        first: 33
-        second: a45a3200
-    Box04:
-      data:
-        first: 1
-        second: a0860100
-      data:
-        first: 4
-        second: 801a0600
-      data:
-        first: 23
-        second: 60182300
-      data:
-        first: 33
-        second: a05a3200
-    Box05:
+        first: 111
+        second: 605fa900
+    Box01:
       data:
         first: 1
         second: aa860100
@@ -116,3 +64,55 @@ ModelImporter:
       data:
         first: 33
         second: a85a3200
+    Box02:
+      data:
+        first: 1
+        second: a8860100
+      data:
+        first: 4
+        second: 881a0600
+      data:
+        first: 23
+        second: 66182300
+      data:
+        first: 33
+        second: a65a3200
+    Box03:
+      data:
+        first: 1
+        second: a0860100
+      data:
+        first: 4
+        second: 801a0600
+      data:
+        first: 23
+        second: 60182300
+      data:
+        first: 33
+        second: a05a3200
+    Box04:
+      data:
+        first: 1
+        second: a2860100
+      data:
+        first: 4
+        second: 821a0600
+      data:
+        first: 23
+        second: 62182300
+      data:
+        first: 33
+        second: a25a3200
+    Box05:
+      data:
+        first: 1
+        second: a4860100
+      data:
+        first: 4
+        second: 841a0600
+      data:
+        first: 23
+        second: 64182300
+      data:
+        first: 33
+        second: a45a3200

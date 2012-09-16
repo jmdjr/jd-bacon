@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 43ea522ea2fab634881054a444a4c81d
+guid: 38d65e24367e44c4791f9be1aa516b1e
 ModelImporter:
   fileIDToRecycleName:
     4300000: Right Door
@@ -42,20 +42,20 @@ ModelImporter:
     //RootNode:
       data:
         first: 1
-        second: a0860100
+        second: a2860100
       data:
         first: 4
-        second: 801a0600
+        second: 821a0600
       data:
         first: 111
         second: 605fa900
     Left Door:
       data:
         first: 1
-        second: a2860100
+        second: a0860100
       data:
         first: 4
-        second: 821a0600
+        second: 801a0600
       data:
         first: 23
         second: 60182300
