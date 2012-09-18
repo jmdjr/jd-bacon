@@ -7,16 +7,81 @@ using System.Collections.Generic;
 
 public class WeaponSystem
 {
-    public enum WeaponTypes
+    public interface IWeapon
     {
-        NONE,
-        SWORD,
-        SHOTGUN
+        string Name { get; set; }
+        AnimationType AnimationType { get; set; }
+        int DamageAmount { get; set; }
+        bool IsActive { get; set; }
+        int CooldownTime { get; set; }
     }
 
-    public enum AttackTypes
+    public class Sword : IWeapon
     {
-        IDLE,
-        ATTACK
+        private string name = "Sword";
+        private AnimationType animationType = AnimationType.W_SWORD;
+        private int damageAmount = 1;
+        private bool isActive = true;
+        private int cooldownTime = 0;
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+            }
+        }
+
+        public AnimationType AnimationType
+        {
+            get
+            {
+                return animationType;
+            }
+            set
+            {
+                animationType = value;
+            }
+        }
+
+        public int DamageAmount
+        {
+            get
+            {
+                return damageAmount;
+            }
+            set
+            {
+                damageAmount = value;
+            }
+        }
+
+        public bool IsActive
+        {
+            get
+            {
+                return isActive;
+            }
+            set
+            {
+                isActive = value;
+            }
+        }
+
+        public int CooldownTime
+        {
+            get
+            {
+                return cooldownTime;
+            }
+            set
+            {
+                cooldownTime = value;
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ public class PlayerController : StateMachineSystem
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
     public float JumpStrength = 3.0f;
     public float AntiGravityJumpFactor = -0.12f;
-    public float WaitTimeForJump = 0.15f;
+    public float WaitTimeForJump = 0.0f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
     private bool facingLeft = false;
@@ -177,7 +177,7 @@ public class PlayerController : StateMachineSystem
     private bool ToAttackingState()
     {
         // You have pressed the button to attack.
-        return true;
+        return Input.GetAxis("Fire1") > 0;
     }
     private bool ToDamageState()
     {
