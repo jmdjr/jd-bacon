@@ -259,7 +259,6 @@ public class PlayerController : StateMachineSystem
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
     }
-
     public void Update()
     {
         if (!hasReleasedJump)
@@ -285,7 +284,6 @@ public class PlayerController : StateMachineSystem
             }
         }
     }
-
     public void OnCollisionEnter(Collision collision)
     {
         switch (collision.gameObject.tag)
