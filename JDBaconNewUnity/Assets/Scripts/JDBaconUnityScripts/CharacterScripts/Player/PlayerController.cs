@@ -289,8 +289,8 @@ public class PlayerController : StateMachineSystem
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                PlayerHealth PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
-                PlayerHealth.ChangeCurrentHealth(-3);
+                Player PlayerHealth = this.gameObject.GetComponent<Player>();
+                PlayerHealth.ChangeCurrentHealth(-1);
                 if (!PlayerHealth.IsAlive())
                 {
                     PlayerHealth.Dead();

@@ -58,7 +58,7 @@ public class Level1StateManager : StateMachineSystem
     private IEnumerator TransitionToNextRoomAction()
     {
         Debug.Log("Request transition");
-        CameraControl.RequestCameraMotion();
+        CameraControl.RequestCameraMotion("");
         yield return 0;
     }
     private IEnumerator IntroRoomAction()
@@ -67,7 +67,7 @@ public class Level1StateManager : StateMachineSystem
     }
     private IEnumerator FourthRoomAction()
     {
-        CameraControl.RequestCameraMotion();
+        CameraControl.RequestCameraMotion("");
         CameraControl.TransitionFromRiggingToPlayerMode();
         yield return 0;
     }

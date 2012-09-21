@@ -27,8 +27,7 @@ public class Health : MonoBehaviour
 	/// </summary>
 	public void ChangeCurrentHealth(int variable)
 	{
-		currentHealth = currentHealth + variable > totalHealth 
-						? totalHealth : (currentHealth + variable);
+		currentHealth = Math.Min(currentHealth + variable, totalHealth);
 		if(currentHealth <= 0)
 			isAlive = false;
 	}

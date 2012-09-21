@@ -57,7 +57,6 @@
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
     <Compile Include="EnvironmentScripts\ZeroZoneScript.cs" />
     <Compile Include="InspectorScripts\BaconDebugProvider.cs" />
-    <Compile Include="InspectorScripts\Inspector_DrawPathBetweenChildren.cs" />
     <Compile Include="JDBaconMain.cs" />
     <Compile Include="StateManagement\StateMachineSystem.cs">
       <SubType>Code</SubType>

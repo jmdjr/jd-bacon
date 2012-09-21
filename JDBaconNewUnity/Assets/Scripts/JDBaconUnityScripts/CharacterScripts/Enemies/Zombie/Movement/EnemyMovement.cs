@@ -19,8 +19,8 @@ public class EnemyMovement : StateMachineSystem
     public Direction currentDirection = Direction.Left;
     public float WalkingSpeed = .5f;
     public float RunningSpeed = 1f;
-    public float perception = 1f;
-    public ForceMode WalkingForceMode = ForceMode.Force;
+    public float perception = 5f;
+    public ForceMode WalkingForceMode = ForceMode.VelocityChange;
     public GameObject player;
 
     #endregion
@@ -54,7 +54,7 @@ public class EnemyMovement : StateMachineSystem
     private IEnumerator AttackPlayerAction()
     {
         Vector3 NewMotion;
-        if (player.transform.position.x < this.gameObject.transform.position.x)
+        if (player.transform.position.x > this.gameObject.transform.position.x)
         {
             NewMotion = RunningSpeed * Vector3.right;
         }
@@ -176,7 +176,9 @@ public class EnemyMovement : StateMachineSystem
         IdleWaiting.AddExitCondition(ToAttackPlayer);
 
         AttackPlayer.Action = AttackPlayerAction;
-        //AttackPlayer.AddExitCondition(ToAttackPlayer);
+		AttackPlayer.RepeatActionCount = 0;
+		//Debug.Log(AttackPlayer.ExitConditionList);
+        AttackPlayer.AddExitCondition(ToAttackPlayer);
 
 
         WaitingSM = new StateMachine("Waiting", IdleWaiting);

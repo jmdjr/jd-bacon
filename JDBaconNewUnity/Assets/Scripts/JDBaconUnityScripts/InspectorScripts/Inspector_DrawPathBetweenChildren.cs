@@ -1,4 +1,0 @@
-﻿
-    class Inspector_DrawPathBetweenChildren
-    {
-    }
