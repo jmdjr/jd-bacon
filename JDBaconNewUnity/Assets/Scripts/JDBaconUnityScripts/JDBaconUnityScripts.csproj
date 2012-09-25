@@ -49,6 +49,8 @@
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
+    <Compile Include="Classes\JDIObject.cs" />
+    <Compile Include="Classes\JDIObjectTypes.cs" />
     <Compile Include="WeaponScripts\WeaponSystem.cs" />
     <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="CharacterScripts\Player\PlayerHealth.cs" />
