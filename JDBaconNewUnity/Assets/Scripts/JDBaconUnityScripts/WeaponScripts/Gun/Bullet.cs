@@ -6,25 +6,26 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 	
 	protected float mSpeed = 20.0f;
-	public float speed{get{return mSpeed;}}
+	public float Speed{get{return mSpeed;}}
 	
 	protected float mMaxSpeed = 25.0f;
-	public float maxSpeed{get{return maxSpeed;}}
+	public float MaxSpeed{get{return mMaxSpeed;}}
 	
 	protected Vector3 mMovementDirection;
-	public float movementDirection{get{return movementDirection;}}
+    public Vector3 MovementDirection { get { return mMovementDirection; } }
 	
 	protected float mAcceleration = 1.0f;
-	public float acceleration{get{return acceleration;}}
+	public float Acceleration{get{return mAcceleration;}}
 	
-	protected float mDamage = 10.0f;
-	public float damage{get{return damage;}}
+	protected int mDamage = 10;
+	public int Damage{get{return mDamage;}}
 	
 	protected float mLifeSpan = 10.0f;
-	public float lifeSpan{get{return lifeSpan;}}
+	public float LifeSpan{get{return mLifeSpan;}}
 	
-	// Knows what types of creature shot the projectile
-	protected Type mInstigatorType;
+	// Knows what types of creature shot the bullet
+	protected Type mCharacterType;
+    public Type CharacterType { get { return mCharacterType; } }
 	
 	
 	// Use this for initialization
@@ -32,8 +33,6 @@ public class Bullet : MonoBehaviour {
 		
 		// bullet moves forward
 		mMovementDirection = transform.forward;
-		
-		
 		gameObject.GetComponent<SphereCollider>().isTrigger = true;
 		
 		// Start mini thread to destroy object after period of time
@@ -63,10 +62,22 @@ public class Bullet : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
-	//Script used on collision
+    // Sets the character who fired the weapon
+    public void setCharacter(Character character){
+        mCharacterType = character.GetType();
+    }
+	
+    //Script used on collision
 	void OnTriggerEnter(Collider other){
-		
+        
+        // Instantiate a sprite for reference of the collision
+        Character sprite = other.gameObject.GetComponent<Character>();
+
+        if (sprite != null){
+            if (sprite.GetType() != mCharacterType){
+                sprite.TakeDamage(mDamage);
+            }
+        }
 	}
-	// Function to set who shot the item
-	//public void setInstigator();
+
 }

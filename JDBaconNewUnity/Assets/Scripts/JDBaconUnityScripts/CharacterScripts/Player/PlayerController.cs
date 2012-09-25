@@ -17,6 +17,7 @@ public class PlayerController : StateMachineSystem
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
     private bool facingLeft = false;
+    private Weapon mWeapon;
 
     private bool airborne = false;
     private bool hasReleasedJump = false;
@@ -107,11 +108,13 @@ public class PlayerController : StateMachineSystem
 
     #region Jumping
     private StateMachine JumpingSM;
+
     #region States
     private State IdleJumping = new State("Idle Jumping");
     private State JumpingUp = new State("Jumping into the Air");
     private State DoubleJumpingUp = new State("2nd Jumping into the Air");
     #endregion
+
     #region Actions
     private IEnumerator IdleJumpingAction()
     {
@@ -138,8 +141,8 @@ public class PlayerController : StateMachineSystem
         ApplyJumpingPhysics();
         yield return 0;
     }
-
     #endregion
+
     #region Conditions
     private bool ToIdleJumpingCondition()
     {
@@ -154,36 +157,68 @@ public class PlayerController : StateMachineSystem
         return hasReleasedJump && Input.GetAxis("Jump") > 0 && this.airborne && this.AllowDoubleJump;
     }
     #endregion
+
     #endregion
 
     #region Attacking
-    
+    private StateMachine AttackingSM;
+
     #region States
     State IdleCombatState = new State("No Combat");
     State AttackingState = new State("Attacking");
     State DamageState = new State("Taking Damage");
     State SwitchingWeaponsState = new State("Switching between Weapons");
     #endregion
-    
+
+    #region Actions
+    private IEnumerator SwitchingWeaponsAction()
+    {
+        if (!this.airborne)
+        {
+            this.UpdateStandardAnimation(AnimationType.S_STAND);
+        }
+        yield return 0;
+    }
+    private IEnumerator IdleCombatAction()
+    {
+        yield return 0;
+    }
+    private IEnumerator AttackingAction()
+    {
+        if (mWeapon != null)
+        {
+            mWeapon.Attack();
+        }
+        yield return 0;
+    }
+    private IEnumerator DamageAction()
+    {
+        yield return 0;
+    }
+    #endregion
+
     #region Conditions
-    private bool ToSwitchingWeapons()
+    private bool SwitchingWeaponsCondition()
+    {
+        // You have pressed the button to attack.
+        return Input.GetAxis("Fire2") > 0;
+    }
+    private bool IdleCombatCondition()
     {
         return true;
     }
-    private bool ToIdleCombatState()
-    {
-        return true;
-    }
-    private bool ToAttackingState()
+    private bool AttackingCondition()
     {
         // You have pressed the button to attack.
         return Input.GetAxis("Fire1") > 0;
     }
-    private bool ToDamageState()
+    private bool DamageCondition()
     {
         // You have been hit by an enemy.
         return true;
     }
+    #endregion
+
     #endregion
 
     #region Entering Action
@@ -193,10 +228,10 @@ public class PlayerController : StateMachineSystem
     #endregion
 
     #region Exit Action
-    
-    #endregion
 
     #endregion
+
+
 
     protected void InitializeWalkingSM()
     {
@@ -247,17 +282,42 @@ public class PlayerController : StateMachineSystem
         DoubleJumpingUp.AddExitCondition(ToIdleJump);
     }
 
+    protected void InitializeAttackingSM()
+    {
+        ExitStateCondition ToSwitchingWeapons = new ExitStateCondition(SwitchingWeaponsCondition, SwitchingWeaponsState);
+        ExitStateCondition ToIdleCombatState = new ExitStateCondition(IdleCombatCondition, IdleCombatState);
+        ExitStateCondition ToAttackingState = new ExitStateCondition(AttackingCondition, AttackingState);
+
+        SwitchingWeaponsState.Action = SwitchingWeaponsAction;
+        SwitchingWeaponsState.AddExitCondition(ToIdleCombatState);
+        SwitchingWeaponsState.AddExitCondition(ToAttackingState);
+
+        IdleCombatState.Action = IdleCombatAction;
+        IdleCombatState.AddExitCondition(ToSwitchingWeapons);
+        IdleCombatState.AddExitCondition(ToAttackingState);
+
+        AttackingState.Action = AttackingAction;
+        AttackingState.AddExitCondition(ToIdleCombatState);
+        AttackingState.AddExitCondition(ToAttackingState);
+
+
+        AttackingSM = new StateMachine("Attacking", IdleCombatState);
+    }
+
     protected override void InitializeStateManager()
     {
         base.InitializeStateManager();
         this.Animator = new CharacterAnimationHelper(this.BoneAnimation);
         this.renderer.enabled = false;
+        mWeapon = new MachineGun();
 
         InitializeWalkingSM();
         InitializeJumpingSM();
+        InitializeAttackingSM();
 
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
+        this.MachineList.Add(AttackingSM);
     }
     public void Update()
     {
