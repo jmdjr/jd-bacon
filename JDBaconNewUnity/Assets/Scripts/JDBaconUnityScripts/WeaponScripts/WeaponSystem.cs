@@ -10,7 +10,7 @@ public class WeaponSystem
     public interface IWeapon
     {
         string Name { get; set; }
-        AnimationType AnimationType { get; set; }
+        HeroAnimationType AnimationType { get; set; }
         int DamageAmount { get; set; }
         bool IsActive { get; set; }
         int CooldownTime { get; set; }
@@ -19,7 +19,7 @@ public class WeaponSystem
     public class Sword : IWeapon
     {
         private string name = "Sword";
-        private AnimationType animationType = AnimationType.W_SWORD;
+        private HeroAnimationType animationType = HeroAnimationType.W_SWORD;
         private int damageAmount = 1;
         private bool isActive = true;
         private int cooldownTime = 0;
@@ -36,7 +36,7 @@ public class WeaponSystem
             }
         }
 
-        public AnimationType AnimationType
+        public HeroAnimationType AnimationType
         {
             get
             {

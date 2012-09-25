@@ -17,15 +17,15 @@ public class PlayerController : StateMachineSystem
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
     private bool facingLeft = false;
-    private Weapon mWeapon;
+    //private Weapon mWeapon;
 
     private bool airborne = false;
     private bool hasReleasedJump = false;
     private CharacterAnimationHelper Animator = null;
 
-    private AnimationType currentStandard = AnimationType.S_STAND;
-    private AnimationType currentWeapon = AnimationType.W_NONE;
-    private AnimationType currentDirection = AnimationType.D_STRAIT;
+    private HeroAnimationType currentStandard = HeroAnimationType.S_STAND;
+    private HeroAnimationType currentWeapon = HeroAnimationType.W_NONE;
+    private HeroAnimationType currentDirection = HeroAnimationType.D_STRAIT;
     #endregion
 
     #region Walking
@@ -64,7 +64,7 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            this.UpdateStandardAnimation(AnimationType.S_STAND);
+            this.UpdateStandardAnimation(HeroAnimationType.S_STAND);
         }
         yield return 0;
     }
@@ -72,7 +72,7 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            this.UpdateStandardAnimation(AnimationType.S_WALK);
+            this.UpdateStandardAnimation(HeroAnimationType.S_WALK);
         }
 
         ApplyWalkingPhysics(Vector3.left);
@@ -82,7 +82,7 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            this.UpdateStandardAnimation(AnimationType.S_WALK);
+            this.UpdateStandardAnimation(HeroAnimationType.S_WALK);
         } 
         
         ApplyWalkingPhysics(Vector3.right);
@@ -122,7 +122,7 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator JumpingUpEnterAction()
     {
-        this.UpdateStandardAnimation(AnimationType.S_JUMP);
+        this.UpdateStandardAnimation(HeroAnimationType.S_JUMP);
         yield return 0;
     }
     private IEnumerator JumpingUpAction()
@@ -175,7 +175,7 @@ public class PlayerController : StateMachineSystem
     {
         if (!this.airborne)
         {
-            this.UpdateStandardAnimation(AnimationType.S_STAND);
+            this.UpdateStandardAnimation(HeroAnimationType.S_STAND);
         }
         yield return 0;
     }
@@ -185,10 +185,10 @@ public class PlayerController : StateMachineSystem
     }
     private IEnumerator AttackingAction()
     {
-        if (mWeapon != null)
-        {
-            mWeapon.Attack();
-        }
+        //if (mWeapon != null)
+        //{
+        //    mWeapon.Attack();
+        //}
         yield return 0;
     }
     private IEnumerator DamageAction()
@@ -309,7 +309,7 @@ public class PlayerController : StateMachineSystem
         base.InitializeStateManager();
         this.Animator = new CharacterAnimationHelper(this.BoneAnimation);
         this.renderer.enabled = false;
-        mWeapon = new MachineGun();
+        //mWeapon = new MachineGun();
 
         InitializeWalkingSM();
         InitializeJumpingSM();
@@ -331,7 +331,7 @@ public class PlayerController : StateMachineSystem
         {
             if(this.airborne)
             {
-                this.UpdateStandardAnimation(AnimationType.S_STAND);
+                this.UpdateStandardAnimation(HeroAnimationType.S_STAND);
                 this.airborne = false;
             }
         }
@@ -339,7 +339,7 @@ public class PlayerController : StateMachineSystem
         {
             if (!this.airborne)
             {
-                this.UpdateStandardAnimation(AnimationType.S_JUMP);
+                this.UpdateStandardAnimation(HeroAnimationType.S_JUMP);
                 this.airborne = true;
             }
         }
@@ -349,28 +349,28 @@ public class PlayerController : StateMachineSystem
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                Player PlayerHealth = this.gameObject.GetComponent<Player>();
-                PlayerHealth.ChangeCurrentHealth(-1);
-                if (!PlayerHealth.IsAlive())
-                {
-                    PlayerHealth.Dead();
-                }
+                //Player PlayerHealth = this.gameObject.GetComponent<Player>();
+                //PlayerHealth.ChangeCurrentHealth(-1);
+                //if (!PlayerHealth.IsAlive())
+                //{
+                //    PlayerHealth.Dead();
+                //}
                 break;
         }
     }
     
     #region Helper Functions
-    private void UpdateWeaponAnimation(AnimationType weaponType)
+    private void UpdateWeaponAnimation(HeroAnimationType weaponType)
     {
         this.currentWeapon = weaponType.TypeToWeapon();
         this.UpdateAnimation();
     }
-    private void UpdateStandardAnimation(AnimationType standardType)
+    private void UpdateStandardAnimation(HeroAnimationType standardType)
     {
         this.currentStandard = standardType.TypeToStandard();
         this.UpdateAnimation();
     }
-    private void UpdateDirectionAnimation(AnimationType directionType)
+    private void UpdateDirectionAnimation(HeroAnimationType directionType)
     {
         this.currentDirection = directionType.TypeToDirection();
         this.UpdateAnimation();

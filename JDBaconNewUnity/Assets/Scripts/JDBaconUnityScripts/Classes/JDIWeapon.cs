@@ -8,9 +8,6 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDIObject
+public interface JDIWeapon : JDIObject, JDIAmCollidable
 {
-    string Name { get; set; }
-    JDIObjectTypes JDType { get; }
-    bool ReportStatistics(JDIStatTypes stat, int valueShift);
 }

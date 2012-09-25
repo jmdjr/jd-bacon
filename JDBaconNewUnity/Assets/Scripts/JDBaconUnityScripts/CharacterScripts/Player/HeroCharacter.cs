@@ -8,9 +8,7 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDIObject
+public class HeroCharacter : JDCharacter
 {
-    string Name { get; set; }
-    JDIObjectTypes JDType { get; }
-    bool ReportStatistics(JDIStatTypes stat, int valueShift);
 }
+

@@ -8,9 +8,9 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDIObject
+public interface JDIAmCollidable
 {
-    string Name { get; set; }
-    JDIObjectTypes JDType { get; }
-    bool ReportStatistics(JDIStatTypes stat, int valueShift);
+    void OnCollisionEnter(Collision other);
+    void OnCollisionStay(Collision other);
+    void OnCollisionExit(Collision other);
 }
