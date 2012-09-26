@@ -7,44 +7,54 @@ using UnityEngine;
 
 public class JDHeroAnimator : JDIAnimator
 {
-    private HeroAnimationType CurrentAnimation;
+    private HeroAnimationType currentAnimation;
 
-    public Enum AnimationType
+    private Enum AnimationType
     {
         get
         {
-            return this.CurrentAnimation;
+            return this.currentAnimation;
         }
         set
         {
-            this.CurrentAnimation = (HeroAnimationType)value;
+            this.currentAnimation = (HeroAnimationType)value;
         }
     }
 
-    public BoneAnimation Bone
+    public HeroAnimationType CurrentStandardAnimation { get { return ((HeroAnimationType)AnimationType).TypeToStandard(); } }
+    public HeroAnimationType CurrentWeaponAnimation { get { return ((HeroAnimationType)AnimationType).TypeToWeapon(); } }
+    public HeroAnimationType CurrentDirectionalAnimation { get { return ((HeroAnimationType)AnimationType).TypeToDirection(); } }
+
+    public void UpdateCurrentStandard(HeroAnimationType standard)
     {
-        get
+    }
+    public JDHeroAnimator(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
+    {
+        if (bone == null)
         {
-            throw new NotImplementedException();
+            throw new Exception("Bone Cannot be null");
         }
-        set
-        {
-            throw new NotImplementedException();
-        }
+
+        this.Bone = bone;
+        this.currentAnimation = initialAnimation;
+        this.PlayCurrentAnimation();
     }
 
-    public void PlayAnimation(Enum type)
-    {
-        throw new NotImplementedException();
-    }
+    public BoneAnimation Bone { get; set; }
 
     public void PlayCurrentAnimation()
     {
-        throw new NotImplementedException();
+        Debug.Log(this.currentAnimation.TypeToStandardString());
+        Bone.Play(this.currentAnimation.TypeToStandardString(), PlayMode.StopSameLayer);
+
+        if (this.CurrentWeaponAnimation != HeroAnimationType.W_NONE)
+        {
+            Bone.Play(this.currentAnimation.TypeToWeaponString(), PlayMode.StopSameLayer);
+        }
     }
 
     public bool IsCurrentAnimationComplete()
     {
-        throw new NotImplementedException();
+        return !Bone.isPlaying;
     }
 }

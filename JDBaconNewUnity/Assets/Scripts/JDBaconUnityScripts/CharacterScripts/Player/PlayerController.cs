@@ -17,7 +17,6 @@ public class PlayerController : StateMachineSystem
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
     private bool facingLeft = false;
-    //private Weapon mWeapon;
 
     private bool airborne = false;
     private bool hasReleasedJump = false;
