@@ -8,9 +8,12 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public class JDCharacter : MonoBehaviour, JDICharacter
+[Serializable]
+public class JDCharacter : JDICharacter
 {
     #region Variables
+    [SerializeField]
+    private String _name;
     #endregion
 
     #region Properties
@@ -81,19 +84,6 @@ public class JDCharacter : MonoBehaviour, JDICharacter
     }
 
     public Event WasHitWithWeapon(JDICharacter other, JDIWeapon weapon)
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual void OnCollisionEnter(Collision other)
-    {
-        throw new NotImplementedException();
-    }
-    public virtual void OnCollisionStay(Collision other)
-    {
-        throw new NotImplementedException();
-    }
-    public virtual void OnCollisionExit(Collision other)
     {
         throw new NotImplementedException();
     }

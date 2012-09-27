@@ -5,6 +5,15 @@
     WEAPON,
     COLLECTABLE
 }
+public enum TagTypes
+{
+    UNTAGGED,
+    PLAYER,
+    ENEMY,
+    EVENTTRIGGER,
+    LEVELTERRAIN,
+    COLLECTABLE
+}
 
 public enum JDIStatTypes
 {

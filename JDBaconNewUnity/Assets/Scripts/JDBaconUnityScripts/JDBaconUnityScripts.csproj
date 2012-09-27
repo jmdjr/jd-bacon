@@ -46,10 +46,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterScripts\Character.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
     <Compile Include="CharacterScripts\Player\HeroCharacter.cs" />
+    <Compile Include="CharacterScripts\Player\JDPlayerController.cs" />
+    <Compile Include="CharacterScripts\Player\Player.cs" />
     <Compile Include="Classes\JDCharacter.cs" />
     <Compile Include="Classes\JDCharacterAnimator.cs" />
     <Compile Include="Classes\JDEnumerationExtension.cs" />
@@ -57,9 +60,16 @@
     <Compile Include="Classes\JDIAnimator.cs" />
     <Compile Include="Classes\JDICharacter.cs" />
     <Compile Include="Classes\JDICollectable.cs" />
+    <Compile Include="Classes\JDIHaveScriptHandles.cs" />
     <Compile Include="Classes\JDIObject.cs" />
     <Compile Include="Classes\JDEnumerations.cs" />
     <Compile Include="Classes\JDIWeapon.cs" />
+    <Compile Include="StateManagement\JDStateMachineSystem.cs" />
+    <Compile Include="WeaponScripts\Contact\Sword.cs" />
+    <Compile Include="WeaponScripts\Gun\Bullet.cs" />
+    <Compile Include="WeaponScripts\Gun\MachineGun.cs" />
+    <Compile Include="WeaponScripts\Gun\Shotgun.cs" />
+    <Compile Include="WeaponScripts\Weapon.cs" />
     <Compile Include="WeaponScripts\WeaponSystem.cs" />
     <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
@@ -93,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CharacterScripts\Enemies\Cardboard Cutout\" />
+    <Folder Include="CharacterScripts\NPC\" />
     <Folder Include="CollectableScripts\" />
   </ItemGroup>
   <ItemGroup>

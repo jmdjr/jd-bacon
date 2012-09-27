@@ -8,7 +8,7 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDICharacter : JDIObject, JDIAmCollidable
+public interface JDICharacter : JDIObject
 {
     JDIAnimator Animator {get;set;}     // Animator related to this Character
     int MaxHitPoints { get; set; }      // Max amount of HP if fully recovered
