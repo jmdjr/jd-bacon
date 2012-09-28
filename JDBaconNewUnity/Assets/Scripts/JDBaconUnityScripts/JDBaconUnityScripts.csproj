@@ -49,8 +49,11 @@
     <Compile Include="CharacterScripts\Character.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
+    <Compile Include="CharacterScripts\Player\HeroAnimationProperties.cs" />
     <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
+    <Compile Include="CharacterScripts\Player\HeroAnimator.cs" />
     <Compile Include="CharacterScripts\Player\HeroCharacter.cs" />
+    <Compile Include="CharacterScripts\Player\HeroPhysicsProperties.cs" />
     <Compile Include="CharacterScripts\Player\HeroSMS.cs" />
     <Compile Include="CharacterScripts\Player\JDPlayerController.cs" />
     <Compile Include="CharacterScripts\Player\Player.cs" />
@@ -62,9 +65,12 @@
     <Compile Include="Classes\JDICharacter.cs" />
     <Compile Include="Classes\JDICollectable.cs" />
     <Compile Include="Classes\JDIHaveScriptHandles.cs" />
+    <Compile Include="Classes\JDMeleeWeapon.cs" />
     <Compile Include="Classes\JDIObject.cs" />
     <Compile Include="Classes\JDEnumerations.cs" />
     <Compile Include="Classes\JDIWeapon.cs" />
+    <Compile Include="Classes\JDMonoBehavior.cs" />
+    <Compile Include="Classes\JDMonoBodyBehavior.cs" />
     <Compile Include="StateManagement\JDStateMachineSystem.cs" />
     <Compile Include="StatisticsManagement\MainGameplayHUD.cs" />
     <Compile Include="WeaponScripts\Contact\Sword.cs" />

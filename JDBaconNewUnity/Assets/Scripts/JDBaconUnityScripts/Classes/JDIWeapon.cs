@@ -8,6 +8,9 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDIWeapon : JDIObject, JDIAmCollidable
+public interface JDIWeapon : JDIObject
 {
+    int DamageAmount { get; set; }
+    bool IsActive { get; set; }
+    int CooldownTime { get; set; }
 }

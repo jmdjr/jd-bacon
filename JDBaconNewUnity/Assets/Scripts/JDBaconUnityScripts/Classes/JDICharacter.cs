@@ -10,7 +10,6 @@ using Object = UnityEngine.Object;
 
 public interface JDICharacter : JDIObject
 {
-    JDIAnimator Animator {get;set;}     // Animator related to this Character
     int MaxHitPoints { get; set; }      // Max amount of HP if fully recovered
     int HitPoints { get; set; }         // Current anount of HP
     int CollisionDamage { get; set; }   // Amount of damage a body check would generate

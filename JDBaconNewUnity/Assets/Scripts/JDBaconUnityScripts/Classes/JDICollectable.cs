@@ -8,6 +8,6 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
-public interface JDICollectable : JDIObject, JDIAmCollidable
+public interface JDICollectable : JDIObject
 {
 }

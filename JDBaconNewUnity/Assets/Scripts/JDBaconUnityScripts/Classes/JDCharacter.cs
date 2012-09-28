@@ -20,8 +20,6 @@ public class JDCharacter : JDICharacter
     private int hitPoints;
     [SerializeField]
     private int collisionDamage;
-    [SerializeField]
-    private JDIAnimator animator;
     #endregion
 
     #region Properties
@@ -30,7 +28,6 @@ public class JDCharacter : JDICharacter
     public int MaxHitPoints { get { return this.maxHitPoints; } set { this.maxHitPoints = value; } }
     public int HitPoints { get { return this.hitPoints; } set { this.hitPoints = value; } }
     public int CollisionDamage { get { return this.collisionDamage; } set { this.collisionDamage = value; } }
-    public JDIAnimator Animator { get { return this.animator; } set { this.animator = value; } }
     #endregion
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)

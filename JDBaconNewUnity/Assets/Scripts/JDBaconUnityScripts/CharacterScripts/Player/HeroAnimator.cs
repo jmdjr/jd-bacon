@@ -15,7 +15,7 @@ using UnityEngine;
 //  scaled appropriately.
 
 [Serializable]
-public class CharacterAnimationHelper : JDIAnimator
+public class HeroAnimator : JDIAnimator
 {
     [SerializeField]
     private BoneAnimation bone;
@@ -38,7 +38,7 @@ public class CharacterAnimationHelper : JDIAnimator
     public HeroAnimationType CurrentWeaponAnimation { get { return CurrentAnimation.TypeToWeapon(); } }
     public HeroAnimationType CurrentDirectionalAnimation { get { return CurrentAnimation.TypeToDirection(); } }
 
-    public CharacterAnimationHelper(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
+    public HeroAnimator(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
     {
         if (bone == null)
         {

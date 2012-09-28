@@ -17,8 +17,26 @@ public class MonoScriptEventArgs
     }
 }
 
-
-public class CollisionEventArgs
+public delegate void MonoBodyScriptEventHanlder(CollisionEventArgs eventArgs);
+public class CollisionEventArgs : MonoScriptEventArgs
 {
+    private Collision other;
+    public Collision Other { get { return this.other; } }
+
+    public CollisionEventArgs(MonoBehaviour scriptReference, Collision other)
+    : base(scriptReference)
+    {
+        this.other = other;
+    }
+}
+
+public class JDCollisionObject
+{
+
+    JDIObjectTypes ObjectType;
+    TagTypes ObjectTagType;
+    JDIObject ScriptObject;
+
+    public JDCollisionObject(Collision other) { }
 
 }

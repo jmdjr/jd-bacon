@@ -16,33 +16,50 @@ public class JDStateMachineSystem : JDIObject
 {
     // If all stateMachines are in a dead state, then this is true.
     public bool IsDead { get { return this.MachineList.TrueForAll(m => !m.IsAlive); } }
-    public MonoBehaviour ScriptReference;
+
+    public JDMonoBehavior ScriptReference;
+
+    public JDStateMachineSystem(JDMonoBehavior scriptReference)
+    {
+        this.ScriptReference = scriptReference;
+
+        scriptReference.ScriptAwake += new MonoScriptEventHandler(ScriptReference_ScriptAwake);
+        scriptReference.ScriptDestroy += new MonoScriptEventHandler(ScriptReference_ScriptDestroy);
+    }
+
+    void ScriptReference_ScriptDestroy(MonoScriptEventArgs eventArgs)
+    {
+        this.Destroy();
+    }
+
+    private void ScriptReference_ScriptAwake(MonoScriptEventArgs eventArgs)
+    {
+        this.Initialize();
+    }
 
     public void Destroy()
     {
-        Debug.Log("stopped one: " + this.Name);
+        //Debug.Log("stopped one: " + this.Name);
         ScriptReference.StopCoroutine("Run");
     }
 
     protected List<StateMachine> MachineList = new List<StateMachine>();
 
-    // Override in child class and load MachineList with machines.
-    // The State Machine System will take care of running the machines
-    //  and switching the states.
-    protected virtual void InitializeStateManager() { }
-
-    public void Initialize(MonoBehaviour scriptReference)
+    public void Initialize()
     {
-        this.ScriptReference = scriptReference;
-
         InitializeStateManager();
 
         foreach (StateMachine machine in MachineList)
         {
-            machine.CoroutineDelegate = scriptReference.StartCoroutine;
+            machine.CoroutineDelegate = this.ScriptReference.StartCoroutine;
             machine.Start();
         }
     }
+
+    // Override in child class and load MachineList with machines.
+    // The State Machine System will take care of running the machines
+    //  and switching the states.
+    protected virtual void InitializeStateManager() { }
 
     public void Pause()
     {
