@@ -6,7 +6,8 @@ using SmoothMoves;
 
 public class JDPlayerController : MonoBehaviour, JDIHaveScriptHandles, JDIAmCollidable
 {
-    public JDCharacter CharacterProperties = new JDCharacter();
+    public HeroCharacter CharacterProperties = new HeroCharacter();
+
     public event MonoScriptEventHandler ScriptAwake;
     public event MonoScriptEventHandler ScriptUpdate;
     public event MonoScriptEventHandler ScriptDestroy;

@@ -8,6 +8,7 @@ using SmoothMoves;
 
 using Object = UnityEngine.Object;
 
+[Serializable]
 public class HeroCharacter : JDCharacter
 {
 }

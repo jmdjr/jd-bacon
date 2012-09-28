@@ -15,7 +15,7 @@ public interface JDICharacter : JDIObject
     int HitPoints { get; set; }         // Current anount of HP
     int CollisionDamage { get; set; }   // Amount of damage a body check would generate
 
-    void TakeDamage(int damage);        // Function for inflicting damage to Character
+    void UpdateHealth(int amount);      // Function for altering the amount of health of the Character
     int InflictingDamage();             // Calculates amount of damage to inflict
 
     Event WasHitWithWeapon(JDICharacter other, JDIWeapon weapon);

@@ -230,8 +230,6 @@ public class PlayerController : StateMachineSystem
 
     #endregion
 
-
-
     protected void InitializeWalkingSM()
     {
         ExitStateCondition ToIdleWalk = new ExitStateCondition(ToIdleWalkingCondition, IdleWalking);

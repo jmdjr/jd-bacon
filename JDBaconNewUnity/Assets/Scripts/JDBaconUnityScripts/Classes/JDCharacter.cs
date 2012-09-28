@@ -13,60 +13,24 @@ public class JDCharacter : JDICharacter
 {
     #region Variables
     [SerializeField]
-    private String _name;
+    private String name;
+    [SerializeField]
+    private int maxHitPoints;
+    [SerializeField]
+    private int hitPoints;
+    [SerializeField]
+    private int collisionDamage;
+    [SerializeField]
+    private JDIAnimator animator;
     #endregion
 
     #region Properties
-    public string Name { get; set; }
-    public JDIObjectTypes JDType
-    {
-        get { return JDIObjectTypes.CHARACTER; }
-    }
-
-    public JDIAnimator Animator
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public int MaxHitPoints
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public int HitPoints
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public int CollisionDamage
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public JDIObjectTypes JDType { get { return JDIObjectTypes.CHARACTER; } }
+    public string Name { get { return this.name; } set { this.name = value; } }
+    public int MaxHitPoints { get { return this.maxHitPoints; } set { this.maxHitPoints = value; } }
+    public int HitPoints { get { return this.hitPoints; } set { this.hitPoints = value; } }
+    public int CollisionDamage { get { return this.collisionDamage; } set { this.collisionDamage = value; } }
+    public JDIAnimator Animator { get { return this.animator; } set { this.animator = value; } }
     #endregion
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
@@ -74,14 +38,11 @@ public class JDCharacter : JDICharacter
         throw new NotImplementedException();
     }
 
-    public void TakeDamage(int damage)
+    public void UpdateHealth(int amount)
     {
-        throw new NotImplementedException();
+        this.HitPoints += amount;
     }
-    public int InflictingDamage()
-    {
-        throw new NotImplementedException();
-    }
+    public virtual int InflictingDamage() { return this.CollisionDamage; }
 
     public Event WasHitWithWeapon(JDICharacter other, JDIWeapon weapon)
     {
