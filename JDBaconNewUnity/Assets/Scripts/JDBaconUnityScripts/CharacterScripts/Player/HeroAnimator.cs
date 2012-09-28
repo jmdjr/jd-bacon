@@ -58,7 +58,6 @@ public class HeroAnimator : JDIAnimator
 
     public void PlayCurrentAnimation()
     {
-        Debug.Log(this.CurrentAnimation.TypeToStandardString());
         Bone.Play(this.CurrentAnimation.TypeToStandardString(), PlayMode.StopSameLayer);
 
         if (this.CurrentWeaponAnimation != HeroAnimationType.W_NONE)

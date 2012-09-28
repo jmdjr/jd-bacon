@@ -40,9 +40,4 @@ public class JDCharacter : JDICharacter
         this.HitPoints += amount;
     }
     public virtual int InflictingDamage() { return this.CollisionDamage; }
-
-    public Event WasHitWithWeapon(JDICharacter other, JDIWeapon weapon)
-    {
-        throw new NotImplementedException();
-    }
 }

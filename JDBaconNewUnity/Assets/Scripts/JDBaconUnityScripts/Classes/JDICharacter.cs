@@ -16,6 +16,4 @@ public interface JDICharacter : JDIObject
 
     void UpdateHealth(int amount);      // Function for altering the amount of health of the Character
     int InflictingDamage();             // Calculates amount of damage to inflict
-
-    Event WasHitWithWeapon(JDICharacter other, JDIWeapon weapon);
 }

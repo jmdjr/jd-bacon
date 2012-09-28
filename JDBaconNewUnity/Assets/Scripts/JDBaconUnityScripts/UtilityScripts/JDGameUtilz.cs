@@ -111,4 +111,12 @@ public static class JDGameUtilz
 
         return xs.Deserialize(memoryStream);
     }
+
+    public static JDMonoBehavior GetJDMonoBehavior(GameObject obj)
+    {
+        return obj.GetComponent<JDMonoBehavior>();
+    }
+
+    //public JDIObject GetJDObjectFromScript
+
 }

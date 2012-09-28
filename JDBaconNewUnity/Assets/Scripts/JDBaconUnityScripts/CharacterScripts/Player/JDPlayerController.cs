@@ -4,7 +4,7 @@ using System.Collections;
 using SmoothMoves;
 
 [RequireComponent(typeof(Rigidbody))]
-public class JDPlayerController : JDMonoBehavior
+public class JDPlayerController : JDMonoBodyBehavior
 {
     public HeroCharacter CharacterProperties = new HeroCharacter();
     public HeroPhysicsProperties PhysicsProperties = new HeroPhysicsProperties();
@@ -19,5 +19,10 @@ public class JDPlayerController : JDMonoBehavior
         HeroMachineSystem = new HeroSMS(this, this.CharacterProperties, this.PhysicsProperties, animateProperties);
 
         base.Awake();
+    }
+
+    public override void OnCollisionEnter(Collision other)
+    {
+        base.OnCollisionEnter(other);
     }
 }

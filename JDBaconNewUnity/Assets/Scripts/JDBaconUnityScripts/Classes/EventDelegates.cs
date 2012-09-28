@@ -8,10 +8,10 @@ using System.Collections.Generic;
 public delegate void MonoScriptEventHandler(MonoScriptEventArgs eventArgs);
 public class MonoScriptEventArgs
 {
-    private MonoBehaviour script;
-    public MonoBehaviour Script { get { return script; } }
+    private JDMonoBehavior script;
+    public JDMonoBehavior Script { get { return script; } }
 
-    public MonoScriptEventArgs(MonoBehaviour scriptReference)
+    public MonoScriptEventArgs(JDMonoBehavior scriptReference)
     {
         this.script = scriptReference;
     }
@@ -23,7 +23,7 @@ public class CollisionEventArgs : MonoScriptEventArgs
     private Collision other;
     public Collision Other { get { return this.other; } }
 
-    public CollisionEventArgs(MonoBehaviour scriptReference, Collision other)
+    public CollisionEventArgs(JDMonoBehavior scriptReference, Collision other)
     : base(scriptReference)
     {
         this.other = other;
@@ -32,7 +32,6 @@ public class CollisionEventArgs : MonoScriptEventArgs
 
 public class JDCollisionObject
 {
-
     JDIObjectTypes ObjectType;
     TagTypes ObjectTagType;
     JDIObject ScriptObject;
