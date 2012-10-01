@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using SmoothMoves;
+using System.Collections.Generic;
 
 public class JDMonoBehavior : MonoBehaviour, JDIHaveScriptHandles
 {
@@ -12,6 +13,8 @@ public class JDMonoBehavior : MonoBehaviour, JDIHaveScriptHandles
     public Rigidbody Body { get { return this.rigidbody; } }
     public Collider Collider { get { return this.rigidbody.collider; } }
     public Vector3 ColliderCenter { get { return this.Collider.bounds.center; } }
+
+    public List<JDIObject> JDCollection = new List<JDIObject>();
 
     public virtual void Awake()
     {

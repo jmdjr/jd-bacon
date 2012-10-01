@@ -25,10 +25,8 @@ public class JDHeroAnimator : JDIAnimator
     public HeroAnimationType CurrentWeaponAnimation { get { return ((HeroAnimationType)AnimationType).TypeToWeapon(); } }
     public HeroAnimationType CurrentDirectionalAnimation { get { return ((HeroAnimationType)AnimationType).TypeToDirection(); } }
 
-    public void UpdateCurrentStandard(HeroAnimationType standard)
-    {
-    }
-    public JDHeroAnimator(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
+
+    public JDHeroAnimator(BoneAnimation bone = null, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
     {
         if (bone == null)
         {
@@ -56,5 +54,11 @@ public class JDHeroAnimator : JDIAnimator
     public bool IsCurrentAnimationComplete()
     {
         return !Bone.isPlaying;
+    }
+
+    public void PlayAnimation(HeroAnimationType heroAnimationType)
+    {
+        this.AnimationType = heroAnimationType;
+        this.PlayCurrentAnimation();
     }
 }

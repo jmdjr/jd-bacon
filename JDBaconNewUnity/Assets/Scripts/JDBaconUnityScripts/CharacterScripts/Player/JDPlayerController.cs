@@ -6,17 +6,20 @@ using SmoothMoves;
 [RequireComponent(typeof(Rigidbody))]
 public class JDPlayerController : JDMonoBodyBehavior
 {
-    public HeroCharacter CharacterProperties = new HeroCharacter();
-    public HeroPhysicsProperties PhysicsProperties = new HeroPhysicsProperties();
     public BoneAnimation Bone;
-    private HeroAnimationProperties animateProperties;
+    public JDHeroCharacter Hero;
+
+    [NonSerialized]
     public HeroSMS HeroMachineSystem;
 
     public override void Awake()
     {
-        animateProperties = new HeroAnimationProperties(new HeroAnimator(this.Bone));
+        Hero = new JDHeroCharacter(new HeroAnimationProperties(new JDHeroAnimator()), new HeroPhysicsProperties()); 
+
         this.Body.renderer.enabled = false;
-        HeroMachineSystem = new HeroSMS(this, this.CharacterProperties, this.PhysicsProperties, animateProperties);
+        HeroMachineSystem = new HeroSMS(this, this.Hero);
+
+        this.JDCollection.Add(this.Hero);
 
         base.Awake();
     }

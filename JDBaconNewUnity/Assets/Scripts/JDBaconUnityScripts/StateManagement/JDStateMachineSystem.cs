@@ -43,13 +43,13 @@ public class JDStateMachineSystem : JDIObject
         ScriptReference.StopCoroutine("Run");
     }
 
-    protected List<StateMachine> MachineList = new List<StateMachine>();
+    protected List<JDStateMachine> MachineList = new List<JDStateMachine>();
 
     public void Initialize()
     {
         InitializeStateManager();
 
-        foreach (StateMachine machine in MachineList)
+        foreach (JDStateMachine machine in MachineList)
         {
             machine.CoroutineDelegate = this.ScriptReference.StartCoroutine;
             machine.Start();
@@ -63,174 +63,12 @@ public class JDStateMachineSystem : JDIObject
 
     public void Pause()
     {
-        StateMachine.isPaused = true;
+        JDStateMachine.isPaused = true;
     }
 
     public void Play()
     {
-        StateMachine.isPaused = false;
-    }
-
-    protected sealed class StateMachine
-    {
-        public delegate Coroutine StartCoroutine(IEnumerator func);
-
-        public bool IsAlive { get { return this.currentState.IsDeadState; } }
-        private State currentState = null;
-        private uint timesActionPerformed = 0;
-        public string Name { get; private set; }
-        public static bool isPaused { get; set; }
-
-        public StateMachine(string Name, State state)
-        {
-            this.Name = Name;
-            this.SetInitialState(state);
-        }
-
-        public StartCoroutine CoroutineDelegate = null;
-
-        public void SetInitialState(State state)
-        {
-            currentState = state;
-            isPaused = false;
-        }
-
-        private IEnumerator Run()
-        {
-            if (currentState != null)
-            {
-                do
-                {
-                    if (!isPaused)
-                    {
-                        State ToState = currentState.RunTests();
-
-                        if (ToState != null)
-                        {
-
-                            if (currentState.Exiting != null)
-                            {
-                                yield return CoroutineDelegate(currentState.Exiting());
-                            }
-                            currentState = ToState;
-
-                            if (currentState.Entering != null)
-                            {
-                                yield return CoroutineDelegate(currentState.Entering());
-                            }
-
-                            timesActionPerformed = currentState.RepeatActionCount;
-                        }
-
-                        if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
-                        {
-                            if (currentState.Action != null && CoroutineDelegate != null)
-                            {
-
-                                yield return CoroutineDelegate(currentState.Action());
-                            }
-                            --timesActionPerformed;
-                        }
-                        else
-                        {
-                            yield return 0;
-                        }
-                    }
-
-                } while (!currentState.IsDeadState || currentState.RepeateIfDead);
-            }
-            else
-            {
-                Debug.Log(this.Name + ": Current State Not Set");
-            }
-        }
-
-        public void Start()
-        {
-            CoroutineDelegate(Run());
-        }
-    }
-
-    protected sealed class State
-    {
-        public delegate IEnumerator ActionDelegate();
-
-        // Name of this State, for debugging purposes.
-        public string Name { get { return name; } }
-        private string name;
-
-        // This state is dead if it doesn't have any exit conditions, meanning it doesn't go anywhere past this action.
-        public bool IsDeadState { get { return exitConditionList.Count == 0; } }
-        public bool RepeateIfDead { get; set; }
-        public uint RepeatActionCount { get; set; }
-
-        /// <summary>
-        /// Action Performed immidiately after transition into the state. <br/>
-        /// 
-        /// </summary>
-        public ActionDelegate Entering = null;
-        public ActionDelegate Action = null;
-        public ActionDelegate Exiting = null;
-        public IList ExitConditionList { get { return exitConditionList.AsReadOnly(); } }
-        private List<ExitStateCondition> exitConditionList = new List<ExitStateCondition>();
-
-        public State(string name)
-        {
-            this.name = name;
-            this.RepeateIfDead = false;
-        }
-
-        public bool AddExitCondition(ExitStateCondition condition)
-        {
-            // Cannot have duplicate ExitStateConditions in the same list.
-            if (!exitConditionList.Contains(condition))
-            {
-                exitConditionList.Add(condition);
-                return true;
-            }
-
-            return false;
-        }
-        public bool RemoveExitCondition(ExitStateCondition condition)
-        {
-            if (exitConditionList.Contains(condition))
-            {
-                exitConditionList.Remove(condition);
-                return true;
-            }
-
-            return false;
-        }
-
-        public State RunTests()
-        {
-            foreach (ExitStateCondition condition in exitConditionList)
-            {
-                if (condition.ExitTest())
-                {
-                    return condition.ToState;
-                }
-            }
-
-            return null;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-    protected sealed class ExitStateCondition
-    {
-        public delegate bool ExitCondition();
-        public ExitCondition ExitTest;
-        public State ToState;
-
-        public ExitStateCondition(ExitCondition test, State state)
-        {
-            ExitTest = test;
-            ToState = state;
-        }
+        JDStateMachine.isPaused = false;
     }
 
     private string name;
@@ -254,5 +92,174 @@ public class JDStateMachineSystem : JDIObject
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
         return true;
+    }
+}
+
+public class JDStateMachine
+{
+    public delegate Coroutine StartCoroutine(IEnumerator func);
+
+    public bool IsAlive { get { return this.currentState.IsDeadState; } }
+    private State currentState = null;
+    private uint timesActionPerformed = 0;
+    public string Name { get; private set; }
+    public static bool isPaused { get; set; }
+
+    public JDStateMachine(string Name)
+    {
+        this.Name = Name;
+
+        this.InitializeStateMachine();
+    }
+
+    public StartCoroutine CoroutineDelegate = null;
+
+    public void SetInitialState(State state)
+    {
+        currentState = state;
+        isPaused = false;
+    }
+
+    private IEnumerator Run()
+    {
+        if (currentState != null)
+        {
+            do
+            {
+                if (!isPaused)
+                {
+                    State ToState = currentState.RunTests();
+
+                    if (ToState != null)
+                    {
+
+                        if (currentState.Exiting != null)
+                        {
+                            yield return CoroutineDelegate(currentState.Exiting());
+                        }
+                        currentState = ToState;
+
+                        if (currentState.Entering != null)
+                        {
+                            yield return CoroutineDelegate(currentState.Entering());
+                        }
+
+                        timesActionPerformed = currentState.RepeatActionCount;
+                    }
+
+                    if (currentState.RepeatActionCount == 0 || timesActionPerformed > 0)
+                    {
+                        if (currentState.Action != null && CoroutineDelegate != null)
+                        {
+
+                            yield return CoroutineDelegate(currentState.Action());
+                        }
+                        --timesActionPerformed;
+                    }
+                    else
+                    {
+                        yield return 0;
+                    }
+                }
+
+            } while (!currentState.IsDeadState || currentState.RepeateIfDead);
+        }
+        else
+        {
+            Debug.Log(this.Name + ": Current State Not Set");
+        }
+    }
+
+    public void Start()
+    {
+        CoroutineDelegate(Run());
+    }
+
+    public virtual void InitializeStateMachine()
+    {
+    }
+
+}
+
+public sealed class State
+{
+    public delegate IEnumerator ActionDelegate();
+
+    // Name of this State, for debugging purposes.
+    public string Name { get { return name; } }
+    private string name;
+
+    // This state is dead if it doesn't have any exit conditions, meanning it doesn't go anywhere past this action.
+    public bool IsDeadState { get { return exitConditionList.Count == 0; } }
+    public bool RepeateIfDead { get; set; }
+    public uint RepeatActionCount { get; set; }
+
+    /// <summary>
+    /// Action Performed immidiately after transition into the state. <br/>
+    /// 
+    /// </summary>
+    public ActionDelegate Entering = null;
+    public ActionDelegate Action = null;
+    public ActionDelegate Exiting = null;
+    public IList ExitConditionList { get { return exitConditionList.AsReadOnly(); } }
+    private List<ExitStateCondition> exitConditionList = new List<ExitStateCondition>();
+
+    public State(string name)
+    {
+        this.name = name;
+        this.RepeateIfDead = false;
+    }
+
+    public bool AddExitCondition(ExitStateCondition condition)
+    {
+        // Cannot have duplicate ExitStateConditions in the same list.
+        if (!exitConditionList.Contains(condition))
+        {
+            exitConditionList.Add(condition);
+            return true;
+        }
+
+        return false;
+    }
+    public bool RemoveExitCondition(ExitStateCondition condition)
+    {
+        if (exitConditionList.Contains(condition))
+        {
+            exitConditionList.Remove(condition);
+            return true;
+        }
+
+        return false;
+    }
+
+    public State RunTests()
+    {
+        foreach (ExitStateCondition condition in exitConditionList)
+        {
+            if (condition.ExitTest())
+            {
+                return condition.ToState;
+            }
+        }
+
+        return null;
+    }
+
+    public override string ToString()
+    {
+        return Name;
+    }
+}
+
+public sealed class ExitStateCondition
+{
+    public delegate bool ExitCondition();
+    public ExitCondition ExitTest;
+    public State ToState;
+
+    public ExitStateCondition(ExitCondition test, State state)
+    {
+        ExitTest = test;
+        ToState = state;
     }
 }

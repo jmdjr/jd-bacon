@@ -6,7 +6,7 @@ using SmoothMoves;
 [Serializable]
 public class HeroAnimationProperties
 {
-    public HeroAnimator Animator;
+    public JDHeroAnimator Animator;
     private HeroAnimationType currentStandard = HeroAnimationType.S_STAND;
     private HeroAnimationType currentWeapon = HeroAnimationType.W_NONE;
     private HeroAnimationType currentDirection = HeroAnimationType.D_STRAIT;
@@ -29,7 +29,7 @@ public class HeroAnimationProperties
         }
     }
 
-    public HeroAnimationProperties(HeroAnimator animator)
+    public HeroAnimationProperties(JDHeroAnimator animator)
     {
         this.Animator = animator;
     }
