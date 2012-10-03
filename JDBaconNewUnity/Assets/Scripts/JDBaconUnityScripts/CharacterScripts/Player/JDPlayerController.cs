@@ -14,7 +14,7 @@ public class JDPlayerController : JDMonoBodyBehavior
 
     public override void Awake()
     {
-        Hero = new JDHeroCharacter(new HeroAnimationProperties(new JDHeroAnimator()), new HeroPhysicsProperties()); 
+        Hero = new JDHeroCharacter(new HeroAnimationProperties(new JDHeroAnimator(this.Bone)), new HeroPhysicsProperties()); 
 
         this.Body.renderer.enabled = false;
         HeroMachineSystem = new HeroSMS(this, this.Hero);

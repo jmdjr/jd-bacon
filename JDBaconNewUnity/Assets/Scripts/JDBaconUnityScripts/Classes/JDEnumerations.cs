@@ -46,10 +46,6 @@ public enum HeroAnimationType
     S_STAND = 1,
     S_WALK = 2,
     S_JUMP = 3,
-    S_STAND_SWING = 4,
-    S_STAND_SHOOT = 5,
-    S_WALK_SWING = 6,
-    S_WALK_SHOOT = 7,
 
     MASK_STANDARD = 4095,
 
@@ -64,21 +60,35 @@ public enum HeroAnimationType
 
     // Weapons
     W_NONE = 1 << 20,
-    W_SWORD = 2 << 20,
-    W_SHOTGUN = 3 << 20,
-    W_GRENADE = 4 << 20,
+    W_SWORD_IDLE = 2 << 20,
+    W_SWORD_ATTACK = 3 << 20,
+    W_SHOTGUN_IDLE = 4 << 20,
+    W_SHOTGUN_ATTACK = 5 << 20,
+    W_GRENADE_IDLE = 6 << 20,
+    W_GRENADE_ATTACK = 7 << 20,
+    W_BACONAISSE_IDLE = 8 << 20,
+    W_BACONAISSE_ATTACK = 9 << 20,
 
     MASK_WEAPON = 4095 << 20,
 }
 
+public enum HeroWeaponIconType
+{
+    NONE = -1,
+    SWORD = 0,
+    SHOTGUN = 1,
+    GRENADE = 2,
+    BACONAISSE = 3,
+}
+
 // Character animations will be stored as a set of 3 flagged bit ranges.  each range represents a collection of unique animations
 //
-// | Standard Animations |   Directions   |      Weapons     |
+// | Standard Animations |   Directions   |       Skins      |
 // |   0000 0000  0000   |   0000  0000   |  0000 0000 0000  |
 //
-// This allows for a maximum of ~62 unique animations, for ~14 directions, utilizing ~62 different weapons.
-//  if these quantities need to be extended, a 32 bit int will be used instead, in which each of the three flag regions will be
-//  scaled appropriately.
+// This enumeration is for enemies, providing the flags for animations.  all enemies should be structured to have similar animation
+// names, the enemies animations can be in separate bones, but the names for the skin swap animation should still follow this convention.
+
 public enum EnemyAnimationType
 {
     // Standard Animations
@@ -86,10 +96,6 @@ public enum EnemyAnimationType
     S_STAND = 1,
     S_WALK = 2,
     S_JUMP = 3,
-    S_STAND_SWING = 4,
-    S_STAND_SHOOT = 5,
-    S_WALK_SWING = 6,
-    S_WALK_SHOOT = 7,
 
     MASK_STANDARD = 4095,
 
@@ -102,11 +108,10 @@ public enum EnemyAnimationType
 
     MASK_DIRECTION = 255 << 12,
 
-    // Weapons
-    W_NONE = 1 << 20,
-    W_SWORD = 2 << 20,
-    W_SHOTGUN = 3 << 20,
-    W_GRENADE = 4 << 20,
+    // Enemy Skins
+    E_NONE = 1 << 20,
+    E_CARDBOARD_TARGET = 2 << 20,
+    E_BROCCOLLI_MONSTER = 3 << 20,
 
     MASK_WEAPON = 4095 << 20,
 }

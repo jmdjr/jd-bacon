@@ -6,12 +6,12 @@ using SmoothMoves;
 [Serializable]
 public class HeroPhysicsProperties
 {
-    public float WalkingSpeed = 50f;
-    public float MaxWalkSpeed = 100.0f;
+    public float WalkingSpeed = 1.5f;
+    public float MaxWalkSpeed = 1.5f;
     public ForceMode WalkingForceMode = ForceMode.Acceleration;
     public float JumpStrength = 3.0f;
     public float AntiGravityJumpFactor = -0.12f;
-    public float WaitTimeForJump = 0.0f;
+    public float WaitTimeForJump = 0.3f;
     public bool AllowDoubleJump = true;
     public ForceMode JumpingForceMode = ForceMode.Impulse;
 
@@ -25,20 +25,17 @@ public class HeroPhysicsProperties
     {
         Vector3 NewMotion = WalkingSpeed * Direction;
 
-        body.AddForce(NewMotion, WalkingForceMode);
-
         Vector3 myVelocity = body.velocity;
-        Vector3 horizontalMotion = Vector3.Cross(myVelocity, Vector3.left) + Vector3.Cross(myVelocity, Vector3.right);
-        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
-
+        Vector3 horizontalMotion = Vector3.ClampMagnitude(NewMotion, this.MaxWalkSpeed);
+        
         body.velocity = new Vector3(horizontalMotion.x, myVelocity.y, 0);
     }
 
     public void ApplyJumpingPhysics(Rigidbody body)
     {
-        Vector3 NewMotion = body.mass * Physics.gravity * AntiGravityJumpFactor * JumpStrength;
-        Vector3 originalV = body.velocity;
-        body.velocity = new Vector3(originalV.x, 0, 0);
-        body.AddForce(NewMotion, JumpingForceMode);
+        Vector3 myVelocity = body.velocity;
+        Vector3 horizontalMotion = Vector3.Cross(myVelocity, Vector3.left) + Vector3.Cross(myVelocity, Vector3.right);
+        horizontalMotion = Vector3.ClampMagnitude(horizontalMotion, this.MaxWalkSpeed);
+        body.velocity = new Vector3(horizontalMotion.x, JumpStrength, 0);
     }
 }

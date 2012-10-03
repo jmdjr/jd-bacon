@@ -58,11 +58,11 @@ public class HeroJumpingSM : JDStateMachine
     }
     private IEnumerator JumpingUpEnterAction()
     {
-        AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_JUMP);
         yield return 0;
     }
     private IEnumerator JumpingUpAction()
     {
+        AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_JUMP);
         PhysicsProperties.HasReleasedJump = false;
         PhysicsProperties.ApplyJumpingPhysics(this.ScriptReference.rigidbody);
         yield return new WaitForSeconds(PhysicsProperties.WaitTimeForJump);
@@ -73,6 +73,7 @@ public class HeroJumpingSM : JDStateMachine
     }
     private IEnumerator JumpingUpAgainAction()
     {
+        AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_JUMP);
         PhysicsProperties.HasReleasedJump = false;
         PhysicsProperties.ApplyJumpingPhysics(this.ScriptReference.rigidbody);
         yield return 0;
@@ -86,7 +87,7 @@ public class HeroJumpingSM : JDStateMachine
     }
     private bool ToJumpCondition()
     {
-        return Input.GetAxis("Jump") > 0 && !PhysicsProperties.IsAirborne;
+        return PhysicsProperties.HasReleasedJump && Input.GetAxis("Jump") > 0 && !PhysicsProperties.IsAirborne;
     }
     private bool ToDoubleJumpCondition()
     {

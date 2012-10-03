@@ -14,6 +14,8 @@ public class JDHeroCharacter : JDCharacter
     public HeroAnimationProperties AnimationProperties;
     public HeroPhysicsProperties PhysicsProperties;
 
+    public JDWeaponManager WeaponManager;
+
     public JDHeroCharacter(HeroAnimationProperties animationProps, HeroPhysicsProperties physicsProperties)
     {
         this.PhysicsProperties = physicsProperties;

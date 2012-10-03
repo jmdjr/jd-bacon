@@ -30,11 +30,11 @@ public static class HeroAnimationTypeExtension
             case HeroAnimationType.W_NONE:
                 return "NoWeapon";
 
-            case HeroAnimationType.W_SWORD:
-                return "Sword";
+            case HeroAnimationType.W_SWORD_IDLE:
+                return "SwordIdle";
 
-            case HeroAnimationType.W_SHOTGUN:
-                return "Shotgun";
+            case HeroAnimationType.W_SHOTGUN_IDLE:
+                return "ShotgunIdle";
         }
     }
     public static string TypeToStandardString(this HeroAnimationType type)
@@ -44,9 +44,6 @@ public static class HeroAnimationTypeExtension
             default:
             case HeroAnimationType.S_STAND:
                 return "Stand";
-
-            case HeroAnimationType.S_WALK_SWING:
-                return "WalkSwing";
 
             case HeroAnimationType.S_WALK:
                 return "Walk";
