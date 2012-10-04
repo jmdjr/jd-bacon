@@ -20,6 +20,8 @@ public class JDHeroCharacter : JDCharacter
     {
         this.PhysicsProperties = physicsProperties;
         this.AnimationProperties = animationProps;
+
+        this.WeaponManager = new JDWeaponManager(this);
     }
 }
 

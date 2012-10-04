@@ -5,11 +5,13 @@ using System.Text;
 
 public class JDShotgun : JDHeroWeapon
 {
-    public JDShotgun ()
+    public JDShotgun (JDHeroCharacter hero)
     {
+        this.heroReference = hero;
+
         this.Range = 0;
-        this.WeaponIdleAnimationType = HeroAnimationType.W_SWORD_IDLE;
-        this.WeaponAttackAnimationType = HeroAnimationType.W_SWORD_ATTACK;
+        this.WeaponIdleAnimationType = HeroAnimationType.W_SHOTGUN_IDLE;
+        this.WeaponAttackAnimationType = HeroAnimationType.W_SHOTGUN_ATTACK;
         this.WeaponIconType = HeroWeaponIconType.SHOTGUN;
         this.DamageAmount = 10;
         this.CooldownTime = 1;

@@ -6,15 +6,17 @@ using SmoothMoves;
 public class JDWeaponManager
 {
     protected int CurrentWeaponIndex;
-    protected JDHeroWeapon[] Weapons = 
-    {
-        new JDSword(),
-        new JDShotgun(),
-    };
+    protected JDHeroWeapon[] Weapons; 
 
-    public JDWeaponManager()
+    public JDWeaponManager(JDHeroCharacter heroReference)
     {
         this.CurrentWeaponIndex = 0;
+
+        Weapons = new JDHeroWeapon[]
+        {
+            new JDSword(heroReference),
+            new JDShotgun(heroReference),
+        };
     }
 
     public void SwitchToWeapon (int weaponIndex)
@@ -24,5 +26,20 @@ public class JDWeaponManager
         {
             this.CurrentWeaponIndex = Weapons.Length - 1;
         }
+    }
+
+    public HeroAnimationType GetWeaponAttack ()
+    {
+        return Weapons[this.CurrentWeaponIndex].WeaponAttackAnimationType.TypeToWeapon();
+    }
+    
+    public HeroAnimationType GetWeaponIdle()
+    {
+        return Weapons[this.CurrentWeaponIndex].WeaponIdleAnimationType.TypeToWeapon();
+    }
+
+    public HeroWeaponIconType GetWeaponIcon()
+    {
+        return Weapons[this.CurrentWeaponIndex].WeaponIconType;
     }
 }

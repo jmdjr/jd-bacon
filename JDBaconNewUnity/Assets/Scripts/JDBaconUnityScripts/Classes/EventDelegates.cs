@@ -35,14 +35,14 @@ public class CollisionEventArgs : MonoScriptEventArgs
 
 public class JDCollisionObject
 {
-    JDIObjectTypes ObjectType;
-    TagTypes ObjectTagType;
-    JDIObject ScriptObject;
+    public JDIObjectTypes ObjectType { get; protected set; }
+    public TagTypes ObjectTagType { get; protected set; }
+    public JDIObject ScriptObject { get; protected set; }
 
     public JDCollisionObject(Collision other) 
     {
         JDMonoBehavior behavior = other.gameObject.GetComponent<JDMonoBehavior>();
-
+        this.ObjectTagType = TagTypeExtension.ToTagType(other.collider.tag);
         Debug.Log(behavior != null);
     }
 

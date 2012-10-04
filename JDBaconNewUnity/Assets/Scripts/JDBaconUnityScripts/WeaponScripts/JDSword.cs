@@ -5,8 +5,10 @@ using SmoothMoves;
 
 public class JDSword : JDHeroWeapon
 {
-    public JDSword ()
+    public JDSword(JDHeroCharacter hero)
     {
+        this.heroReference = hero;
+
         this.Range = 0;
         this.WeaponIdleAnimationType = HeroAnimationType.W_SWORD_IDLE;
         this.WeaponAttackAnimationType = HeroAnimationType.W_SWORD_ATTACK;

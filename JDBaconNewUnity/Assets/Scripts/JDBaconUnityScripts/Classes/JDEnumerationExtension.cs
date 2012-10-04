@@ -33,8 +33,14 @@ public static class HeroAnimationTypeExtension
             case HeroAnimationType.W_SWORD_IDLE:
                 return "SwordIdle";
 
+            case HeroAnimationType.W_SWORD_ATTACK:
+                return "SwordAttack";
+
             case HeroAnimationType.W_SHOTGUN_IDLE:
                 return "ShotgunIdle";
+
+            case HeroAnimationType.W_SHOTGUN_ATTACK:
+                return "ShotgunAttack";
         }
     }
     public static string TypeToStandardString(this HeroAnimationType type)
@@ -58,17 +64,14 @@ public static class HeroAnimationTypeExtension
     {
         return type.TypeToDirectionalString() + type.TypeToWeaponString() + type.TypeToStandardString();
     }
-
     public static HeroAnimationType TypeToStandard(this HeroAnimationType type)
     {
         return (HeroAnimationType)(HeroAnimationType.MASK_STANDARD & type);
     }
-
     public static HeroAnimationType TypeToWeapon(this HeroAnimationType type)
     {
         return (HeroAnimationType)(HeroAnimationType.MASK_WEAPON & type);
     }
-
     public static HeroAnimationType TypeToDirection(this HeroAnimationType type)
     {
         return (HeroAnimationType)(HeroAnimationType.MASK_DIRECTION & type);

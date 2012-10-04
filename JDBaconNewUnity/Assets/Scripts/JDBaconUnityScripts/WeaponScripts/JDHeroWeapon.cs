@@ -4,7 +4,7 @@ using System.Collections;
 using SmoothMoves;
 
 [Serializable]
-public class JDHeroWeapon : JDIWeapon
+public abstract class JDHeroWeapon : JDIWeapon
 {
     [SerializeField]
     private int damageAmount;
@@ -25,6 +25,7 @@ public class JDHeroWeapon : JDIWeapon
     private HeroWeaponIconType weaponIconType;
 
     protected int WeaponIndex;
+    protected JDHeroCharacter heroReference;
 
     public int DamageAmount { get { return this.damageAmount; } set { this.damageAmount = value; } }
     public bool IsActive { get { return this.isActive; } set { this.isActive = value; } }
@@ -37,6 +38,11 @@ public class JDHeroWeapon : JDIWeapon
     public HeroWeaponIconType WeaponIconType { get { return weaponIconType; } set { weaponIconType = value; } }
 
     public JDIObjectTypes JDType { get { return JDIObjectTypes.WEAPON; } }
+
+    public virtual void AttackUpdate()
+    {
+        this.heroReference.AnimationProperties.UpdateWeaponAnimation(this.WeaponAttackAnimationType);
+    }
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
