@@ -47,7 +47,7 @@ public class MainGameplayHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire3"))
         {
             if (i < Weapons.Count)
             {
@@ -59,7 +59,7 @@ public class MainGameplayHUD : MonoBehaviour
                 WeaponSelected = Weapons[i++];
             }
         }
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Pause"))
         {
             Debug.Log("Gameplay Paused");
             //PauseGameplay();
