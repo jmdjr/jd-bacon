@@ -7,6 +7,13 @@ public class Player : Character
 {
     private Weapon mPlayerWeapon;
     public Weapon PlayerWeapon { get { return mPlayerWeapon; } }
+
+    // On creation of this item
+    void Start()
+    {
+        this.mHealth = 5;
+        this.mMaxHealth = 5;
+    }
     // Update is called once per frame
     void Update()
     {

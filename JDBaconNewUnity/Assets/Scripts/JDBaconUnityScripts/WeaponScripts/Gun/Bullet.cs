@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour {
 	void Start () {
 		
 		// bullet moves forward
-		mMovementDirection = transform.forward;
+		mMovementDirection = transform.right;
 		gameObject.GetComponent<SphereCollider>().isTrigger = true;
 		
 		// Start mini thread to destroy object after period of time
@@ -49,11 +49,6 @@ public class Bullet : MonoBehaviour {
 			mSpeed += mAcceleration * Time.deltaTime;
 		}
 		
-		// Destroy game object if its off the screen
-		if(!renderer.isVisible)
-		{
-			Destroy(gameObject);
-		}
 	}
 	
 	// object destroyed after 10 seconds

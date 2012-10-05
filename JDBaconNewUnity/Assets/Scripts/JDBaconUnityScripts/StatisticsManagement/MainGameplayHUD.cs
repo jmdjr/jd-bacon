@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class MainGameplayHUD : MonoBehaviour
 {
-    public Player mPlayer;
+    public JDHeroCharacter mPlayer;
     bool isPaused = false;
     float timescale;
 
@@ -20,6 +20,7 @@ public class MainGameplayHUD : MonoBehaviour
     public Texture2D BaconHealth;
     public Texture2D WeaponSelected;
     public List<Texture2D> Weapons;
+    public float previousTimeScale;
     // TODO: Change to correct iterator
     public int i = 0;
     
@@ -30,10 +31,10 @@ public class MainGameplayHUD : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mPlayer.Health = 5;
-        mPlayer.MaxHealth = 5;
-        BaconWidth = BaconHealth.width / mPlayer.Health;
-        BaconHeight = BaconHealth.height / mPlayer.Health;
+        mPlayer.HitPoints = 5;
+        mPlayer.MaxHitPoints = 5;
+        BaconWidth = BaconHealth.width / mPlayer.MaxHitPoints;
+        BaconHeight = BaconHealth.height / mPlayer.MaxHitPoints;
 
         Weapons.Add(BaconSword);
         Weapons.Add(BaconShotgun);
@@ -58,15 +59,29 @@ public class MainGameplayHUD : MonoBehaviour
                 WeaponSelected = Weapons[i++];
             }
         }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            Debug.Log("Gameplay Paused");
+            //PauseGameplay();
+            if (Time.timeScale == 0)
+            {
+                Time.timeScale = previousTimeScale;
+            }
+            else
+            {
+                previousTimeScale = Time.timeScale;
+                Time.timeScale = 0;
+            }
+        }
     }
 
     // Display Character Health
     void OnGUI()
     {
-        GUI.Label(new Rect(50, 40, 100, 100), "Total Health: " + mPlayer.MaxHealth);
-        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + mPlayer.Health);
+        GUI.Label(new Rect(50, 40, 100, 100), "Total Health: " + mPlayer.MaxHitPoints);
+        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + mPlayer.MaxHitPoints);
         // Draw Bacon Health Bar
-        GUI.DrawTexture(new Rect((Screen.width - BaconHealth.width) / 2, 10, BaconWidth * (mPlayer.Health), BaconHeight * (mPlayer.Health)), BaconHealth);
+        GUI.DrawTexture(new Rect((Screen.width - BaconHealth.width) / 2, 10, BaconWidth * (mPlayer.HitPoints), BaconHeight * (mPlayer.HitPoints)), BaconHealth);
         GUI.Box(new Rect(Screen.width / 20 * 2, Screen.height / 7 * 6, 100, 100), WeaponSelected);
     }
 

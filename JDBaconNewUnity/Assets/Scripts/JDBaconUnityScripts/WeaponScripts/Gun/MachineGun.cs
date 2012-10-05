@@ -5,7 +5,6 @@ public class MachineGun : Weapon
 {
     // Type of bullet that belongs to the gun
     public Bullet mBullet;
-    public float fireRate = 1.0f;
 
     // Used to keep the bullets moving in the same direction regardless of character position
     public bool mLockRotation;
@@ -18,7 +17,7 @@ public class MachineGun : Weapon
     void onDrawGizmos()
     {
         Gizmos.DrawSphere(transform.position, 0.1f);
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * .5f);
+        Gizmos.DrawLine(transform.position, transform.position + transform.right * .5f);
     }
 
     // Use this for initialization
@@ -27,9 +26,10 @@ public class MachineGun : Weapon
         if (mBullet == null)
         {
             Debug.LogError("Bullet Type not set");
-            Debug.Break();
+            Debug.Break(); 
         }
 
+        
         mStartingRotation = transform.rotation;
     }
 
@@ -37,11 +37,14 @@ public class MachineGun : Weapon
     // Function that is modified by the weapon being used
     public override IEnumerator Attack()
     {
+        Debug.LogError("Firing Machine Gun");
+        Debug.Break();
         mCreator = transform.parent.gameObject.GetComponent<Character>();
 
         // if it is on screen
         if (mCreator.renderer.isVisible)
         {
+            
             if (mLockRotation)
             {
                 transform.rotation = mStartingRotation;
@@ -49,7 +52,7 @@ public class MachineGun : Weapon
 
             Bullet bullet = (Bullet)GameObject.Instantiate(mBullet, transform.position, transform.rotation);
             bullet.setCharacter(mCreator);
-            yield return new WaitForSeconds(fireRate);
+            yield return new WaitForSeconds(attackRate);
         }
 
     }

@@ -310,11 +310,11 @@ public class PlayerController : StateMachineSystem
 
         InitializeWalkingSM();
         InitializeJumpingSM();
-        InitializeAttackingSM();
+        //InitializeAttackingSM();
 
         this.MachineList.Add(WalkingSM);
         this.MachineList.Add(JumpingSM);
-        this.MachineList.Add(AttackingSM);
+        //this.MachineList.Add(AttackingSM);
     }
     public void Update()
     {
