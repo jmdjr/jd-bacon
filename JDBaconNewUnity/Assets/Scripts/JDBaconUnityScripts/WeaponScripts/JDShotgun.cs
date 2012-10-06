@@ -10,8 +10,8 @@ public class JDShotgun : JDHeroWeapon
         this.heroReference = hero;
 
         this.Range = 0;
-        this.WeaponIdleAnimationType = HeroAnimationType.W_SHOTGUN_IDLE;
-        this.WeaponAttackAnimationType = HeroAnimationType.W_SHOTGUN_ATTACK;
+        this.WeaponIdleAnimationType = HeroAnimationType.W_NONE;
+        this.WeaponAttackAnimationType = HeroAnimationType.W_NONE;
         this.WeaponIconType = HeroWeaponIconType.SHOTGUN;
         this.DamageAmount = 10;
         this.CooldownTime = 1;

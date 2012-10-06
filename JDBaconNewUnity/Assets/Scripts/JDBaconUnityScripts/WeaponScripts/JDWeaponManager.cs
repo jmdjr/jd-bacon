@@ -2,18 +2,25 @@
 using System;
 using System.Collections;
 using SmoothMoves;
+using System.Collections.Generic;
 
 public class JDWeaponManager
 {
     protected int CurrentWeaponIndex;
-    protected JDHeroWeapon[] Weapons; 
+    protected List<JDHeroWeapon> Weapons;
+
+    public List<JDHeroWeapon> WeaponsList
+    {
+        get { return Weapons; }
+    }
 
     public JDWeaponManager(JDHeroCharacter heroReference)
     {
-        this.CurrentWeaponIndex = 0;
+        this.CurrentWeaponIndex = 1;
 
-        Weapons = new JDHeroWeapon[]
+        Weapons = new List<JDHeroWeapon>()
         {
+            new JDNoWeapon(heroReference),
             new JDSword(heroReference),
             new JDShotgun(heroReference),
         };
@@ -22,13 +29,36 @@ public class JDWeaponManager
     public void SwitchToWeapon (int weaponIndex)
     {
         this.CurrentWeaponIndex = weaponIndex;
-        if (this.CurrentWeaponIndex >= Weapons.Length)
+        if (this.CurrentWeaponIndex >= Weapons.Count)
         {
-            this.CurrentWeaponIndex = Weapons.Length - 1;
+            this.CurrentWeaponIndex = Weapons.Count - 1;
         }
     }
 
-    public HeroAnimationType GetWeaponAttack ()
+    public void GotoNextWeapon()
+    {
+        ++this.CurrentWeaponIndex;
+
+        if (this.CurrentWeaponIndex >= Weapons.Count)
+        {
+            this.CurrentWeaponIndex = 0;
+        }
+    }
+
+    public void GotoPreviousWeapon()
+    {
+        --this.CurrentWeaponIndex;
+
+        if (this.CurrentWeaponIndex < 0)
+        {
+            this.CurrentWeaponIndex = Weapons.Count - 1;
+        }
+    }
+    public int GetCurrentWeaponIndex()
+    {
+        return this.CurrentWeaponIndex;
+    }
+    public HeroAnimationType GetWeaponAttack()
     {
         return Weapons[this.CurrentWeaponIndex].WeaponAttackAnimationType.TypeToWeapon();
     }

@@ -5,22 +5,20 @@ using System.Collections;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
+[Serializable]
 public class MainGameplayHUD : MonoBehaviour
 {
-    public JDHeroCharacter mPlayer;
+    public JDPlayerController player;
+    protected JDHeroCharacter PlayerReference;
     bool isPaused = false;
     float timescale;
 
     // Items to appear in the equiped Box
     // TODO: change this to Check the player for equipped weapon
-    public Texture2D BaconSword;
-    public Texture2D BaconShotgun;
-    public Texture2D BaconMachineGun;
-    public Texture2D BaconChainsaw;
     public Texture2D BaconHealth;
-    public Texture2D WeaponSelected;
-    public List<Texture2D> Weapons;
+    protected List<Texture2D> Weapons;
     public float previousTimeScale;
+    private Texture2D WeaponSelected;
     // TODO: Change to correct iterator
     public int i = 0;
     
@@ -31,17 +29,13 @@ public class MainGameplayHUD : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mPlayer.HitPoints = 5;
-        mPlayer.MaxHitPoints = 5;
-        BaconWidth = BaconHealth.width / mPlayer.MaxHitPoints;
-        BaconHeight = BaconHealth.height / mPlayer.MaxHitPoints;
-
-        Weapons.Add(BaconSword);
-        Weapons.Add(BaconShotgun);
-        Weapons.Add(BaconMachineGun);
-        Weapons.Add(BaconChainsaw);
-
-        WeaponSelected = Weapons[i];
+        PlayerReference = player.Hero;
+        PlayerReference.HitPoints = 5;
+        PlayerReference.MaxHitPoints = 5;
+        BaconWidth = BaconHealth.width / PlayerReference.MaxHitPoints;
+        BaconHeight = BaconHealth.height / PlayerReference.MaxHitPoints;
+        Weapons = new List<Texture2D>(Enum.GetValues(typeof(HeroWeaponIconType)).Length);
+        Weapons.AddRange(PlayerReference.WeaponManager.WeaponsList.ConvertAll<Texture2D>(image => image.WeaponIconType.ToIconImageFile()));
     }
 
     // Update is called once per frame
@@ -49,15 +43,9 @@ public class MainGameplayHUD : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire3"))
         {
-            if (i < Weapons.Count)
-            {
-                WeaponSelected = Weapons[i++];
-            }
-            else 
-            { 
-                i = 0;
-                WeaponSelected = Weapons[i++];
-            }
+            WeaponSelected = Weapons[this.PlayerReference.WeaponManager.GetCurrentWeaponIndex()];
+
+            Debug.Log(WeaponSelected);
         }
         if (Input.GetButtonDown("Pause"))
         {
@@ -78,10 +66,10 @@ public class MainGameplayHUD : MonoBehaviour
     // Display Character Health
     void OnGUI()
     {
-        GUI.Label(new Rect(50, 40, 100, 100), "Total Health: " + mPlayer.MaxHitPoints);
-        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + mPlayer.MaxHitPoints);
+        GUI.Label(new Rect(50, 40, 100, 100), "Total Health: " + PlayerReference.MaxHitPoints);
+        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + PlayerReference.MaxHitPoints);
         // Draw Bacon Health Bar
-        GUI.DrawTexture(new Rect((Screen.width - BaconHealth.width) / 2, 10, BaconWidth * (mPlayer.HitPoints), BaconHeight * (mPlayer.HitPoints)), BaconHealth);
+        GUI.DrawTexture(new Rect((Screen.width - BaconHealth.width) / 2, 10, BaconWidth * (PlayerReference.HitPoints), BaconHeight * (PlayerReference.HitPoints)), BaconHealth);
         GUI.Box(new Rect(Screen.width / 20 * 2, Screen.height / 7 * 6, 100, 100), WeaponSelected);
     }
 

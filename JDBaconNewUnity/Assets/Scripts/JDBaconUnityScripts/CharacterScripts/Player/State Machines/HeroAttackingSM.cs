@@ -9,7 +9,7 @@ public class HeroAttackingSM : JDStateMachine
     private HeroPhysicsProperties PhysicsProperties;
     private HeroAnimationProperties AnimationProperties;
     private JDMonoBodyBehavior ScriptReference;
-
+    private JDWeaponManager WeaponManager;
     private bool takenAHit = false;
 
     public HeroAttackingSM(JDHeroCharacter HeroReference, JDMonoBodyBehavior scriptReference)
@@ -19,6 +19,7 @@ public class HeroAttackingSM : JDStateMachine
         this.PhysicsProperties = HeroReference.PhysicsProperties;
         this.AnimationProperties = HeroReference.AnimationProperties;
         this.ScriptReference = scriptReference;
+        this.WeaponManager = heroReference.WeaponManager;
 
         this.ScriptReference.ScriptCollisionEnter += new MonoBodyScriptEventHanlder(ScriptReference_ScriptCollisionEnter);
     }
@@ -32,12 +33,13 @@ public class HeroAttackingSM : JDStateMachine
     State IdleCombatState;
     private IEnumerator IdleCombatAction()
     {
-        this.AnimationProperties.UpdateWeaponAnimation(HeroAnimationType.W_NONE);
+        this.AnimationProperties.UpdateWeaponAnimation(this.WeaponManager.GetWeaponIdle());
         yield return 0;
     }
     private bool IdleCombatCondition()
     {
-        return true;
+
+        return Input.GetAxis("Fire1") == 0;
     }
     #endregion
 
@@ -45,7 +47,7 @@ public class HeroAttackingSM : JDStateMachine
     State AttackingState;
     private IEnumerator AttackingAction()
     {
-        this.AnimationProperties.UpdateWeaponAnimation(this.heroReference.WeaponManager.GetWeaponAttack());
+        this.AnimationProperties.UpdateWeaponAnimation(this.WeaponManager.GetWeaponAttack());
         yield return 0;
     }
     private bool AttackingCondition()
@@ -65,7 +67,7 @@ public class HeroAttackingSM : JDStateMachine
     private bool DamageCondition()
     {
         // You have been hit by an enemy.
-        return true;
+        return false;
     }
     #endregion
 
@@ -73,16 +75,13 @@ public class HeroAttackingSM : JDStateMachine
     State SwitchingWeaponsState;
     private IEnumerator SwitchingWeaponsAction()
     {
-        if (!PhysicsProperties.IsAirborne)
-        {
-            AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_STAND);
-        }
+        this.WeaponManager.GotoNextWeapon();
         yield return 0;
     }
     private bool SwitchingWeaponsCondition()
     {
         // You have pressed the button to attack.
-        return Input.GetAxis("Fire2") > 0;
+        return Input.GetAxis("Fire3") > 0;
     }
     #endregion
 
@@ -90,12 +89,14 @@ public class HeroAttackingSM : JDStateMachine
     {
         IdleCombatState = new State("Idle, not attacking")
         {
-            Action = IdleCombatAction
+            Action = IdleCombatAction,
+            RepeatActionCount = 1
         };
 
         SwitchingWeaponsState = new State("Switching Between Weapons") 
         { 
-            Action = SwitchingWeaponsAction
+            Action = SwitchingWeaponsAction,
+            RepeatActionCount = 1,
         };
 
         AttackingState = new State("Attacking") 

@@ -1,4 +1,8 @@
-﻿
+﻿using UnityEngine;
+using UnityEditor;
+using System;
+using System.Collections;
+
 public static class HeroAnimationTypeExtension
 {
     public static string TypeToDirectionalString(this HeroAnimationType type)
@@ -116,6 +120,27 @@ public static class TagTypeExtension
             default:
             case "Untagged":
                 return TagTypes.UNTAGGED;
+        }
+    }
+}
+
+public static class HeroWeaponIconTypeExtension
+{
+    public static Texture2D ToIconImageFile(this HeroWeaponIconType icon)
+    {
+
+        string basePath = "GUI/";
+        switch (icon)
+        {
+            case HeroWeaponIconType.SHOTGUN:
+                return (Texture2D)EditorGUIUtility.Load(basePath + "ShotGun.psd");
+            
+            case HeroWeaponIconType.SWORD:
+                return (Texture2D)EditorGUIUtility.Load(basePath + "sword.png");
+
+            default:
+            case HeroWeaponIconType.NONE:
+                return (Texture2D)EditorGUIUtility.Load(basePath + "LeftFist.png");
         }
     }
 }

@@ -74,11 +74,9 @@ public enum HeroAnimationType
 
 public enum HeroWeaponIconType
 {
-    NONE = -1,
-    SWORD = 0,
-    SHOTGUN = 1,
-    GRENADE = 2,
-    BACONAISSE = 3,
+    NONE = 0,
+    SWORD = 1,
+    SHOTGUN = 2,
 }
 
 // Character animations will be stored as a set of 3 flagged bit ranges.  each range represents a collection of unique animations

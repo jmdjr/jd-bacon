@@ -58,13 +58,10 @@ public class CharacterAnimationHelper : JDIAnimator
 
     public void PlayCurrentAnimation()
     {
-        Debug.Log(this.CurrentAnimation.TypeToStandardString());
         Bone.Play(this.CurrentAnimation.TypeToStandardString(), PlayMode.StopSameLayer);
+        Bone.Play(this.CurrentAnimation.TypeToWeaponString(), PlayMode.StopSameLayer);
 
-        if (this.CurrentWeaponAnimation != HeroAnimationType.W_NONE)
-        {
-            Bone.Play(this.CurrentAnimation.TypeToWeaponString(), PlayMode.StopSameLayer);
-        }
+        Debug.Log(this.CurrentStandardAnimation.TypeToStandardString() + " " + this.CurrentWeaponAnimation.TypeToWeaponString());
     }
 
     public bool IsCurrentAnimationComplete()
