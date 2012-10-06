@@ -41,6 +41,7 @@ public class HeroHorizontalMovementSM : JDStateMachine
     #region Actions
     private IEnumerator IdleWalkingAction()
     {
+        Debug.Log("test");
         if (!PhysicsProperties.IsAirborne)
         {
             AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_STAND);

@@ -77,9 +77,11 @@
     <Compile Include="Classes\JDIHaveScriptHandles.cs" />
     <Compile Include="Classes\JDIObject.cs" />
     <Compile Include="Classes\JDEnumeration.cs" />
+    <Compile Include="Classes\JDISeeGUI.cs" />
     <Compile Include="Classes\JDIWeapon.cs" />
     <Compile Include="Classes\JDMonoBehavior.cs" />
     <Compile Include="Classes\JDMonoBodyBehavior.cs" />
+    <Compile Include="Classes\JDMonoGuiBehavior.cs" />
     <Compile Include="InspectorScripts\EditorGUIUtilityFindTexture.cs" />
     <Compile Include="WeaponScripts\JDHeroWeapon.cs" />
     <Compile Include="EnvironmentScripts\JDBox.cs" />
