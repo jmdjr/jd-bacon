@@ -8,7 +8,7 @@ using UnityEngine;
 public class JDHeroAnimator : JDIAnimator
 {
     private HeroAnimationType currentAnimation;
-
+    private bool dirtyAnimation = false;
     private Enum AnimationType
     {
         get
@@ -17,6 +17,10 @@ public class JDHeroAnimator : JDIAnimator
         }
         set
         {
+            if (this.currentAnimation != (HeroAnimationType)value)
+            {
+                dirtyAnimation = true;
+            }
             this.currentAnimation = (HeroAnimationType)value;
         }
     }
@@ -24,7 +28,6 @@ public class JDHeroAnimator : JDIAnimator
     public HeroAnimationType CurrentStandardAnimation { get { return ((HeroAnimationType)AnimationType).TypeToStandard(); } }
     public HeroAnimationType CurrentWeaponAnimation { get { return ((HeroAnimationType)AnimationType).TypeToWeapon(); } }
     public HeroAnimationType CurrentDirectionalAnimation { get { return ((HeroAnimationType)AnimationType).TypeToDirection(); } }
-
 
     public JDHeroAnimator(BoneAnimation bone = null, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
     {
@@ -40,17 +43,6 @@ public class JDHeroAnimator : JDIAnimator
 
     public BoneAnimation Bone { get; set; }
 
-    public void PlayCurrentAnimation()
-    {
-        Debug.Log(this.currentAnimation.TypeToStandardString());
-        Bone.Play(this.currentAnimation.TypeToStandardString(), PlayMode.StopSameLayer);
-
-        if (this.CurrentWeaponAnimation != HeroAnimationType.W_NONE)
-        {
-            Bone.Play(this.currentAnimation.TypeToWeaponString(), PlayMode.StopSameLayer);
-        }
-    }
-
     public bool IsCurrentAnimationComplete()
     {
         return !Bone.isPlaying;
@@ -61,4 +53,19 @@ public class JDHeroAnimator : JDIAnimator
         this.AnimationType = heroAnimationType;
         this.PlayCurrentAnimation();
     }
+
+    public float GetCurrentClipLength()
+    {
+        return Bone[this.currentAnimation.TypeToWeaponString()].clip.length;
+    }
+
+    public void PlayCurrentAnimation()
+    {
+        if (this.dirtyAnimation)
+        {
+            Bone.Play(this.currentAnimation.TypeToStandardString(), PlayMode.StopSameLayer);
+            Bone.Play(this.currentAnimation.TypeToWeaponString(), PlayMode.StopSameLayer);
+        }
+    }
+
 }

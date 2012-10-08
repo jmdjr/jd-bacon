@@ -11,7 +11,7 @@ public abstract class JDHeroWeapon : JDIWeapon
     [SerializeField]
     private bool isActive;
     [SerializeField]
-    private int cooldownTime;
+    private float cooldownTime;
     [SerializeField]
     private string name;
     [SerializeField]
@@ -29,7 +29,7 @@ public abstract class JDHeroWeapon : JDIWeapon
 
     public int DamageAmount { get { return this.damageAmount; } set { this.damageAmount = value; } }
     public bool IsActive { get { return this.isActive; } set { this.isActive = value; } }
-    public int CooldownTime { get { return this.cooldownTime; } set { this.cooldownTime = value; } }
+    public float CooldownTime { get { return this.cooldownTime; } set { this.cooldownTime = value; } }
     public string Name { get { return this.name; } set { this.name = value; } }
     public float Range { get { return range; } set { range = value; } }
 

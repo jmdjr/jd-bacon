@@ -38,8 +38,7 @@ public class HeroAttackingSM : JDStateMachine
     }
     private bool IdleCombatCondition()
     {
-
-        return Input.GetAxis("Fire1") == 0;
+        return !DamageCondition() && !AttackingCondition() && !SwitchingWeaponsCondition();
     }
     #endregion
 
@@ -48,7 +47,8 @@ public class HeroAttackingSM : JDStateMachine
     private IEnumerator AttackingAction()
     {
         this.AnimationProperties.UpdateWeaponAnimation(this.WeaponManager.GetWeaponAttack());
-        yield return 0;
+        //yield return new WaitForSeconds(this.AnimationProperties.Animator.GetCurrentClipLength());  // need to properly identify how long the animation is.
+        yield return new WaitForSeconds(this.WeaponManager.CurrentWeapon.CooldownTime);
     }
     private bool AttackingCondition()
     {
@@ -81,7 +81,7 @@ public class HeroAttackingSM : JDStateMachine
     private bool SwitchingWeaponsCondition()
     {
         // You have pressed the button to attack.
-        return Input.GetAxis("Fire3") > 0;
+        return Input.GetButton("Fire3");
     }
     #endregion
 

@@ -8,12 +8,12 @@ public class JDWeaponManager
 {
     protected int CurrentWeaponIndex;
     protected List<JDHeroWeapon> Weapons;
-
     public List<JDHeroWeapon> WeaponsList
     {
         get { return Weapons; }
     }
 
+    public JDHeroWeapon CurrentWeapon { get { return this.Weapons[CurrentWeaponIndex]; } }
     public JDWeaponManager(JDHeroCharacter heroReference)
     {
         this.CurrentWeaponIndex = 1;
@@ -44,7 +44,6 @@ public class JDWeaponManager
             this.CurrentWeaponIndex = 0;
         }
     }
-
     public void GotoPreviousWeapon()
     {
         --this.CurrentWeaponIndex;
@@ -62,12 +61,10 @@ public class JDWeaponManager
     {
         return Weapons[this.CurrentWeaponIndex].WeaponAttackAnimationType.TypeToWeapon();
     }
-    
     public HeroAnimationType GetWeaponIdle()
     {
         return Weapons[this.CurrentWeaponIndex].WeaponIdleAnimationType.TypeToWeapon();
     }
-
     public HeroWeaponIconType GetWeaponIcon()
     {
         return Weapons[this.CurrentWeaponIndex].WeaponIconType;

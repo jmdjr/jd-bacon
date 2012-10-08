@@ -31,6 +31,7 @@ public class HeroAnimationProperties
 
     public HeroAnimationProperties(JDHeroAnimator animator)
     {
+        Debug.Log("Recreated animationProperties");
         this.Animator = animator;
     }
 
@@ -52,6 +53,7 @@ public class HeroAnimationProperties
 
     private void UpdateAnimation()
     {
+        Debug.Log("UpdateAnimation:<s:" + this.currentStandard + "|w:" + this.currentWeapon + "|d:" + this.currentDirection + ">");
         this.Animator.PlayAnimation(this.currentStandard | this.currentWeapon | this.currentDirection);
     }
 }
