@@ -23,5 +23,10 @@ public class JDHeroCharacter : JDCharacter
 
         this.WeaponManager = new JDWeaponManager(this);
     }
+
+    public override int InflictingDamage()
+    {
+        return this.WeaponManager.CurrentWeapon.DamageAmount;
+    }
 }
 
