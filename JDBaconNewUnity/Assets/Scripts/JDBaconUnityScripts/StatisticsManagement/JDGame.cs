@@ -49,6 +49,23 @@ public class JDGame
             return reaper;
         }
     }
+
+    public static JDCharacter GetCharacterFromCollider(Collider collider)
+    {
+        try
+        {
+            GameObject go = collider.gameObject;
+
+            JDMonoBodyBehavior registeredScript = go.GetComponent<JDMonoBodyBehavior>();
+            JDCharacter character = (JDCharacter)registeredScript.JDCollection.Find(match => { return match.JDType == JDIObjectTypes.CHARACTER; });
+
+            return character;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
     
 }
 

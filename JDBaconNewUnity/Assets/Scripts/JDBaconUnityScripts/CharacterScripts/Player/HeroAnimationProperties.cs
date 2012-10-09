@@ -8,7 +8,7 @@ public class HeroAnimationProperties
 {
     public JDHeroAnimator Animator;
     private HeroAnimationType currentStandard = HeroAnimationType.S_STAND;
-    private HeroAnimationType currentWeapon = HeroAnimationType.W_NONE;
+    private HeroAnimationType currentWeapon = HeroAnimationType.W_SWORD_IDLE;
     private HeroAnimationType currentDirection = HeroAnimationType.D_STRAIT;
     private bool facingLeft = false;
 
@@ -53,7 +53,7 @@ public class HeroAnimationProperties
 
     private void UpdateAnimation()
     {
-        Debug.Log("UpdateAnimation:<s:" + this.currentStandard + "|w:" + this.currentWeapon + "|d:" + this.currentDirection + ">");
+        Debug.Log("UpdateAnimation:<" + this.currentStandard + "|" + this.currentWeapon + "|" + this.currentDirection + ">");
         this.Animator.PlayAnimation(this.currentStandard | this.currentWeapon | this.currentDirection);
     }
 }

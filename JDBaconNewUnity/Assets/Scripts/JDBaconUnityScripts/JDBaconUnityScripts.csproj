@@ -53,6 +53,7 @@
     <Compile Include="CharacterScripts\Character.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\CardboardCutoutMovement.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutout.cs" />
+    <Compile Include="CharacterScripts\Enemies\JDEnemyController.cs" />
     <Compile Include="CharacterScripts\Enemies\JDEnemy.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />

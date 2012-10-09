@@ -21,12 +21,22 @@ public class HeroAttackingSM : JDStateMachine
         this.ScriptReference = scriptReference;
         this.WeaponManager = heroReference.WeaponManager;
 
-        this.ScriptReference.ScriptCollisionEnter += new MonoBodyScriptEventHanlder(ScriptReference_ScriptCollisionEnter);
+        BoneAnimation bone = this.heroReference.AnimationProperties.Animator.Bone;
+        bone.RegisterColliderTriggerDelegate(WeaponAttackTrigger);
     }
 
-    private void ScriptReference_ScriptCollisionEnter(CollisionEventArgs eventArgs)
+    private void WeaponAttackTrigger(ColliderTriggerEvent triggerEvent)
     {
+        if (triggerEvent.boneName == "Weapon")
+        {
+            JDCharacter character = JDGame.GetCharacterFromCollider(triggerEvent.otherCollider);
 
+            if (character != null)
+            {
+                Debug.Log(character.Name);
+                character.UpdateHealth(this.heroReference.InflictingDamage());
+            }
+        }
     }
 
     #region Idle
