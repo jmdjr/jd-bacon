@@ -13,15 +13,22 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-<%--
-
-<div>
-Regular contents here. Header does not expand or contact.
-</div>
-
-<p>Assuming the current page is named "current.htm", the below links when navigated to expands a particular header on that page:</p>
-<p>
-- <a href="">Expand 1st header within "expandable" header group</a><br />
-- <a href="current.htm?expandable=1&subexpandable=0">Expand 2nd header within "expandable" header group and 1st header within nested "subexpandable" group</a><br />
-</p>--%>
+<section class="Default">
+<div style="width:400px;margin-left:auto; margin-right:auto;"><img src="../Content/JDGDDLogo.png" alt="JD Bacon, The Game!" style="width:400px;" /></div>
+<h3>JD Bacon – The Game</h3>
+<i>It’s past time that bacon had a game of its own.</i>
+<br />
+<h3>Venue</h3>
+JD Bacon – The Game is a hack and slash, bacon filled platformer designed for the PC.
+<br />
+<h4>Features</h4>
+<ul>
+    <li>Master the future as a piece of delicious bacon.</li>
+    <li>Dominate with a magnificent collection of bacon themed weapons.</li>
+    <li>Fight off hordes of Zombie Hippies, Mutated Vegetables, Tofu Soldiers and more.</li>
+    <li>Tour a futuristic, HAM controlled Topia from the eyes of JD Bacon.</li>
+    <li>Unlock the true power of bacon to become Super JD Bacon.</li>
+    <li>Enjoy bacon flavored products from J&D’s Foods.</li>
+</ul>
+</section>
 </asp:Content>

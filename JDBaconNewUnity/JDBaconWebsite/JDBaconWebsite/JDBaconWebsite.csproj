@@ -54,8 +54,11 @@
     <Content Include="Content\5-25-2012 Bacon Sketch.jpg" />
     <Content Include="Content\arrowbullet.png" />
     <Content Include="Content\accordion.css" />
+    <Content Include="Content\BroccoliMonsterPose.png" />
     <Content Include="Content\JDBaconPoster.jpg" />
+    <Content Include="Content\JDGDDLogo.png" />
     <Content Include="Content\JDSuperBacon copy.jpg" />
+    <Content Include="Content\JDWithShotGunPose.png" />
     <Content Include="Content\Level 1 Room 2.jpg" />
     <Content Include="Content\Level 1 Room 3.jpg" />
     <Content Include="Content\Level 2 Factory 2.jpg" />
@@ -67,6 +70,8 @@
     <Content Include="Content\loading2.gif" />
     <Content Include="Content\Pigs copy.jpg" />
     <Content Include="Content\Rogue 6 Studios Logo.jpg" />
+    <Content Include="Content\SuperJDPose.png" />
+    <Content Include="Content\SuperJDPoster.png" />
     <Content Include="Pages\AboutUs.aspx" />
     <Content Include="Pages\BackStory.aspx" />
     <Content Include="Pages\CharacterConcepts.aspx" />
@@ -82,6 +87,7 @@
     <Content Include="Content\titlebar-active.png" />
     <Content Include="Content\titlebar.png" />
     <Content Include="Pages\HomePage.aspx" />
+    <Content Include="Scripts\Marquee.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

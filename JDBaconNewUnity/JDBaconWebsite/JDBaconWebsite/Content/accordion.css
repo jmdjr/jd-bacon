@@ -1,48 +1,58 @@
 ﻿.Page
 {
-    width:100%;
+    width:1000px;
     margin-left:auto; 
     margin-right:auto;
-    padding: 10px;
+    padding: 5px;
+    font: 18px Comic Sans MS, Arial, Helvetica;
+}
+
+
+.LeftMenuBar
+{
+    width: 190px;
+    min-height:617px;
+    padding-left:5px;
+    border: double 3px #DD1F22;
+    background-color:White;
+    float:left;
 }
 
 .arrowlistmenu{
     width: 180px; /*width of accordion menu*/
 }
 
-.LeftMenuBar
-{
-    width: 190px;
-    height:600px;
-    padding-left:5px;
-    border: double 3px #DD1F22;
-    background-color:White;
-    float:left;
-    display:block;
-}
-
 .MainContentArea
 {
-    display:block;
-    width:100%;
+    width:790px;
+    float:right;
 }
 
-.TitleBarRegion
+header
 {
     height:103px;
-    background-color: #E1120E;
+    background-color: white;
     text-align:center;
     border: double 5px black;
-    width:100%;
 }
 
-.BodyContent
+section.Default
 {
     margin-top:15px;
     min-height: 100px;
     border: double 5px black;
     background-color:White;
-    width:100%;
+    padding: 10px;
+}
+
+.ClearFloats
+{
+    clear:both;
+}
+
+footer 
+{
+    margin-top: 20px;
 }
 
 .arrowlistmenu .menuheader{ /*CSS class for menu headers in general (expanding or not!)*/

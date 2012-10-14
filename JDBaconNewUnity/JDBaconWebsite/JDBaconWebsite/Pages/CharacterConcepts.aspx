@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="CharacterConcepts.aspx.cs" Inherits="JDBaconWebsite.Pages.CharacterConcepts" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
+<title>Character Concepts</title>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="PageLogo" runat="server">
@@ -8,4 +9,8 @@
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="TitleBar" runat="server">
 <h1>Character Concepts</h1>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
+<section class="Default"></section>
 </asp:Content>

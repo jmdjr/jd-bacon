@@ -1,6 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="Characters.aspx.cs" Inherits="JDBaconWebsite.Pages.Characters" %>
 
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
+<title>Character Bios</title>
+</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
+<section class="Default">
 <ul>
 <li><stong>JD Bacon</stong> - He is the hero of our story.  JD Bacon was once the great pig war hero JD Pig.  Until one day, the evil plot of Dr. Swine left JD Pig for dead.  Professor Snout and the pig scientists had no choice, but to try to resurrect him.  All that they could bring back was a piece of Bacon.  JD Bacon is ready for revenge, and revenge is best served crispy.</li>
 <li><stong>Super Bacon</stong> - JD Bacon turns into Super Bacon after consuming Professor Snout greatest invention, “Baconaise”.  Super Bacon is stronger, faster, and meatier than JD Bacon.</li>
@@ -12,6 +17,7 @@
 <li><stong>Vegan Zombie</stong> - These zombies were once the peaceful citizens of Topia, until Dr. Swine’s air born experimental concoction infected them and turned them into his horrible zombie army.</li>
 <li><stong>Buff Vegan Zombie</stong> - These vegan citizens have been given more experimental concoction than the rest of the zombie army.</li>
 </ul>
+</section>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="PageLogo" runat="server">
