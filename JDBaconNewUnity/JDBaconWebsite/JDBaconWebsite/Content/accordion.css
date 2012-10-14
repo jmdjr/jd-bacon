@@ -1,8 +1,9 @@
 ﻿.Page
 {
-    width:1000px; 
+    width:100%;
     margin-left:auto; 
     margin-right:auto;
+    padding: 10px;
 }
 
 .arrowlistmenu{
@@ -17,31 +18,31 @@
     border: double 3px #DD1F22;
     background-color:White;
     float:left;
+    display:block;
 }
 
 .MainContentArea
 {
-    width:780px;
-    float:right;
+    display:block;
+    width:100%;
 }
 
 .TitleBarRegion
 {
     height:103px;
-    width:100%;
     background-color: #E1120E;
     text-align:center;
     border: double 5px black;
+    width:100%;
 }
 
-.RealContent
+.BodyContent
 {
-    width:100%;
     margin-top:15px;
     min-height: 100px;
     border: double 5px black;
     background-color:White;
-    padding:20px 10px 20px 10px;
+    width:100%;
 }
 
 .arrowlistmenu .menuheader{ /*CSS class for menu headers in general (expanding or not!)*/

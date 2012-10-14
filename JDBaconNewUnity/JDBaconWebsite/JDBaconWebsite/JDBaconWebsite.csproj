@@ -13,6 +13,7 @@
     <RootNamespace>JDBaconWebsite</RootNamespace>
     <AssemblyName>JDBaconWebsite</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,8 +76,8 @@
     <Content Include="Pages\LevelConcepts.aspx" />
     <Content Include="Pages\OurGoals.aspx" />
     <Content Include="Pages\ProgressUpdates.aspx" />
+    <Content Include="Pages\SidebarControl.ascx" />
     <Content Include="Pages\StretchGoals.aspx" />
-    <Content Include="Pages\WebForm1.aspx" />
     <Content Include="Scripts\ddaccordion.js" />
     <Content Include="Content\titlebar-active.png" />
     <Content Include="Content\titlebar.png" />
@@ -167,19 +168,19 @@
     <Compile Include="Pages\ProgressUpdates.aspx.designer.cs">
       <DependentUpon>ProgressUpdates.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SidebarControl.ascx.cs">
+      <DependentUpon>SidebarControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SidebarControl.ascx.designer.cs">
+      <DependentUpon>SidebarControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StretchGoals.aspx.cs">
       <DependentUpon>StretchGoals.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\StretchGoals.aspx.designer.cs">
       <DependentUpon>StretchGoals.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
