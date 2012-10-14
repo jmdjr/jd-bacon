@@ -12,4 +12,4 @@ We are a group of ten people with a dream.  Our dream involves videogames and ba
     <img id="HomePageLogo" src="../Content/Rogue 6 Studios Logo.jpg" alt="Rogue 6 Studios Logo" style="float:left;" />
     <div style="float:left; margin-left:auto; margin-right:auto;"><h2>About Rouge 6 Studios</h2></div>
     <img id="Img1" src="../Content/Rogue 6 Studios Logo.jpg" alt="Rogue 6 Studios Logo" style="float:right;" />
-</asp:Content>5
+</asp:Content>
