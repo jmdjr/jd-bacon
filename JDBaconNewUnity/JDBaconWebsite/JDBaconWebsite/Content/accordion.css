@@ -1,58 +1,5 @@
-﻿.Page
-{
-    width:1000px;
-    margin-left:auto; 
-    margin-right:auto;
-    padding: 5px;
-    font: 18px Comic Sans MS, Arial, Helvetica;
-}
-
-
-.LeftMenuBar
-{
-    width: 190px;
-    min-height:617px;
-    padding-left:5px;
-    border: double 3px #DD1F22;
-    background-color:White;
-    float:left;
-}
-
-.arrowlistmenu{
+﻿.arrowlistmenu{
     width: 180px; /*width of accordion menu*/
-}
-
-.MainContentArea
-{
-    width:790px;
-    float:right;
-}
-
-header
-{
-    height:103px;
-    background-color: white;
-    text-align:center;
-    border: double 5px black;
-}
-
-section.Default
-{
-    margin-top:15px;
-    min-height: 100px;
-    border: double 5px black;
-    background-color:White;
-    padding: 10px;
-}
-
-.ClearFloats
-{
-    clear:both;
-}
-
-footer 
-{
-    margin-top: 20px;
 }
 
 .arrowlistmenu .menuheader{ /*CSS class for menu headers in general (expanding or not!)*/
@@ -100,15 +47,29 @@ font-weight: bold;
 border-bottom: 1px solid #dadada;
 font-size: 90%;
 }
+.arrowlistmenu a
+{
+    text-decoration: none;
+    display: block;
+}
+.arrowlistmenu a:hover
+{
+    color:Red;
+}
+
+.arrowlistmenu a:visited
+{
+    color:white;
+}
 
 .arrowlistmenu ul li a:visited{
-color: #A70303;
+    color: #A70303;
 }
 
 .arrowlistmenu ul li a:hover{ /*hover state CSS*/
 background-color: #F3F3F3;
 }
 
-.arrowlistmenu ul li a.subexpandable:hover{ /*hover state CSS for sub menu header*/
+.arrowlistmenu a.subexpandable:hover{ /*hover state CSS for sub menu header*/
 background: lightblue;
 }

@@ -2,9 +2,12 @@
 <!DOCTYPE html>
 
 <html style="background-color:#FF5B59">
+
 <%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
+
 <head>
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
+    <link rel="Stylesheet" type="text/css" href="../Content/default.css" />
     <link rel="Stylesheet" type="text/css" href="../Content/accordion.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript" src="../Scripts/ddaccordion.js">

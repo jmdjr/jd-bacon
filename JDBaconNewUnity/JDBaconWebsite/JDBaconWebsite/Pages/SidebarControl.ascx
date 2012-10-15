@@ -22,12 +22,10 @@
             //do nothing
         }
     })
+
 </script>
 <div class="arrowlistmenu">
-    <h3 class="menuheader expandable">Home</h3>
-    <ul class="categoryitems">
-        <li><a href="HomePage.aspx?expandable=0">Home Page</a></li>
-    </ul>
+    <h3 class="menuheader"><a href="HomePage.aspx">Home</a></h3>
     <h3 class="menuheader expandable">About Rouge 6</h3>
     <ul class="categoryitems">
         <li><a href="AboutUs.aspx?expandable=1">Who We Are</a></li>
@@ -54,3 +52,8 @@
         <li><a href="ContactUs.aspx?expandable=5" >Contact Us</a></li>
     </ul>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $(".arrowlistmenu categoryitems");
+    });
+</script>
