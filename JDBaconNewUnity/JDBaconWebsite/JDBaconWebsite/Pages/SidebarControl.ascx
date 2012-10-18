@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SidebarControl.ascx.cs" Inherits="JDBaconWebsite.Pages.SidebarControl" %>
+
 <script type="text/javascript">
     ddaccordion.init({                  //top level headers initialization
         headerclass: "expandable",      //Shared CSS class name of headers group that are expandable
@@ -24,36 +25,45 @@
     })
 
 </script>
+
 <div class="arrowlistmenu">
     <h3 class="menuheader"><a href="HomePage.aspx">Home</a></h3>
     <h3 class="menuheader expandable">About Rouge 6</h3>
     <ul class="categoryitems">
-        <li><a href="AboutUs.aspx?expandable=1">Who We Are</a></li>
-        <li><a href="OurGoals.aspx?expandable=1">Our Goals</a></li>
+        <li><a href="AboutUs.aspx">Who We Are</a></li>
+        <li><a href="OurGoals.aspx">Our Goals</a></li>
     </ul>
     <h3 class="menuheader expandable">Story of JD</h3>
     <ul class="categoryitems">
-        <li><a href="BackStory.aspx?expandable=2">Back Story</a></li>
-        <li><a href="Characters.aspx?expandable=2">Characters</a></li>
+        <li><a href="BackStory.aspx">Back Story</a></li>
+        <li><a href="Characters.aspx">Characters</a></li>
     </ul>
     <h3 class="menuheader expandable">Concepts</h3>
     <ul class="categoryitems">
-        <li><a href="LevelConcepts.aspx?expandable=3" >Level Concepts</a></li>
-        <li><a href="CharacterConcepts.aspx?expandable=3" >Character Concepts</a></li>
-        <li><a href="CinematicConcepts.aspx?expandable=3" >Cinematic Concepts</a></li>
+        <li><a href="LevelConcepts.aspx" >Level Concepts</a></li>
+        <li><a href="CharacterConcepts.aspx" >Character Concepts</a></li>
+        <li><a href="CinematicConcepts.aspx" >Cinematic Concepts</a></li>
     </ul>
     <h3 class="menuheader expandable">Game Status</h3>
     <ul class="categoryitems">
-        <li><a href="ProgressUpdates.aspx?expandable=4" >Progress Update</a></li>
-        <li><a href="StretchGoals.aspx?expandable=4" >Stretch Goals</a></li>
+        <li><a href="ProgressUpdates.aspx" >Progress Update</a></li>
+        <li><a href="StretchGoals.aspx" >Stretch Goals</a></li>
     </ul>
     <h3 class="menuheader expandable">Contact Us</h3>
     <ul class="categoryitems">
-        <li><a href="ContactUs.aspx?expandable=5" >Contact Us</a></li>
+        <li><a href="ContactUs.aspx" >Contact Us</a></li>
     </ul>
 </div>
 <script type="text/javascript">
     $(function () {
-        $(".arrowlistmenu categoryitems");
+        $(".arrowlistmenu .categoryitems").each(function (index, element) {
+
+            $("li a", this).each(function (aIndex, aElement) {
+                var currentLink = $(this).attr("href");
+                if (currentLink.indexOf("?expandable") < 0) {
+                    $(this).attr("href", currentLink + "?expandable=" + index);
+                }
+            });
+        });
     });
 </script>

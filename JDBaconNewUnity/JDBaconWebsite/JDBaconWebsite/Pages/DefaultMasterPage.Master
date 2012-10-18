@@ -3,7 +3,7 @@
 
 <html style="background-color:#FF5B59">
 
-<%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
+<%@ Register Src="Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
 
 <head>
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
@@ -26,7 +26,10 @@
                 <div style="width:150px; height: 150px; margin: 15px auto auto auto;">
                     <asp:ContentPlaceHolder ID="PageLogo" runat="server"></asp:ContentPlaceHolder>
                 </div>
-                <JDSite:Sidebar ID="JDSideBar" runat="server"/>
+                <!--<JDSite:Sidebar ID="JDSideBar" runat="server"/> -->
+                <div>
+                { Menu has been temporarily disabled due to construction }
+                </div>
             </div>
             <div id="ContentDiv" class="MainContentArea">
                 <header>

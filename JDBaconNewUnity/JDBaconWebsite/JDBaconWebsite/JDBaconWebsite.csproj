@@ -55,6 +55,31 @@
     <Content Include="Content\arrowbullet.png" />
     <Content Include="Content\accordion.css" />
     <Content Include="Content\BroccoliMonsterPose.png" />
+    <Content Include="Content\ConceptsFromTravis\About Rogue 6.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Back Story.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Character Concepts.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Characters.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Concepts.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Contact Us.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Front Page With All Super Bacon Tile.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Front Page with Full Super bacon Background.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Front Page With Super Bacon Two Tile.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Front Page.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Game Status.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Hippi.png" />
+    <Content Include="Content\ConceptsFromTravis\Hippy Faded.jpg" />
+    <Content Include="Content\ConceptsFromTravis\JD Bacon Faded.jpg" />
+    <Content Include="Content\ConceptsFromTravis\JD Bacon Kickstarter Concept.jpg" />
+    <Content Include="Content\ConceptsFromTravis\JDs_wingedLogo Fade.jpg" />
+    <Content Include="Content\ConceptsFromTravis\JDs_wingedLogo.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Level Concepts.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Our Goals.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Pigs Faded.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Story of JD.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Stretch Goals.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Super Bacon Tile 2.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Superbacon Tile Background.jpg" />
+    <Content Include="Content\ConceptsFromTravis\Who We Are %281%29.jpg" />
     <Content Include="Content\default.css" />
     <Content Include="Content\JDBaconPoster.jpg" />
     <Content Include="Content\JDGDDLogo.png" />
@@ -73,18 +98,21 @@
     <Content Include="Content\Rogue 6 Studios Logo.jpg" />
     <Content Include="Content\SuperJDPose.png" />
     <Content Include="Content\SuperJDPoster.png" />
+    <Content Include="default.aspx" />
     <Content Include="Pages\AboutUs.aspx" />
     <Content Include="Pages\BackStory.aspx" />
     <Content Include="Pages\CharacterConcepts.aspx" />
     <Content Include="Pages\Characters.aspx" />
     <Content Include="Pages\CinematicConcepts.aspx" />
     <Content Include="Pages\ContactUs.aspx" />
+    <Content Include="Pages\JohnsHome.aspx" />
     <Content Include="Pages\LevelConcepts.aspx" />
     <Content Include="Pages\OurGoals.aspx" />
     <Content Include="Pages\ProgressUpdates.aspx" />
     <Content Include="Pages\SidebarControl.ascx" />
     <Content Include="Pages\StoryOfJDBaconV1.aspx" />
     <Content Include="Pages\StretchGoals.aspx" />
+    <Content Include="Pages\UnderConstruction.aspx" />
     <Content Include="Scripts\ddaccordion.js" />
     <Content Include="Content\titlebar-active.png" />
     <Content Include="Content\titlebar.png" />
@@ -100,6 +128,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AboutUs.aspx.cs">
       <DependentUpon>AboutUs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -156,6 +191,13 @@
     <Compile Include="Pages\HomePage.aspx.designer.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\JohnsHome.aspx.cs">
+      <DependentUpon>JohnsHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\JohnsHome.aspx.designer.cs">
+      <DependentUpon>JohnsHome.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\LevelConcepts.aspx.cs">
       <DependentUpon>LevelConcepts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -197,6 +239,13 @@
     </Compile>
     <Compile Include="Pages\StretchGoals.aspx.designer.cs">
       <DependentUpon>StretchGoals.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UnderConstruction.aspx.cs">
+      <DependentUpon>UnderConstruction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\UnderConstruction.aspx.designer.cs">
+      <DependentUpon>UnderConstruction.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
