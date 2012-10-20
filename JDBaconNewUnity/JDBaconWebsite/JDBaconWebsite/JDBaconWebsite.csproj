@@ -124,13 +124,16 @@
     <Content Include="Pages\StoryOfJDBaconV1.aspx" />
     <Content Include="Pages\StretchGoals.aspx" />
     <Content Include="Pages\UnderConstruction.aspx" />
+    <Content Include="Pages\UnderConstruction2.aspx" />
     <Content Include="Scripts\ddaccordion.js" />
     <Content Include="Content\titlebar-active.png" />
     <Content Include="Content\titlebar.png" />
     <Content Include="Pages\HomePage.aspx" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\Marquee.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -257,6 +260,13 @@
     </Compile>
     <Compile Include="Pages\UnderConstruction.aspx.designer.cs">
       <DependentUpon>UnderConstruction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UnderConstruction2.aspx.cs">
+      <DependentUpon>UnderConstruction2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\UnderConstruction2.aspx.designer.cs">
+      <DependentUpon>UnderConstruction2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

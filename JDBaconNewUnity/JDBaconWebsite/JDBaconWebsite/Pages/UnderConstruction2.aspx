@@ -1,12 +1,9 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DefaultMasterPage.master.cs" Inherits="JDBaconWebsite.DefaultMasterPage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UnderConstruction2.aspx.cs" Inherits="JDBaconWebsite.Pages.UnderConstruction2" %>
+
 <!DOCTYPE html>
-
-<html style="background-color:#FF5B59">
-
-<%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
+<title>Comming Soon! JD Bacon The Game!</title>
     <link rel="Stylesheet" type="text/css" href="../Content/default.css" />
     <link rel="Stylesheet" type="text/css" href="../Content/accordion.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -24,19 +21,35 @@
         <div id="Page" class="Page">
             <div id="LeftMenuBar" class="LeftMenuBar">
                 <div style="width:150px; height: 150px; margin: 15px auto auto auto;">
-                    <asp:ContentPlaceHolder ID="PageLogo" runat="server"></asp:ContentPlaceHolder>
+                    <img id="HomePageLogo" src="../Content/Rogue 6 Studios Logo.jpg" alt="Rogue 6 Studios Logo" />
                 </div>
-                <!--<JDSite:Sidebar ID="JDSideBar" runat="server"/> -->
                 <div>
                 { Menu has been temporarily disabled due to construction }
                 </div>
             </div>
             <div id="ContentDiv" class="MainContentArea">
                 <header>
-                    <asp:ContentPlaceHolder ID="TitleBar" runat="server"></asp:ContentPlaceHolder>
+                    <h1>Currently Under Construction</h1>
                 </header>
                 <section>
-                    <asp:ContentPlaceHolder ID="Content" runat="server"></asp:ContentPlaceHolder>
+            <section class="Default">
+                <div style="width:400px;margin-left:auto; margin-right:auto;"><img src="../Content/JDGDDLogo.png" alt="JD Bacon, The Game!" style="width:400px;" /></div>
+                <h3>JD Bacon – The Game</h3>
+                <i>It’s past time that bacon had a game of its own.</i>
+                <br />
+                <h3>Venue</h3>
+                JD Bacon – The Game is a hack and slash, bacon filled platformer designed for the PC.
+                <br />
+                <h4>Features</h4>
+                <ul>
+                    <li>Master the future as a piece of delicious bacon.</li>
+                    <li>Dominate with a magnificent collection of bacon themed weapons.</li>
+                    <li>Fight off hordes of Zombie Hippies, Mutated Vegetables, Tofu Soldiers and more.</li>
+                    <li>Tour a futuristic, HAM controlled Topia from the eyes of JD Bacon.</li>
+                    <li>Unlock the true power of bacon to become Super JD Bacon.</li>
+                    <li>Enjoy bacon flavored products from J&D’s Foods.</li>
+                </ul>
+            </section>
                 </section>
             </div>
             <div id="clearFloats" class="ClearFloats"></div>
