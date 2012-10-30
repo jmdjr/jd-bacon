@@ -12,42 +12,48 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <table class="LevelConceptMap">
+<section class="Default">
+    <table class="CharacterConceptMap">
         <tr>
             <td>
-                <img src="../Content/Level 1 Room 2.jpg" />
+                <img src="../Content/JD Bacon BodyParts.bmp" alt=""/>
             </td>
 
             <td>
-                <img src="../Content/Level 1 Room 3.jpg" />
+                <img src="../Content/Zombie 2 Bodyparts.bmp" alt=""/>
             </td>
 
             <td>
-                <img src="../Content/Level 2 Factory 2.jpg" />
+                <img src="../Content/Super Bacon Bodyparts.bmp" alt="" />
+            </td>
+            <td rowspan="3">
+                <img src="../Content/Kali Flower Concept 2.jpg" alt="" />
             </td>
         </tr>
         <tr>
             <td>
-                <img src="../Content/Level 2 Factory.jpg" />
+                <img src="../Content/Zombie 1Bodyparts.bmp" alt="" />
             </td>
             <td>
-                <img src="../Content/JDs_wingedLogo Fade_LevelScale.jpg" />
+                <img src="../Content/Clam Boss and Turret Concept.jpeg" alt="" />
             </td>
             <td>
-                <img src="../Content/Level 3 Kali Flower Float.jpg" />
+                <img src="../Content/Special Zombie Concept.jpeg"  alt=""/>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="../Content/Level 3 Tofu Float.jpg" />
+                <img src="../Content/Veggi Monster Concept.jpeg" alt="" />
             </td>
             <td>
-                <img src="../Content/Level 4 City Shot.jpg" />
+                <img src="../Content/Tofu Concept.jpeg" alt="" />
             </td>
 
             <td>
-                <img src="../Content/Level 5 Shot 1.jpg" />
+                <img src="../Content/Kali Flower Bodyparts.bmp" alt="" />
             </td>
         </tr>
     </table>
+    </section>
+    <script type="text/javascript" src="../Scripts/ConceptMapFancy.js"></script>
 </asp:Content>

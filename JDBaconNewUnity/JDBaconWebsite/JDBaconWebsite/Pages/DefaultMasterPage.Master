@@ -1,10 +1,8 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DefaultMasterPage.master.cs" Inherits="JDBaconWebsite.DefaultMasterPage" %>
 <!DOCTYPE html>
 
-<html style="background-color:#FF5B59">
-
 <%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
-
+<html style="background-color:#FF5B59">
 <head>
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
     <link rel="Stylesheet" type="text/css" href="../Content/default.css" />
@@ -26,10 +24,10 @@
                 <div style="width:150px; height: 150px; margin: 15px auto auto auto;">
                     <asp:ContentPlaceHolder ID="PageLogo" runat="server"></asp:ContentPlaceHolder>
                 </div>
-                <!--<JDSite:Sidebar ID="JDSideBar" runat="server"/> -->
-                <div>
+                <JDSite:Sidebar ID="JDSideBar" runat="server"/> 
+     <%--           <div>
                 { Menu has been temporarily disabled due to construction }
-                </div>
+                </div>--%>
             </div>
             <div id="ContentDiv" class="MainContentArea">
                 <header>

@@ -1,78 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="C:\Users\johndavis\Desktop\JDBaconSite" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="jdbaconthegame.com" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="jdbacon" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="default.aspx" publishTime="10/18/2012 16:37:48" />
+    <file relUrl="default.aspx" publishTime="10/26/2012 10:46:49" />
+    <file relUrl="Content/ConceptsFromTravis/Characters.jpg" publishTime="10/15/2012 08:27:24" />
     <file relUrl="Pages/ProgressUpdates.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/JDBaconPoster.jpg" publishTime="10/15/2012 07:38:42" />
+    <file relUrl="Content/Kali Flower Bodyparts.bmp" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Pages/JohnsHome.aspx" publishTime="10/17/2012 13:14:27" />
     <file relUrl="Content/SuperJDPoster.png" publishTime="10/15/2012 07:38:42" />
-    <file relUrl="Pages/HomePage.aspx" publishTime="10/17/2012 13:22:26" />
+    <file relUrl="Content/default.css" publishTime="10/26/2012 10:39:37" />
     <file relUrl="Content/ConceptsFromTravis/Concepts.jpg" publishTime="10/15/2012 08:27:37" />
     <file relUrl="Content/Level 1 Room 3.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Web.config" publishTime="10/19/2012 10:37:41" />
+    <file relUrl="Web.config" publishTime="10/26/2012 10:47:54" />
     <file relUrl="Content/Level 2 Factory.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Pages/OurGoals.aspx" publishTime="10/15/2012 07:38:43" />
-    <file relUrl="Pages/ContactUs.aspx" publishTime="10/15/2012 07:38:43" />
-    <file relUrl="Content/ConceptsFromTravis/Hippi.png" publishTime="10/15/2012 08:27:17" />
-    <file relUrl="bin/JDBaconWebsite.pdb" publishTime="10/19/2012 10:37:41" />
-    <file relUrl="bin/JDBaconWebsite.dll" publishTime="10/19/2012 10:37:41" />
-    <file relUrl="Content/titlebar.png" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/JDs_wingedLogo.jpg" publishTime="10/15/2012 08:27:12" />
-    <file relUrl="Scripts/Marquee.js" publishTime="10/15/2012 07:38:41" />
-    <file relUrl="Content/Rogue 6 Studios Logo.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/arrowbullet.png" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Pages/SidebarControl.ascx" publishTime="10/18/2012 11:51:55" />
-    <file relUrl="Pages/UnderConstruction.aspx" publishTime="10/18/2012 14:06:55" />
-    <file relUrl="Content/Level 3 Tofu Float.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/Back Story.jpg" publishTime="10/15/2012 08:27:25" />
-    <file relUrl="Content/ConceptsFromTravis/Contact Us.jpg" publishTime="10/15/2012 08:27:02" />
-    <file relUrl="Pages/DefaultMasterPage.Master" publishTime="10/19/2012 10:33:29" />
-    <file relUrl="Pages/StretchGoals.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/BroccoliMonsterPose.png" publishTime="10/15/2012 07:38:42" />
+    <file relUrl="Pages/ContactUs.aspx" publishTime="10/15/2012 07:38:43" />
+    <file relUrl="Content/JD Bacon Faded.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/Veggi Monster Concept.jpeg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="bin/JDBaconWebsite.pdb" publishTime="10/26/2012 10:46:52" />
+    <file relUrl="Content/Zombie 1Bodyparts.bmp" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="bin/JDBaconWebsite.dll" publishTime="10/26/2012 10:46:52" />
+    <file relUrl="Content/Tofu Concept.jpeg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/titlebar.png" publishTime="10/09/2012 11:23:39" />
+    <file relUrl="Content/Zombie 2 Bodyparts.bmp" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/Who We Are (1).jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Scripts/Marquee.js" publishTime="10/15/2012 07:38:41" />
+    <file relUrl="Content/Hippy Faded.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/Super Bacon Tile 2.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/JD Bacon Kickstarter Concept.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/Clam Boss and Turret Concept.jpeg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Pages/SidebarControl.ascx" publishTime="10/18/2012 11:51:55" />
+    <file relUrl="Pages/UnderConstruction.aspx" publishTime="10/26/2012 10:41:46" />
+    <file relUrl="Content/ConceptsFromTravis/Back Story.jpg" publishTime="10/15/2012 08:27:25" />
+    <file relUrl="Content/arrowbullet.png" publishTime="10/09/2012 11:23:39" />
+    <file relUrl="Pages/DefaultMasterPage.Master" publishTime="10/26/2012 10:40:19" />
+    <file relUrl="Pages/StretchGoals.aspx" publishTime="10/15/2012 07:38:43" />
+    <file relUrl="Content/Pigs Faded.jpg" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Content/ConceptsFromTravis/Front Page.jpg" publishTime="10/15/2012 08:26:28" />
     <file relUrl="Content/SuperJDPose.png" publishTime="10/15/2012 07:38:42" />
     <file relUrl="Pages/Characters.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/JDGDDLogo.png" publishTime="10/15/2012 07:38:42" />
-    <file relUrl="Content/ConceptsFromTravis/Game Status.jpg" publishTime="10/15/2012 08:27:09" />
+    <file relUrl="Content/JDs_wingedLogo.jpg" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Content/Pigs copy.jpg" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Content/Level 5 Shot 1.jpg" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Pages/AboutUs.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Pages/LevelConcepts.aspx" publishTime="10/18/2012 08:41:58" />
+    <file relUrl="Content/Superbacon Tile Background.jpg" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Scripts/jquery-1.8.2.min.js" publishTime="10/15/2012 08:35:38" />
     <file relUrl="Content/ConceptsFromTravis/Character Concepts.jpg" publishTime="10/15/2012 08:27:35" />
     <file relUrl="Content/ConceptsFromTravis/Front Page With All Super Bacon Tile.jpg" publishTime="10/15/2012 15:23:32" />
+    <file relUrl="Pages/HomePage.aspx" publishTime="10/17/2012 13:22:26" />
     <file relUrl="Content/loading2.gif" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/JDs_wingedLogo Fade.jpg" publishTime="10/18/2012 08:40:20" />
-    <file relUrl="Content/ConceptsFromTravis/JD Bacon Kickstarter Concept.jpg" publishTime="10/15/2012 08:27:29" />
+    <file relUrl="Content/Level 3 Tofu Float.jpg" publishTime="10/09/2012 11:23:39" />
+    <file relUrl="Content/JDs_wingedLogo Fade.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/JD Bacon BodyParts.bmp" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Scripts/ddaccordion.js" publishTime="10/09/2012 11:23:37" />
     <file relUrl="Content/ConceptsFromTravis/Front Page With Super Bacon Two Tile.jpg" publishTime="10/15/2012 15:23:32" />
-    <file relUrl="Pages/CharacterConcepts.aspx" publishTime="10/15/2012 07:38:43" />
-    <file relUrl="Content/5-25-2012 Bacon Sketch.jpg" publishTime="10/09/2012 11:23:39" />
+    <file relUrl="Pages/CharacterConcepts.aspx" publishTime="10/20/2012 15:25:15" />
+    <file relUrl="Content/Kali Flower Concept 2.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/ConceptsFromTravis/Game Status.jpg" publishTime="10/15/2012 08:27:09" />
     <file relUrl="Content/ConceptsFromTravis/Story of JD.jpg" publishTime="10/15/2012 08:27:27" />
-    <file relUrl="Content/ConceptsFromTravis/JD Bacon Faded.jpg" publishTime="10/15/2012 15:23:32" />
-    <file relUrl="Content/default.css" publishTime="10/18/2012 11:58:38" />
+    <file relUrl="Content/JDs_wingedLogo Fade_LevelScale.jpg" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/ConceptsFromTravis/Contact Us.jpg" publishTime="10/15/2012 08:27:02" />
     <file relUrl="Content/Level 2 Factory 2.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/Hippy Faded.jpg" publishTime="10/15/2012 15:23:32" />
     <file relUrl="Pages/UnderConstruction2.aspx" publishTime="10/19/2012 10:36:32" />
+    <file relUrl="Content/5-25-2012 Bacon Sketch.jpg" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Content/ConceptsFromTravis/Our Goals.jpg" publishTime="10/15/2012 08:27:10" />
+    <file relUrl="Pages/OurGoals.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/Level 4 City Shot.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/Characters.jpg" publishTime="10/15/2012 08:27:24" />
+    <file relUrl="Content/Hippi.png" publishTime="10/20/2012 15:25:17" />
+    <file relUrl="Content/Special Zombie Concept.jpeg" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Content/ConceptsFromTravis/Level Concepts.jpg" publishTime="10/15/2012 08:27:34" />
     <file relUrl="Pages/CinematicConcepts.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/JDSuperBacon copy.jpg" publishTime="10/15/2012 07:38:42" />
-    <file relUrl="Content/ConceptsFromTravis/Superbacon Tile Background.jpg" publishTime="10/18/2012 12:00:51" />
-    <file relUrl="Content/ConceptsFromTravis/Who We Are (1).jpg" publishTime="10/15/2012 08:27:10" />
-    <file relUrl="Content/ConceptsFromTravis/Pigs Faded.jpg" publishTime="10/15/2012 15:23:32" />
+    <file relUrl="Content/ConceptsFromTravis/Front Page with Full Super bacon Background.jpg" publishTime="10/15/2012 15:23:32" />
+    <file relUrl="Content/Super Bacon Bodyparts.bmp" publishTime="10/20/2012 15:25:17" />
     <file relUrl="Content/titlebar-active.png" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Content/Level 3 Kali Flower Float.jpg" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Pages/StoryOfJDBaconV1.aspx" publishTime="10/15/2012 08:32:17" />
-    <file relUrl="Scripts/ddaccordion.js" publishTime="10/09/2012 11:23:37" />
-    <file relUrl="Content/ConceptsFromTravis/About Rogue 6.jpg" publishTime="10/15/2012 08:27:04" />
-    <file relUrl="Content/ConceptsFromTravis/Super Bacon Tile 2.jpg" publishTime="10/15/2012 15:23:32" />
+    <file relUrl="Content/Rogue 6 Studios Logo.jpg" publishTime="10/09/2012 11:23:39" />
     <file relUrl="Content/JDWithShotGunPose.png" publishTime="10/15/2012 07:38:42" />
     <file relUrl="Content/ConceptsFromTravis/Stretch Goals.jpg" publishTime="10/15/2012 08:27:27" />
     <file relUrl="Content/accordion.css" publishTime="10/15/2012 08:33:53" />
     <file relUrl="Pages/BackStory.aspx" publishTime="10/15/2012 07:38:43" />
     <file relUrl="Content/Level 1 Room 2.jpg" publishTime="10/09/2012 11:23:39" />
-    <file relUrl="Content/ConceptsFromTravis/Front Page with Full Super bacon Background.jpg" publishTime="10/15/2012 15:23:32" />
+    <file relUrl="Content/ConceptsFromTravis/About Rogue 6.jpg" publishTime="10/15/2012 08:27:04" />
   </publishProfile>
 </publishData>

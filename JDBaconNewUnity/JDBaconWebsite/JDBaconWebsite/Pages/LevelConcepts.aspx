@@ -15,41 +15,46 @@
 <section class="Default">
     <table class="LevelConceptMap">
         <tr>
-            <td>
-                <img src="../Content/Level 1 Room 2.jpg" />
+            <td >
+                <img src="../Content/Level 1 Room 2.jpg" alt=""/>
             </td>
 
             <td>
-                <img src="../Content/Level 1 Room 3.jpg" />
+                <img src="../Content/Level 1 Room 3.jpg" alt=""/>
             </td>
 
             <td>
-                <img src="../Content/Level 2 Factory 2.jpg" />
+                <img src="../Content/Level 2 Factory 2.jpg" alt=""/>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="../Content/Level 2 Factory.jpg" />
+                <img src="../Content/Level 2 Factory.jpg" alt=""/>
             </td>
             <td>
-                <img src="../Content/ConceptsFromTravis/JDs_wingedLogo Fade_LevelScale.jpg" />
+                <img src="../Content/JDs_wingedLogo Fade_LevelScale.jpg" alt=""/>
             </td>
             <td>
-                <img src="../Content/Level 3 Kali Flower Float.jpg" />
+                <img src="../Content/Level 3 Kali Flower Float.jpg" alt=""/>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="../Content/Level 3 Tofu Float.jpg" />
+                <img src="../Content/Level 3 Tofu Float.jpg" alt=""/>
             </td>
             <td>
-                <img src="../Content/Level 4 City Shot.jpg" />
+                <img src="../Content/Level 4 City Shot.jpg" alt=""/>
             </td>
 
             <td>
-                <img src="../Content/Level 5 Shot 1.jpg" />
+                <img src="../Content/Level 5 Shot 1.jpg" alt=""/>
             </td>
         </tr>
     </table>
 </section>
+<script type="text/javascript">
+    $(function () {
+        $('table');
+    })
+</script>
 </asp:Content>

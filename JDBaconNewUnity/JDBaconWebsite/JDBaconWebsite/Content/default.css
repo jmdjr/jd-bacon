@@ -1,6 +1,6 @@
 ﻿html
 {
-    background: url('ConceptsFromTravis/Superbacon Tile Background.jpg');
+    background: url('Superbacon Tile Background.jpg');
     background-repeat:repeat;
     background-color:rgba(255, 0, 0, 0.5);
 }
@@ -57,7 +57,17 @@ footer
     margin-top: 20px;
 }
 
+.LevelConceptMap
+{
+    width:100%;
+    height:275px;
+}
+
 .LevelConceptMap img
 {
     width:250px;
+}
+.CharacterConceptMap img
+{
+    width:180px;
 }

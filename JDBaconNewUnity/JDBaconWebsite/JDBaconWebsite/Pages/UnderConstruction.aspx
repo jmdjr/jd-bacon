@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="Pages/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="UnderConstruction.aspx.cs" Inherits="JDBaconWebsite.Pages.UnderConstruction" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="UnderConstruction.aspx.cs" Inherits="JDBaconWebsite.Pages.UnderConstruction" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
 <title>Comming Soon! JD Bacon The Game!</title>
