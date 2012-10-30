@@ -1,8 +1,4 @@
-﻿a{
-	text-decoration:none;
-	color:#f30;	
-}
-p{
+﻿p{
 	clear:both;
 	margin:0;
 	padding:.5em 0;
@@ -19,17 +15,6 @@ pre{
 }
 
 img{border:none;}
-ul,li{
-	margin:0;
-	padding:0;
-}
-li{
-	list-style:none;
-	float:left;
-	display:inline;
-	margin-right:10px;
-}
-
 
 
 /*  */

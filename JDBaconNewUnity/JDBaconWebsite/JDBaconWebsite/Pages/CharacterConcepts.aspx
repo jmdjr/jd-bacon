@@ -16,7 +16,7 @@
     <table class="CharacterConceptMap">
         <tr>
             <td>
-                <img src="../Content/JD Bacon BodyParts.bmp" alt=""/>
+               <img src="../Content/JD Bacon BodyParts.bmp" alt=""/>
             </td>
 
             <td>
@@ -55,5 +55,4 @@
         </tr>
     </table>
     </section>
-    <script type="text/javascript" src="../Scripts/ConceptMapFancy.js"></script>
 </asp:Content>

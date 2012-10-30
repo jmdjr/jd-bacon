@@ -2,11 +2,12 @@
 <!DOCTYPE html>
 
 <%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
-<html style="background-color:#FF5B59">
+<html>
 <head>
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
     <link rel="Stylesheet" type="text/css" href="../Content/default.css" />
     <link rel="Stylesheet" type="text/css" href="../Content/accordion.css" />
+    <link rel="Stylesheet" type="text/css" href="../Content/main.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript" src="../Scripts/ddaccordion.js">
         /***********************************************
@@ -15,7 +16,9 @@
         * This notice must stay intact for legal use
         ***********************************************/
     </script>
-    <script type="text/javascript" src="../Scripts/Marquee.js"></script>
+    <script type="text/javascript" src="../Scripts/Marquee.js" ></script>
+    <script type="text/javascript" src="../Scripts/ConceptMapFancy.js" ></script>
+    <script type="text/javascript" src="../Scripts/main.js" ></script>
 </head>
 <body>
     <form id="MainForm" runat="server">
