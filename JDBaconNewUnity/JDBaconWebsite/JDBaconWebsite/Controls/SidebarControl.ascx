@@ -27,31 +27,32 @@
 </script>
 
 <div class="arrowlistmenu">
-    <h3 class="menuheader"><a href="HomePage.aspx">Home</a></h3>
+    <h3 class="menuheader"><a href="../HomePage.aspx">Home</a></h3>
+    <h3 class="menuheader"><a target="_blank" href="http://www.kickstarter.com/projects/206354589/jd-bacon-the-game?ref=live">Kick Starter!</a></h3>
     <h3 class="menuheader expandable">About Rouge 6</h3>
     <ul class="categoryitems">
-        <li><a href="AboutUs.aspx">Who We Are</a></li>
-        <li><a href="OurGoals.aspx">Our Goals</a></li>
+        <li><a href="../Pages/AboutUs.aspx">Who We Are</a></li>
+        <li><a href="../Pages/OurGoals.aspx">Our Goals</a></li>
     </ul>
     <h3 class="menuheader expandable">Story of JD</h3>
     <ul class="categoryitems">
-        <li><a href="BackStory.aspx">Back Story</a></li>
-        <li><a href="Characters.aspx">Characters</a></li>
+        <li><a href="../Pages/BackStory.aspx">Back Story</a></li>
+        <li><a href="../Pages/Characters.aspx">Characters</a></li>
     </ul>
     <h3 class="menuheader expandable">Concepts</h3>
     <ul class="categoryitems">
-        <li><a href="LevelConcepts.aspx" >Level Concepts</a></li>
-        <li><a href="CharacterConcepts.aspx" >Character Concepts</a></li>
-        <li><a href="CinematicConcepts.aspx" >Cinematic Concepts</a></li>
+        <li><a href="../Pages/LevelConcepts.aspx" >Level Concepts</a></li>
+        <li><a href="../Pages/CharacterConcepts.aspx" >Character Concepts</a></li>
+        <%--<li><a href="../Pages/CinematicConcepts.aspx" >Cinematic Concepts</a></li>--%>
     </ul>
     <h3 class="menuheader expandable">Game Status</h3>
     <ul class="categoryitems">
-        <li><a href="ProgressUpdates.aspx" >Progress Update</a></li>
-        <li><a href="StretchGoals.aspx" >Stretch Goals</a></li>
+        <li><a href="../Pages/ProgressUpdates.aspx" >Progress Update</a></li>
+        <li><a href="../Pages/StretchGoals.aspx" >Stretch Goals</a></li>
     </ul>
     <h3 class="menuheader expandable">Contact Us</h3>
     <ul class="categoryitems">
-        <li><a href="ContactUs.aspx" >Contact Us</a></li>
+        <li><a href="../Pages/ContactUs.aspx" >Contact Us</a></li>
     </ul>
 </div>
 <script type="text/javascript">

@@ -73,6 +73,7 @@
     <Content Include="Content\JD Bacon Faded.jpg" />
     <Content Include="Content\JD Bacon Kickstarter Concept.jpg" />
     <Content Include="Content\JDs_wingedLogo Fade.jpg" />
+    <Content Include="Content\JDs_wingedLogo Fade_Background.jpg" />
     <Content Include="Content\JDs_wingedLogo Fade_LevelScale.jpg" />
     <Content Include="Content\JDs_wingedLogo.jpg" />
     <Content Include="Content\Kali Flower Bodyparts.bmp" />
@@ -110,27 +111,25 @@
     <Content Include="Content\Rogue 6 Studios Logo.jpg" />
     <Content Include="Content\SuperJDPose.png" />
     <Content Include="Content\SuperJDPoster.png" />
-    <Content Include="default.aspx" />
+    <Content Include="Controls\ProgressUpdates.ascx" />
     <Content Include="Pages\AboutUs.aspx" />
     <Content Include="Pages\BackStory.aspx" />
     <Content Include="Pages\CharacterConcepts.aspx" />
     <Content Include="Pages\Characters.aspx" />
     <Content Include="Pages\CinematicConcepts.aspx" />
     <Content Include="Pages\ContactUs.aspx" />
+    <Content Include="Pages\default.aspx" />
     <Content Include="Pages\JohnsHome.aspx" />
     <Content Include="Pages\LevelConcepts.aspx" />
     <Content Include="Pages\OurGoals.aspx" />
     <Content Include="Pages\ProgressUpdates.aspx" />
-    <Content Include="Pages\Sample HoverOver.htm" />
-    <Content Include="Pages\SidebarControl.ascx" />
+    <Content Include="Controls\SidebarControl.ascx" />
     <Content Include="Pages\StoryOfJDBaconV1.aspx" />
     <Content Include="Pages\StretchGoals.aspx" />
-    <Content Include="Pages\UnderConstruction.aspx" />
-    <Content Include="Pages\UnderConstruction2.aspx" />
     <Content Include="Scripts\ddaccordion.js" />
     <Content Include="Content\titlebar-active.png" />
     <Content Include="Content\titlebar.png" />
-    <Content Include="Pages\HomePage.aspx" />
+    <Content Include="HomePage.aspx" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\Marquee.js" />
@@ -146,12 +145,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="default.aspx.cs">
-      <DependentUpon>default.aspx</DependentUpon>
+    <Compile Include="Controls\ProgressUpdates.ascx.cs">
+      <DependentUpon>ProgressUpdates.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="default.aspx.designer.cs">
-      <DependentUpon>default.aspx</DependentUpon>
+    <Compile Include="Controls\ProgressUpdates.ascx.designer.cs">
+      <DependentUpon>ProgressUpdates.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pages\AboutUs.aspx.cs">
       <DependentUpon>AboutUs.aspx</DependentUpon>
@@ -195,6 +194,13 @@
     <Compile Include="Pages\ContactUs.aspx.designer.cs">
       <DependentUpon>ContactUs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DefaultMasterPage.Master.cs">
       <DependentUpon>DefaultMasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -202,11 +208,11 @@
     <Compile Include="Pages\DefaultMasterPage.Master.designer.cs">
       <DependentUpon>DefaultMasterPage.Master</DependentUpon>
     </Compile>
-    <Compile Include="Pages\HomePage.aspx.cs">
+    <Compile Include="HomePage.aspx.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\HomePage.aspx.designer.cs">
+    <Compile Include="HomePage.aspx.designer.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\JohnsHome.aspx.cs">
@@ -237,11 +243,11 @@
     <Compile Include="Pages\ProgressUpdates.aspx.designer.cs">
       <DependentUpon>ProgressUpdates.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SidebarControl.ascx.cs">
+    <Compile Include="Controls\SidebarControl.ascx.cs">
       <DependentUpon>SidebarControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\SidebarControl.ascx.designer.cs">
+    <Compile Include="Controls\SidebarControl.ascx.designer.cs">
       <DependentUpon>SidebarControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pages\StoryOfJDBaconV1.aspx.cs">
@@ -257,20 +263,6 @@
     </Compile>
     <Compile Include="Pages\StretchGoals.aspx.designer.cs">
       <DependentUpon>StretchGoals.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\UnderConstruction.aspx.cs">
-      <DependentUpon>UnderConstruction.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\UnderConstruction.aspx.designer.cs">
-      <DependentUpon>UnderConstruction.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\UnderConstruction2.aspx.cs">
-      <DependentUpon>UnderConstruction2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\UnderConstruction2.aspx.designer.cs">
-      <DependentUpon>UnderConstruction2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

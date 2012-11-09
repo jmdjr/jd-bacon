@@ -7,10 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JDBaconWebsite {
+namespace JDBaconWebsite.Controls {
     
     
-    public partial class HomePage {
+    public partial class ProgressUpdates {
+        
+        /// <summary>
+        /// UpdatesPlaceholder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder UpdatesPlaceholder;
         
         /// <summary>
         /// ContributorsPlaceholder control.

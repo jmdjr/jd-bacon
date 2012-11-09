@@ -5,15 +5,17 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace JDBaconWebsite
+namespace JDBaconWebsite.Controls
 {
-    public partial class HomePage : System.Web.UI.Page
+    public partial class ProgressUpdates: System.Web.UI.UserControl
     {
         List<Contributor> contributorList;
+        List<string> updatesList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             contributorList = new List<Contributor>();
+            updatesList = new List<string>();
 
             GatherContributors();
 
@@ -21,7 +23,8 @@ namespace JDBaconWebsite
 
         public void GatherContributors()
         {
-            contributorList.Add(new Contributor("Samuel M. Jackson", 10, "Sweet, Thanks!!!"));
+            //contributorList.Add(new Contributor("Samuel M. Jackson", 10, "Sweet, Thanks!!!"));
+            updatesList.Add("11/03/2012<br/>Website is Live!");
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -30,6 +33,13 @@ namespace JDBaconWebsite
             foreach (Contributor c in contributorList)
             {
                 ContributorsPlaceholder.Controls.Add(new Literal() { Text = c.GenerateContributorString() });
+            }
+
+            ContributorsPlaceholder.Controls.Add(new Literal() { Text = "No Contributors to report yet... We Need You!" });
+
+            foreach (string c in updatesList)
+            {
+                UpdatesPlaceholder.Controls.Add(new Literal() { Text = c });
             }
         }
         // for now, this will be used to display all the contributors names.

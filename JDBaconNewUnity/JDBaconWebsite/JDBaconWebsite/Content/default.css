@@ -38,7 +38,9 @@ header
     border: double 5px black;
 }
 
-section.Default
+section.Default,
+section.Pig,
+section.Hippy
 {
     margin-top:15px;
     min-height: 100px;
@@ -47,6 +49,26 @@ section.Default
     padding: 10px;
 }
 
+section.Pig
+{
+    background-image: url('JDs_wingedLogo Fade_Background.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    min-height: 181px;
+}
+
+section.Pig > a
+{
+    text-decoration:none !important;
+    color:Black !important;
+}
+section.Hippy
+{
+    background-image: url('Hippy Faded_background.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    min-height: 500px;
+}
 .ClearFloats
 {
     clear:both;

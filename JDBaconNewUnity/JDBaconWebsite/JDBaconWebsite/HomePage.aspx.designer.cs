@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JDBaconWebsite.Pages {
+namespace JDBaconWebsite {
     
     
-    public partial class UnderConstruction2 {
+    public partial class HomePage {
         
         /// <summary>
-        /// MainForm control.
+        /// JDSideBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm MainForm;
+        protected global::JDBaconWebsite.Controls.ProgressUpdates JDSideBar;
     }
 }

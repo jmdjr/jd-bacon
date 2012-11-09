@@ -13,5 +13,18 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-<section class="Default"></section>
+<section class="Default">
+<table>
+    <tr>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+    </tr>
+    <tr>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+        <td><img src="../Content/JD Bacon BodyParts.bmp" alt=""/></td>
+    </tr>
+</table>
+</section>
 </asp:Content>

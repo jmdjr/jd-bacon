@@ -1,7 +1,8 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DefaultMasterPage.master.cs" Inherits="JDBaconWebsite.DefaultMasterPage" %>
 <!DOCTYPE html>
 
-<%@ Register Src="~/Pages/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
+<%@ Register Src="~/Controls/SideBarControl.ascx" TagName="Sidebar" tagprefix="JDSite" %>
+<%@ Register Src="~/Controls/ProgressUpdates.ascx" TagName="ProgressUpdate" tagprefix="JDSite" %>
 <html>
 <head>
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>

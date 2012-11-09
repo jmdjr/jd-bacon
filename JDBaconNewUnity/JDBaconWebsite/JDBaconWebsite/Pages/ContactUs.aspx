@@ -12,5 +12,9 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-<section class="Default"></section>
+<section class="Pig">
+<div style="width:100%; height:100%; margin: 50px auto;text-align:center;font-size:xx-large;">
+<strong>Email:</strong><a href="mailto:jdbacon.thegame01@gmail.com">jdbacon.thegame01@gmail.com</a>
+</div>
+</section>
 </asp:Content>
