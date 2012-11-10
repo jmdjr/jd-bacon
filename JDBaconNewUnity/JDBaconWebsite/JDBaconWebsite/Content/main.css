@@ -29,3 +29,15 @@ img{border:none;}
 	}
 
 /*  */
+
+.marquee
+{
+    white-space:normal;
+    word-wrap:break-word;
+}
+
+.marquee-scrollElement
+{
+    width:100%;
+    word-wrap:break-word;
+}

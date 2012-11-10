@@ -91,7 +91,7 @@
             newMarquee = newMarqueeList;
 
             if (newMarquee.length) {
-                setTimeout(animateMarquee, 25);
+                setTimeout(animateMarquee, marqueeState.timeout);
             }
         }
 
@@ -100,7 +100,7 @@
             var $marquee = $(this),
                 width = $marquee.attr('width') || $marquee.width(),
                 height = $marquee.attr('height') || $marquee.height(),
-                $marqueeRedux = $marquee.after('<div ' + (klass ? 'class="' + klass + '" ' : '') + 'style="display: block-inline; width: ' + width + 'px; height: ' + height + 'px; overflow: hidden;"><div style="float: left; white-space: nowrap;">' + $marquee.html() + '</div></div>').next(),
+                $marqueeRedux = $marquee.after('<div ' + (klass ? 'class="' + klass + '" ' : '') + 'style="display: block-inline; width: ' + width + 'px; height: ' + height + 'px; overflow: hidden;"><div style="float: left;"' + (klass ? 'class="' + klass + '" ' : '') + '>' + $marquee.html() + '</div></div>').next(),
                 marqueeRedux = $marqueeRedux.get(0),
                 hitedge = 0,
                 direction = ($marquee.attr('direction') || 'left').toLowerCase(),
@@ -112,7 +112,8 @@
                     loops: $marquee.attr('loop') || -1,
                     scrollamount: $marquee.attr('scrollamount') || this.scrollAmount || 2,
                     behavior: ($marquee.attr('behavior') || 'scroll').toLowerCase(),
-                    width: /left|right/.test(direction) ? width : height
+                    width: /left|right/.test(direction) ? width : height,
+                    timeout: $marquee.attr('timeout')
                 };
 
             // corrects a bug in Firefox - the default loops for slide is -1
