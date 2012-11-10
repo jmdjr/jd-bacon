@@ -46,9 +46,12 @@
                     marqueeRedux[marqueeState.axis] += (marqueeState.scrollamount * marqueeState.dir);
 
                     // only true if it's hit the end
-                    hitedge = marqueeState.dir == -1 ? marqueeRedux[marqueeState.axis] <= getReset(marqueeState.dir * -1, marqueeRedux, marqueeState) : marqueeRedux[marqueeState.axis] >= getReset(marqueeState.dir * -1, marqueeRedux, marqueeState);
+                    hitedge = marqueeState.dir == -1 ? marqueeRedux[marqueeState.axis] <= getReset(marqueeState.dir * -1, marqueeRedux, marqueeState) : 
+                    marqueeRedux[marqueeState.axis] >= getReset(marqueeState.dir * -1, marqueeRedux, marqueeState);
 
-                    if ((marqueeState.behavior == 'scroll' && marqueeState.last == marqueeRedux[marqueeState.axis]) || (marqueeState.behavior == 'alternate' && hitedge && marqueeState.last != -1) || (marqueeState.behavior == 'slide' && hitedge && marqueeState.last != -1)) {
+                    if ((marqueeState.behavior == 'scroll' && marqueeState.last == marqueeRedux[marqueeState.axis]) 
+                    || (marqueeState.behavior == 'alternate' && hitedge && marqueeState.last != -1) 
+                    || (marqueeState.behavior == 'slide' && hitedge && marqueeState.last != -1)) {
                         if (marqueeState.behavior == 'alternate') {
                             marqueeState.dir *= -1; // flip
                         }
