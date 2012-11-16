@@ -25,7 +25,6 @@ public class MainGameplayHUD : MonoBehaviour
     // Items for shrinking the Bacon
     public float BaconWidth;
     public float BaconHeight;
-    
     // Use this for initialization
     void Start()
     {
@@ -34,6 +33,7 @@ public class MainGameplayHUD : MonoBehaviour
         PlayerReference.MaxHitPoints = 5;
         BaconWidth = BaconHealth.width / PlayerReference.MaxHitPoints;
         BaconHeight = BaconHealth.height / PlayerReference.MaxHitPoints;
+        Debug.Log("BaconHeight:" + BaconHeight);
         Weapons = new List<Texture2D>(Enum.GetValues(typeof(HeroWeaponIconType)).Length);
         Weapons.AddRange(PlayerReference.WeaponManager.WeaponsList.ConvertAll<Texture2D>(image => image.WeaponIconType.ToIconImageFile()));
     }
@@ -62,9 +62,9 @@ public class MainGameplayHUD : MonoBehaviour
     void OnGUI()
     {
         GUI.Label(new Rect(50, 40, 100, 100), "Total Health: " + PlayerReference.MaxHitPoints);
-        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + PlayerReference.MaxHitPoints);
-        // Draw Bacon Health Bar
-        GUI.DrawTexture(new Rect((Screen.width - BaconHealth.width) / 2, 10, BaconWidth * (PlayerReference.HitPoints), BaconHeight * (PlayerReference.HitPoints)), BaconHealth);
+        GUI.Label(new Rect(50, 50, 100, 100), "Health: " + PlayerReference.HitPoints);
+        Rect rect = new Rect((Screen.width - BaconHealth.width) /2 , 10, BaconWidth * (PlayerReference.HitPoints), BaconHeight * (PlayerReference.HitPoints));
+        GUI.DrawTexture(rect, BaconHealth);
         GUI.Box(new Rect(Screen.width / 20 * 2, Screen.height / 7 * 6, 100, 100), WeaponSelected);
     }
 

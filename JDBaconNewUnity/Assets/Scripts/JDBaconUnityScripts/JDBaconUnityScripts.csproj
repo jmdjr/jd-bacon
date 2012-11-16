@@ -84,6 +84,7 @@
     <Compile Include="Classes\JDMonoBodyBehavior.cs" />
     <Compile Include="Classes\JDMonoGuiBehavior.cs" />
     <Compile Include="InspectorScripts\EditorGUIUtilityFindTexture.cs" />
+    <Compile Include="StatisticsManagement\DebugHUD.cs" />
     <Compile Include="WeaponScripts\JDHeroWeapon.cs" />
     <Compile Include="EnvironmentScripts\JDBox.cs" />
     <Compile Include="StateManagement\JDStateMachineSystem.cs" />

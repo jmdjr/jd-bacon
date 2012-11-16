@@ -1,7 +1,12 @@
-using UnityEngine;
+
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
+using UnityEngine;
+using SmoothMoves;
+
+using Object = UnityEngine.Object;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(MeshCollider))]
 public class CardboardCutoutMovement : StateMachineSystem

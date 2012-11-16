@@ -1,11 +1,14 @@
-﻿using System;
+﻿
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace JDBaconUnityScripts.CharacterScripts.Enemies.Cardboard_Cutout
+using UnityEngine;
+using SmoothMoves;
+
+using Object = UnityEngine.Object;
+    
+public class JDCardboardCutout : JDCharacter
 {
-    class JDCardboardCutout
-    {
-    }
+
 }

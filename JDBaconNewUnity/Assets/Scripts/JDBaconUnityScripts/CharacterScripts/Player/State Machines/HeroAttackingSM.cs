@@ -29,11 +29,11 @@ public class HeroAttackingSM : JDStateMachine
     {
         if (triggerEvent.boneName == "Weapon")
         {
-            JDCharacter character = JDGame.GetCharacterFromCollider(triggerEvent.otherCollider);
+            JDCharacter character = JDGame.GetCharacterFromCollider(triggerEvent.otherCollider, this.heroReference);
 
             if (character != null)
             {
-                Debug.Log(character.Name);
+                Debug.Log("Other:" + character.HitPoints + " player:" + this.heroReference.HitPoints);
                 character.UpdateHealth(this.heroReference.InflictingDamage());
             }
         }

@@ -28,6 +28,7 @@ public class JDCharacter : JDICharacter
     public int MaxHitPoints { get { return this.maxHitPoints; } set { this.maxHitPoints = value; } }
     public int HitPoints { get { return this.hitPoints; } set { this.hitPoints = value; } }
     public int CollisionDamage { get { return this.collisionDamage; } set { this.collisionDamage = value; } }
+    public bool IsDead { get { return this.hitPoints <= 0; } }
     #endregion
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
@@ -39,5 +40,6 @@ public class JDCharacter : JDICharacter
     {
         this.HitPoints += amount;
     }
-    public virtual int InflictingDamage() { return this.CollisionDamage; }
+
+    public virtual int InflictingDamage() { return -1 * this.CollisionDamage; }
 }

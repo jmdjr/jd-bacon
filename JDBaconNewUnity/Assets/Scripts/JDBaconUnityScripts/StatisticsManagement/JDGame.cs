@@ -43,21 +43,21 @@ public class JDGame
         {
             if(reaper == null)
             {
-                reaper = ((GrimReaper)LevelMaster.GetComponent<GrimReaper>());
+                reaper = ((GrimReaper)GameMaster.GetComponent<GrimReaper>());
             }
 
             return reaper;
         }
     }
 
-    public static JDCharacter GetCharacterFromCollider(Collider collider)
+    public static JDCharacter GetCharacterFromCollider(Collider collider, JDCharacter Original)
     {
         try
         {
             GameObject go = collider.gameObject;
 
             JDMonoBodyBehavior registeredScript = go.GetComponent<JDMonoBodyBehavior>();
-            JDCharacter character = (JDCharacter)registeredScript.JDCollection.Find(match => { return match.JDType == JDIObjectTypes.CHARACTER; });
+            JDCharacter character = (JDCharacter)registeredScript.JDCollection.Find(match => { return (match.JDType == JDIObjectTypes.CHARACTER && match != Original); });
 
             return character;
         }

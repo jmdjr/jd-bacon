@@ -26,7 +26,7 @@ public class JDHeroCharacter : JDCharacter
 
     public override int InflictingDamage()
     {
-        return this.WeaponManager.CurrentWeapon.DamageAmount;
+        return -1 * this.WeaponManager.CurrentWeapon.DamageAmount;
     }
 }
 

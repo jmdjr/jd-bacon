@@ -13,4 +13,21 @@ public class JDEnemyController : JDMonoBodyBehavior
         EnemyReference = new JDEnemy();
         JDCollection.Add(EnemyReference);
     }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (this.EnemyReference.IsDead)
+        {
+            this.StopAllCoroutines();
+
+            if (this.gameObject != null)
+            {
+                Debug.Log(this.gameObject);
+                Destroy();
+                JDGame.GrimReaper.Kill(this.gameObject);
+            }
+        }
+    }
 }
