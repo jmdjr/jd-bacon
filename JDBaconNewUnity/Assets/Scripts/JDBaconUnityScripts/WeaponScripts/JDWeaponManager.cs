@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using SmoothMoves;
 using System.Collections.Generic;
+using System.Xml;
+using System.IO;
 
 public class JDWeaponManager
 {
@@ -18,11 +20,28 @@ public class JDWeaponManager
     {
         this.CurrentWeaponIndex = 1;
 
+        // will convert this to reading a document later.
+//        String xmlString = @"
+//<Weapons>
+//    <Name>NoWeapon</Name>
+//    <Range>0</Range>
+//    <WeaponIdleAnimationType>W_NONE</WeaponIdleAnimationType>
+//    <WeaponAttackAnimationType>W_NONE</WeaponAttackAnimationType>
+//    <WeaponIconType>NONE</WeaponIconType>
+//    <DamageAmount>0</DamageAmount>
+//    <CooldownTime>1</CooldownTime>
+//    <IsActive>true</IsActive>
+//</Weapons>
+//";
+//        JDHeroWeapon weapons = (JDHeroWeapon)JDGameUtilz.DeserializeObject(xmlString, "Weapons", typeof(JDHeroWeapon), JDGameUtilz.EncodingType.UTF8);
+
+//        Debug.Log(weapons);
+        
         Weapons = new List<JDHeroWeapon>()
         {
             new JDNoWeapon(heroReference),
             new JDSword(heroReference),
-            new JDShotgun(heroReference),
+            new JDShotgun(heroReference)
         };
     }
 

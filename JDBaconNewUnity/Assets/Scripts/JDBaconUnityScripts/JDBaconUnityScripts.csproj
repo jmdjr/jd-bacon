@@ -50,7 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterScripts\Character.cs" />
+    <Compile Include="ObsoleteCode\Character.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\CardboardCutoutMovement.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutout.cs" />
     <Compile Include="CharacterScripts\Enemies\JDEnemyController.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="CharacterScripts\Player\State Machines\HeroJumpingSM.cs" />
     <Compile Include="CharacterScripts\Player\State Machines\HeroSMS.cs" />
     <Compile Include="CharacterScripts\Player\JDPlayerController.cs" />
-    <Compile Include="CharacterScripts\Player\Player.cs" />
+    <Compile Include="ObsoleteCode\Player.cs" />
     <Compile Include="CharacterScripts\JDCharacter.cs" />
     <Compile Include="CharacterScripts\Player\JDHeroAnimator.cs" />
     <Compile Include="Classes\JDEnumerationExtension.cs" />
@@ -89,16 +89,16 @@
     <Compile Include="EnvironmentScripts\JDBox.cs" />
     <Compile Include="StateManagement\JDStateMachineSystem.cs" />
     <Compile Include="StatisticsManagement\MainGameplayHUD.cs" />
-    <Compile Include="WeaponScripts\Contact\Sword.cs" />
-    <Compile Include="WeaponScripts\Gun\Bullet.cs" />
-    <Compile Include="WeaponScripts\Gun\MachineGun.cs" />
-    <Compile Include="WeaponScripts\Gun\Shotgun.cs" />
+    <Compile Include="ObsoleteCode\Contact\Sword.cs" />
+    <Compile Include="ObsoleteCode\Gun\Bullet.cs" />
+    <Compile Include="ObsoleteCode\Gun\MachineGun.cs" />
+    <Compile Include="ObsoleteCode\Gun\Shotgun.cs" />
     <Compile Include="WeaponScripts\JDNoWeapon.cs" />
     <Compile Include="WeaponScripts\JDShotgun.cs" />
     <Compile Include="WeaponScripts\JDSword.cs" />
     <Compile Include="WeaponScripts\JDWeaponManager.cs" />
-    <Compile Include="WeaponScripts\Weapon.cs" />
-    <Compile Include="CharacterScripts\Player\PlayerController.cs" />
+    <Compile Include="ObsoleteCode\Weapon.cs" />
+    <Compile Include="ObsoleteCode\PlayerController.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
@@ -135,6 +135,7 @@
   <ItemGroup>
     <Content Include="UnityEditor.dll" />
     <Content Include="UnityEngine.dll" />
+    <Content Include="Classes\Weapons.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

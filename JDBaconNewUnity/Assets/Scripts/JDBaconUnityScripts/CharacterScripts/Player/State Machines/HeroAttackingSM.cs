@@ -10,7 +10,6 @@ public class HeroAttackingSM : JDStateMachine
     private HeroAnimationProperties AnimationProperties;
     private JDMonoBodyBehavior ScriptReference;
     private JDWeaponManager WeaponManager;
-    private bool takenAHit = false;
 
     public HeroAttackingSM(JDHeroCharacter HeroReference, JDMonoBodyBehavior scriptReference)
     :base("Attacking")
@@ -57,13 +56,13 @@ public class HeroAttackingSM : JDStateMachine
     private IEnumerator AttackingAction()
     {
         this.AnimationProperties.UpdateWeaponAnimation(this.WeaponManager.GetWeaponAttack());
-        //yield return new WaitForSeconds(this.AnimationProperties.Animator.GetCurrentClipLength());  // need to properly identify how long the animation is.
         yield return new WaitForSeconds(this.WeaponManager.CurrentWeapon.CooldownTime);
+        this.AnimationProperties.UpdateWeaponAnimation(this.WeaponManager.GetWeaponIdle());
     }
     private bool AttackingCondition()
     {
         // You have pressed the button to attack.
-        return Input.GetAxis("Fire1") > 0;
+        return Input.GetMouseButton(0);
     }
     #endregion
 

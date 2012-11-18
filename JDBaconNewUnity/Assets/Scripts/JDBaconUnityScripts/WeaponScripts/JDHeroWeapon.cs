@@ -4,7 +4,7 @@ using System.Collections;
 using SmoothMoves;
 
 [Serializable]
-public abstract class JDHeroWeapon : JDIWeapon
+public class JDHeroWeapon : JDIWeapon
 {
     [SerializeField]
     private int damageAmount;

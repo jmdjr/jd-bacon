@@ -117,6 +117,4 @@ public static class JDGameUtilz
         return obj.GetComponent<JDMonoBehavior>();
     }
 
-    //public JDIObject GetJDObjectFromScript
-
 }

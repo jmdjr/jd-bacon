@@ -1,0 +1,22 @@
+﻿<Weapons>
+  <Weapon>
+    <Name>NoWeapon</Name>
+    <Range>0</Range>
+    <WeaponIdleAnimationType>W_NONE</WeaponIdleAnimationType>
+    <WeaponAttackAnimationType>W_NONE</WeaponAttackAnimationType>
+    <WeaponIconType>NONE</WeaponIconType>
+    <DamageAmount>0</DamageAmount>
+    <CooldownTime>1</CooldownTime>
+    <IsActive>True</IsActive>
+  </Weapon>
+  <Weapon>
+    <Name>ShotGun</Name>
+    <Range>50</Range>
+    <WeaponIdleAnimationType>W_NONE</WeaponIdleAnimationType>
+    <WeaponAttackAnimationType>W_NONE</WeaponAttackAnimationType>
+    <WeaponIconType>SHOTGUN</WeaponIconType>
+    <DamageAmount>10</DamageAmount>
+    <CooldownTime>1</CooldownTime>
+    <IsActive>True</IsActive>
+  </Weapon>
+</Weapons>
