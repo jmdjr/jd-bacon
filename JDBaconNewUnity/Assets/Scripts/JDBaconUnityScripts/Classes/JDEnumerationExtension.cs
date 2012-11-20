@@ -32,7 +32,7 @@ public static class HeroAnimationTypeExtension
         {
             default:
             case HeroAnimationType.W_NONE:
-                return "NoWeapon";
+                return "Idle";
 
             case HeroAnimationType.W_SWORD_IDLE:
                 return "SwordIdle";
@@ -52,8 +52,8 @@ public static class HeroAnimationTypeExtension
         switch (type.TypeToStandard())
         {
             default:
-            case HeroAnimationType.S_STAND:
-                return "Stand";
+            case HeroAnimationType.S_IDLE:
+                return "Idle";
 
             case HeroAnimationType.S_WALK:
                 return "Walk";

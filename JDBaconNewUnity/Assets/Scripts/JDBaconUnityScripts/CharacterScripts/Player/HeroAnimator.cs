@@ -38,7 +38,7 @@ public class HeroAnimator : JDIAnimator
     public HeroAnimationType CurrentWeaponAnimation { get { return CurrentAnimation.TypeToWeapon(); } }
     public HeroAnimationType CurrentDirectionalAnimation { get { return CurrentAnimation.TypeToDirection(); } }
 
-    public HeroAnimator(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_STAND | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
+    public HeroAnimator(BoneAnimation bone, HeroAnimationType initialAnimation = HeroAnimationType.S_IDLE | HeroAnimationType.W_NONE | HeroAnimationType.D_STRAIT)
     {
         if (bone == null)
         {

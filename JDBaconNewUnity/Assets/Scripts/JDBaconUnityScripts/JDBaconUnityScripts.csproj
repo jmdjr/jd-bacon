@@ -50,12 +50,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterScripts\Character.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\CardboardCutoutMovement.cs" />
     <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutout.cs" />
     <Compile Include="CharacterScripts\Enemies\JDEnemyController.cs" />
     <Compile Include="CharacterScripts\Enemies\JDEnemy.cs" />
-    <Compile Include="CharacterScripts\Enemies\Zombie\Health\EnemyZombie.cs" />
     <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\HeroAnimationProperties.cs" />
     <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
@@ -67,7 +65,6 @@
     <Compile Include="CharacterScripts\Player\State Machines\HeroJumpingSM.cs" />
     <Compile Include="CharacterScripts\Player\State Machines\HeroSMS.cs" />
     <Compile Include="CharacterScripts\Player\JDPlayerController.cs" />
-    <Compile Include="CharacterScripts\Player\Player.cs" />
     <Compile Include="CharacterScripts\JDCharacter.cs" />
     <Compile Include="CharacterScripts\Player\JDHeroAnimator.cs" />
     <Compile Include="Classes\JDEnumerationExtension.cs" />
@@ -89,16 +86,10 @@
     <Compile Include="EnvironmentScripts\JDBox.cs" />
     <Compile Include="StateManagement\JDStateMachineSystem.cs" />
     <Compile Include="StatisticsManagement\MainGameplayHUD.cs" />
-    <Compile Include="WeaponScripts\Contact\Sword.cs" />
-    <Compile Include="WeaponScripts\Gun\Bullet.cs" />
-    <Compile Include="WeaponScripts\Gun\MachineGun.cs" />
-    <Compile Include="WeaponScripts\Gun\Shotgun.cs" />
     <Compile Include="WeaponScripts\JDNoWeapon.cs" />
     <Compile Include="WeaponScripts\JDShotgun.cs" />
     <Compile Include="WeaponScripts\JDSword.cs" />
     <Compile Include="WeaponScripts\JDWeaponManager.cs" />
-    <Compile Include="WeaponScripts\Weapon.cs" />
-    <Compile Include="CharacterScripts\Player\PlayerController.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />

@@ -43,7 +43,7 @@ public enum HeroAnimationType
 {
     // Standard Animations
     S_NONE = 0,
-    S_STAND = 1,
+    S_IDLE = 1,
     S_WALK = 2,
     S_JUMP = 3,
 
@@ -91,7 +91,7 @@ public enum EnemyAnimationType
 {
     // Standard Animations
     S_NONE = 0,
-    S_STAND = 1,
+    S_IDLE = 1,
     S_WALK = 2,
     S_JUMP = 3,
 

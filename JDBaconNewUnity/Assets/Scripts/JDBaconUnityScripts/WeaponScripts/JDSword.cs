@@ -10,7 +10,7 @@ public class JDSword : JDHeroWeapon
         this.heroReference = hero;
 
         this.Range = 0;
-        this.WeaponIdleAnimationType = HeroAnimationType.W_SWORD_IDLE;
+        this.WeaponIdleAnimationType = HeroAnimationType.W_NONE;
         this.WeaponAttackAnimationType = HeroAnimationType.W_SWORD_ATTACK;
         this.WeaponIconType = HeroWeaponIconType.SWORD;
         this.DamageAmount = 10;

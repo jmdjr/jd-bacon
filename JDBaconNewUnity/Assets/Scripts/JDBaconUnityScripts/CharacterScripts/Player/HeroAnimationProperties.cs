@@ -7,8 +7,8 @@ using SmoothMoves;
 public class HeroAnimationProperties
 {
     public JDHeroAnimator Animator;
-    private HeroAnimationType currentStandard = HeroAnimationType.S_STAND;
-    private HeroAnimationType currentWeapon = HeroAnimationType.W_SWORD_IDLE;
+    private HeroAnimationType currentStandard = HeroAnimationType.S_IDLE;
+    private HeroAnimationType currentWeapon = HeroAnimationType.W_NONE;
     private HeroAnimationType currentDirection = HeroAnimationType.D_STRAIT;
     private bool facingLeft = false;
 

@@ -43,7 +43,7 @@ public class HeroHorizontalMovementSM : JDStateMachine
     {
         if (!PhysicsProperties.IsAirborne)
         {
-            AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_STAND);
+            AnimationProperties.UpdateStandardAnimation(HeroAnimationType.S_IDLE);
         }
         yield return 0;
     }
