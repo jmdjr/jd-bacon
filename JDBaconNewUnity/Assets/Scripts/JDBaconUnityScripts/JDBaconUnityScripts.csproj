@@ -50,11 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\CardboardCutoutMovement.cs" />
-    <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutout.cs" />
+    <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CharacterScripts\Enemies\Cardboard Cutout\JDCardboardCutoutStateMachine.cs" />
+    <Compile Include="CharacterScripts\Enemies\JDEnemyCharacter.cs" />
     <Compile Include="CharacterScripts\Enemies\JDEnemyController.cs" />
-    <Compile Include="CharacterScripts\Enemies\JDEnemy.cs" />
-    <Compile Include="CharacterScripts\Enemies\Zombie\Movement\EnemyMovement.cs" />
     <Compile Include="CharacterScripts\Player\HeroAnimationProperties.cs" />
     <Compile Include="CharacterScripts\Player\CharacterAnimationHelper.cs" />
     <Compile Include="CharacterScripts\Player\HeroAnimator.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Classes\JDMonoBodyBehavior.cs" />
     <Compile Include="Classes\JDMonoGuiBehavior.cs" />
     <Compile Include="InspectorScripts\EditorGUIUtilityFindTexture.cs" />
-    <Compile Include="StatisticsManagement\DebugHUD.cs" />
+    <Compile Include="InspectorScripts\DebugManager.cs" />
     <Compile Include="WeaponScripts\JDHeroWeapon.cs" />
     <Compile Include="EnvironmentScripts\JDBox.cs" />
     <Compile Include="StateManagement\JDStateMachineSystem.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="EnvironmentScripts\ActivateTrigger.cs" />
     <Compile Include="EnvironmentScripts\ApplyExternalForces.cs" />
     <Compile Include="EnvironmentScripts\ZeroZoneScript.cs" />
-    <Compile Include="InspectorScripts\BaconDebugProvider.cs" />
     <Compile Include="JDBaconMain.cs" />
     <Compile Include="StateManagement\StateMachineSystem.cs">
       <SubType>Code</SubType>
@@ -120,6 +120,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CharacterScripts\Enemies\Zombie\" />
     <Folder Include="CharacterScripts\NPC\" />
     <Folder Include="CollectableScripts\" />
   </ItemGroup>

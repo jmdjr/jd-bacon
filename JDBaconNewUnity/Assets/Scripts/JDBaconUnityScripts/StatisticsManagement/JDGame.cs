@@ -66,6 +66,15 @@ public class JDGame
             return null;
         }
     }
-    
+
+    /// <summary>
+    /// Returns the First Instance of a JDIObject of the type provided.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="gameObject"></param>
+    /// <returns></returns>
+    //public static JDIObject GetJDIObjectFromSelf<T>(GameObject gameObject) where T: JDIObject
+    //{
+    //}
 }
 

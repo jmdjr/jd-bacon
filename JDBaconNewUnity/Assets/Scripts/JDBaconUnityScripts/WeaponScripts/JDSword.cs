@@ -13,7 +13,7 @@ public class JDSword : JDHeroWeapon
         this.WeaponIdleAnimationType = HeroAnimationType.W_NONE;
         this.WeaponAttackAnimationType = HeroAnimationType.W_SWORD_ATTACK;
         this.WeaponIconType = HeroWeaponIconType.SWORD;
-        this.DamageAmount = 10;
+        this.DamageAmount = 5;
         this.CooldownTime = 0.28f;
         this.IsActive = false;
     }
