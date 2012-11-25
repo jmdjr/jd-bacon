@@ -6,6 +6,7 @@ ModelImporter:
     4300002: Cylinder01
     4300004: Cylinder02
     4300006: Cylinder03
+    4300008: Light
   serializedVersion: 10
   materials:
     importMaterials: 1
