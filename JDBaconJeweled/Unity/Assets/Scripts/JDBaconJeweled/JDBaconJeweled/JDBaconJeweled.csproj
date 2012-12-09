@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\JDBaconJeweled_debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SmoothMoves_Runtime">
+      <HintPath>..\..\..\SmoothMoves\Plugins\SmoothMoves\SmoothMoves_Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +53,7 @@
     <Compile Include="BaseClasses\JDEnumerationExtension.cs" />
     <Compile Include="BaseClasses\JDGame.cs" />
     <Compile Include="BaseClasses\JDGameUtilz.cs" />
+    <Compile Include="BaseClasses\JDIAmCollidable.cs" />
     <Compile Include="BaseClasses\JDIHaveScriptHandles.cs" />
     <Compile Include="BaseClasses\JDIObject.cs" />
     <Compile Include="BaseClasses\JDISeeGUI.cs" />
@@ -58,6 +62,18 @@
     <Compile Include="BaseClasses\JDMonoGuiBehavior.cs" />
     <Compile Include="BaseClasses\JDMonoGUIBodyBehavior.cs" />
     <Compile Include="BaseClasses\JDStateMachineSystem.cs" />
+    <Compile Include="Bullet Logic\BulletFactory.cs" />
+    <Compile Include="Bullet Logic\JDBullet.cs" />
+    <Compile Include="JewelMatrix\BulletMatrix.cs" />
+    <Compile Include="Bullet Logic\IBullet.cs" />
+    <Compile Include="JDBaconJeweledConsole.cs" />
+    <Compile Include="JewelMatrix\MatrixJewelLogic.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Definitions\BulletDefinitions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

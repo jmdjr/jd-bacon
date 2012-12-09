@@ -6,8 +6,9 @@ using System.Collections;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
-public class JDGame
+public static class JDGame
 {
+    public static string GameMasterName = "__GameMasterObject";
     private static GameObject gameMaster = null;
     public static GameObject GameMaster
     {
@@ -15,13 +16,14 @@ public class JDGame
         {
             if (gameMaster == null)
             {
-                gameMaster = GameObject.Find("__GameMasterObject");
+                gameMaster = GameObject.Find(GameMasterName);
             }
 
             return gameMaster;
         }
     }
 
+    public static string levelMasterName = "__LevelMasterObject";
     private static GameObject levelMaster = null;
     public static GameObject LevelMaster
     {
@@ -29,11 +31,11 @@ public class JDGame
         {
             if (levelMaster == null)
             {
-                levelMaster = GameObject.Find("__LevelMasterObject");
+                levelMaster = GameObject.Find(levelMasterName);
             }
 
             return levelMaster;
-        }
+        } 
     }
 
     public static JDIObject GetJDIObject(JDMonoBodyBehavior script, JDIObjectTypes JDType)

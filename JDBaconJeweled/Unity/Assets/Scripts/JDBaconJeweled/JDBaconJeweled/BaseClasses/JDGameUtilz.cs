@@ -7,11 +7,11 @@ using UnityEngine;
 
 public static class JDGameUtilz
 {
-    public static string _FileLocationz = Application.dataPath;
-    public static string _AnimationzLocationz = _FileLocationz + @"\Animations";
-    public static string _prefabzLocationz = _FileLocationz + @"\Prefabs\Game Prefabs";
-    public static string _LevelzLocationz = _FileLocationz + @"\Levels";
-    public static string _ScriptzLocationz = _FileLocationz + @"\Scripts\JDBaconUnityScripts";
+    //public static string _FileLocationz = Application.dataPath;
+    //public static string _AnimationzLocationz = _FileLocationz + @"\Animations";
+    //public static string _prefabzLocationz = _FileLocationz + @"\Prefabs\Game Prefabs";
+    //public static string _LevelzLocationz = _FileLocationz + @"\Levels";
+    //public static string _ScriptzLocationz = _FileLocationz + @"\Scripts\JDBaconUnityScripts";
 
     public enum EncodingType
     {
@@ -112,9 +112,9 @@ public static class JDGameUtilz
         return xs.Deserialize(memoryStream);
     }
 
-    public static JDMonoBehavior GetJDMonoBehavior(GameObject obj)
-    {
-        return obj.GetComponent<JDMonoBehavior>();
-    }
+    //public static JDMonoBehavior GetJDMonoBehavior(GameObject obj)
+    //{
+    //    return obj.GetComponent<JDMonoBehavior>();
+    //}
 
 }
