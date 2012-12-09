@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+
+using Object = UnityEngine.Object;
+using Random = System.Random;
 
 namespace JDBaconJeweled
 {
@@ -9,20 +17,42 @@ namespace JDBaconJeweled
     {
         public static void Main()
         {
-            Console.WriteLine("Please specify the dimensions of the grid (must be greater than a 5x5):");
-            string dimensions = Console.ReadLine();
 
-            Console.WriteLine("Number of bullets decoded: " + BulletFactory.Instance.Bullets.Count);
-            Console.WriteLine("Bullet Information:");
+            //Console.WriteLine("Please specify the dimensions of the grid (must be greater than a 5x5):");
+            //string dimensions = Console.ReadLine();
+            string dimensions = "9x9";
+            var stuffs = dimensions.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (JDBullet bullet in BulletFactory.Instance.Bullets)
+            int w = int.Parse(stuffs[0]);
+            int h = int.Parse(stuffs[1]);
+
+            BulletMatrix frame = new BulletMatrix(h, w);
+
+            frame.Load();
+
+            
+            frame.Debug_PrintBulletMatrix();
+            Console.WriteLine();
+            Console.WriteLine("The Game will now begin dropping and shifting until all matches are gone...");
+            Console.ReadKey(true);
+
+            List<Vector2> matches = frame.CollectMatchedBullets();
+            frame.Debug_PrintBulletMatrix();
+            Console.WriteLine("Total Matched this round: " + matches.Count);
+            do
             {
-                Console.WriteLine("Name: " + bullet.Name);
-                Console.WriteLine("Id: " + bullet.Id);
-                Console.WriteLine("JDType: " + bullet.JDType);
-                Console.WriteLine("BulletType: " + bullet.BulletType);
-                Console.WriteLine("\n");
+                frame.DropMatchedBullets(matches);
+
+                frame.ShiftItemsDown(matches);
+                matches = frame.CollectMatchedBullets();
             }
+            while (matches.Count > 0);
+
+
+            frame.Debug_PrintBulletMatrix();
+
+            Console.WriteLine();
+
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);

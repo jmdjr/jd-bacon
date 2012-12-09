@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 
 using Object = UnityEngine.Object;
+using Random = System.Random;
 using System.Collections.Generic;
 
 public sealed class BulletFactory
@@ -24,13 +25,43 @@ public sealed class BulletFactory
         }
     }
 
-    public List<JDBullet> Bullets;
+    public static int NumberOfLoadedBullets { get { return Instance.BulletReferences.Count; } }
 
+    private List<JDBullet> BulletReferences;
+    private List<JDBullet> BulletCollection;
     private BulletFactory()
     {
-        Bullets = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
+        BulletCollection = new List<JDBullet>();
+
+        BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
             "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
 
+        Random r = new Random(0);
+
+        foreach (JDBullet bullet in BulletReferences)
+        {
+            bullet.Debug_Color = (ConsoleColor)(r.Next(1, 15));
+        }
     }
 
+    public JDBullet SpawnBullet(int bulletIndex)
+    {
+        if (bulletIndex < 0 || bulletIndex > NumberOfLoadedBullets)
+        {
+            return null;
+        }
+        
+        JDBullet bullet = BulletReferences[bulletIndex].SpawnCopy();
+        BulletCollection.Add(bullet);
+
+        return bullet;
+    }
+
+    public void DestroyBullet(JDBullet bulletReference)
+    {
+        if(this.BulletCollection.Contains(bulletReference))
+        {
+            this.BulletCollection.Remove(bulletReference);
+        }
+    }
 }

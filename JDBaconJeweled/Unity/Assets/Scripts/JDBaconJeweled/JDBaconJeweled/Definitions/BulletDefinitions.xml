@@ -4,21 +4,31 @@
     <Name>Bullet 1</Name>
     <BulletTypeString>BULLET_1</BulletTypeString>
     <Id>1</Id>
+    <bulletDebugChar>@</bulletDebugChar>
   </JDBullet>
   <JDBullet>
     <Name>Bullet 2</Name>
     <BulletTypeString>BULLET_2</BulletTypeString>
-    <Id>1</Id>
+    <bulletDebugChar>#</bulletDebugChar>
+    <Id>2</Id>
   </JDBullet>
   <JDBullet>
     <Name>Bullet 3</Name>
     <BulletTypeString>BULLET_3</BulletTypeString>
-    <Id>1</Id>
+    <bulletDebugChar>%</bulletDebugChar>
+    <Id>3</Id>
   </JDBullet>
   <JDBullet>
     <Name>Bullet 4</Name>
     <BulletTypeString>BULLET_4</BulletTypeString>
-    <Id>1</Id>
+    <bulletDebugChar>*</bulletDebugChar>
+    <Id>4</Id>
+  </JDBullet>
+  <JDBullet>
+    <Name>Bullet 5</Name>
+    <BulletTypeString>BULLET_5</BulletTypeString>
+    <bulletDebugChar>X</bulletDebugChar>
+    <Id>5</Id>
   </JDBullet>
 
 </bulletDefinitions>

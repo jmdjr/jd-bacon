@@ -65,7 +65,6 @@
     <Compile Include="Bullet Logic\BulletFactory.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
-    <Compile Include="Bullet Logic\IBullet.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />
     <Compile Include="JewelMatrix\MatrixJewelLogic.cs" />
   </ItemGroup>
