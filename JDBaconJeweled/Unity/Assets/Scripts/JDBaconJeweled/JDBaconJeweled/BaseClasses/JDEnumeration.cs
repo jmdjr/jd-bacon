@@ -18,18 +18,7 @@ public enum TagTypes
 
 public enum JDIStatTypes
 {
-    Level1_Progress,
-    Level1_EnemiesKilled,
-    Level1_JDCoinsCollected,
-    Level2_Progress,
-    Level2_EnemiesKilled,
-    Level2_JDCoinsCollected,
-    Level3_Progress,
-    Level3_EnemiesKilled,
-    Level3_JDCoinsCollected,
-    Level4_Progress,
-    Level4_EnemiesKilled,
-    Level4_JDCoinsCollected
+    GENERIC
 }
 
 public enum JDIBulletTypes

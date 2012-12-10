@@ -14,6 +14,7 @@ public class BulletMatrix
     public int Width;
 
     private int totalToMatch = 3;
+    public bool enablePrinting = false;
 
     private JDBullet[,] grid;
     private Random r;
@@ -24,7 +25,7 @@ public class BulletMatrix
         this.Height = height;
         this.Width = width;
 
-        r = new Random(11);
+        r = new Random(10);
         min = 0;
         max = BulletFactory.NumberOfLoadedBullets;
         
@@ -110,7 +111,36 @@ public class BulletMatrix
             SpawnBullet(i, j);
         }
     }
-    
+    public bool CanSwapPositions(int i, int j, int i2, int j2)
+    {
+            Tuple<int, int> first = new Tuple<int, int>(i, j);
+            Tuple<int, int> second = new Tuple<int, int>(i2, j2);
+            return CanSwapPositions(first, second);
+    }
+    public bool CanSwapPositions(Tuple<int, int> first, Tuple<int, int> second)
+    {
+        int i = first.Item1;
+        int j = first.Item2;
+
+        Tuple<int, int>[] compass = new Tuple<int, int>[]
+        {
+            new Tuple<int, int>(i + 1, j),
+            new Tuple<int, int>(i - 1, j),
+            new Tuple<int, int>(i, j + 1),
+            new Tuple<int, int>(i, j - 1)
+        };
+
+        return !IsOutOfBounds(first) && !IsOutOfBounds(second) && first != second && compass.Any(a => a == second);
+    }
+    private bool IsOutOfBounds(Tuple<int, int> position)
+    {
+        return position.Item1 >= 0 && position.Item1 < this.Height
+            && position.Item2 >= 0 && position.Item2 < this.Width;
+    }
+    public void SwapPositions(Tuple<int, int> first, Tuple<int, int> second)
+    {
+        SwapPositions(first.Item1, first.Item2, second.Item1, second.Item2);
+    }
     public void SwapPositions(int i, int j, int i2, int j2)
     {
         if (i == i2 && j == j2 || i != i2 && j != j2)
@@ -124,15 +154,17 @@ public class BulletMatrix
         grid[i, j] = grid[i2, j2];
         grid[i2, j2] = holder;
     }
-    
     private void bubblePositionUp(ref int i, int j)
     {
         while (i > 0)
         {
             SwapPositions(i, j, --i, j);
-            this.Debug_PrintBulletMatrix();
-            System.Threading.Thread.Sleep(50);
-            Console.Clear();
+            if (enablePrinting)
+            {
+                Console.SetCursorPosition(0, 0);
+                this.Debug_PrintBulletMatrix();
+                System.Threading.Thread.Sleep(50);
+            }
         }
     }
 
@@ -145,18 +177,20 @@ public class BulletMatrix
         int steps = 1;
         ++i;
 
-        while (i < this.Height && steps < this.totalToMatch)
+        if (toMatch != null)
         {
-
-            if (grid[i, j].BulletType == toMatch.BulletType)
+            while (i < this.Height && steps < this.totalToMatch)
             {
-                ++matches;
+
+                if (grid[i, j] != null && grid[i, j].BulletType == toMatch.BulletType)
+                {
+                    ++matches;
+                }
+
+                ++steps;
+                ++i;
             }
-
-            ++steps;
-            ++i;
         }
-
         return matches >= this.totalToMatch;
     }
     private bool isHorizontalStreak(int i, int j)
@@ -168,18 +202,21 @@ public class BulletMatrix
         int steps = 1;
         ++j;
 
-        while (j < this.Width && steps < this.totalToMatch)
+        if (toMatch != null)
         {
-
-            if (grid[i, j].BulletType == toMatch.BulletType)
+            while (j < this.Width && steps < this.totalToMatch)
             {
-                ++matches;
+
+                if (grid[i, j] != null && grid[i, j].BulletType == toMatch.BulletType)
+                {
+                    ++matches;
+                }
+
+                ++steps;
+                ++j;
             }
-
-            ++steps;
-            ++j;
         }
-
+        
         return matches >= this.totalToMatch;
     }
     private void SpawnBullet(int i, int j)
@@ -196,6 +233,26 @@ public class BulletMatrix
     {
         BulletFactory.Instance.DestroyBullet(grid[i, j]);
         grid[i, j] = null;
+    }
+    public Tuple<int, int> CommandToPosition(string command)
+    {
+        char[] commandSplit = command.ToCharArray();
+
+        return new Tuple<int,int>(CharToNumber(command[0]), CharToNumber(command[1]));
+
+    }
+    private int CharToNumber(char command) 
+    {
+        if (command >= '0' && command <= '9')
+        {
+            return int.Parse(command.ToString());
+        }
+        else if (command >= 'A' && command <= 'Z')
+        {
+            return 10 + (command - 'A');
+        }
+
+        return -1;
     }
     private void StepThroughGrid(GridStepper onColumn) { StepThroughGrid(null, onColumn, null); }
     private void StepThroughGrid(GridStepper enterRow, GridStepper onColumn) { StepThroughGrid(enterRow, onColumn, null); }
@@ -222,18 +279,24 @@ public class BulletMatrix
             }
         }
     }
+    private string Debug_CoordChar(int index)
+    {
+        if (index < 10 && index >= 0) return index.ToString();
+        if (index >= 10 && index < 36) return ((char)('A' + index)).ToString();
+        return "?";
+    }
     public void Debug_PrintBulletMatrix()
     {
         Console.Write("  ");
         for (int j = 0; j < this.Width; ++j)
         {
-            Console.Write((char)('A' + j) + " ");
+            Console.Write(Debug_CoordChar(j) + " ");
         }
 
-        Console.Write('\n');
+        Console.WriteLine();
 
         StepThroughGrid(
-            ((i, j) => { Console.Write((i + 1) + " "); }),
+            ((i, j) => { Console.Write(Debug_CoordChar(i) + " "); }),
             ((i, j) =>
             {
                 if (grid[i, j] != null)
@@ -246,9 +309,18 @@ public class BulletMatrix
                 {
                     Console.Write(" ");
                 }
+
                 Console.Write(" ");
             }),
-            ((i, j) => { Console.Write("\n"); })
+            ((i, j) =>
+            {
+                if (GameStatistics.Instance.HasStatisticByIndex(i))
+                {
+                    Console.Write(GameStatistics.Instance.GetStatisticNameByIndex(i) + ": " + GameStatistics.Instance.GetStatisticValueByIndex(i));
+                }
+
+                Console.WriteLine();
+            })
         );
     }
     #endregion Utility

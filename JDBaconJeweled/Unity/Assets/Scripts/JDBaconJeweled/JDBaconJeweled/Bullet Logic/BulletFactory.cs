@@ -7,9 +7,29 @@ using Object = UnityEngine.Object;
 using Random = System.Random;
 using System.Collections.Generic;
 
-public sealed class BulletFactory
+public sealed class BulletFactory : JDIObject
 {
     string BulletDefinitionFile = "./Definitions/BulletDefinitions.xml";
+
+    private List<JDBullet> BulletReferences;
+    private List<JDBullet> BulletCollection;
+
+    public string Name
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+        set
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public JDIObjectTypes JDType
+    {
+        get { return JDIObjectTypes.OBJECT; }
+    }
+    public static int NumberOfLoadedBullets { get { return Instance.BulletReferences.Count; } }
 
     private static BulletFactory instance;
 
@@ -25,10 +45,43 @@ public sealed class BulletFactory
         }
     }
 
-    public static int NumberOfLoadedBullets { get { return Instance.BulletReferences.Count; } }
+    public JDBullet SpawnBullet(int bulletIndex)
+    {
+        if (bulletIndex < 0 || bulletIndex > NumberOfLoadedBullets)
+        {
+            return null;
+        }
 
-    private List<JDBullet> BulletReferences;
-    private List<JDBullet> BulletCollection;
+        JDBullet bullet = BulletReferences[bulletIndex].SpawnCopy();
+        bullet.ReportStatistics(JDIStatTypes.GENERIC, 0);
+        BulletCollection.Add(bullet);
+
+        return bullet;
+    }
+
+    public void DestroyBullet(JDBullet bulletReference)
+    {
+        if (this.BulletCollection.Contains(bulletReference))
+        {
+
+            this.BulletCollection.Remove(bulletReference);
+            bulletReference.ReportStatistics(JDIStatTypes.GENERIC, 1);
+        }
+    }
+
+    public bool ReportStatistics(JDIStatTypes stat, int valueShift)
+    {
+        return true;
+    }
+
+    public void ResetStatistics()
+    {
+        foreach (JDBullet bullet in BulletReferences)
+        {
+            GameStatistics.Instance.CreateStatistic(bullet.bulletDebugChar, 0);
+        }
+    }
+
     private BulletFactory()
     {
         BulletCollection = new List<JDBullet>();
@@ -41,27 +94,6 @@ public sealed class BulletFactory
         foreach (JDBullet bullet in BulletReferences)
         {
             bullet.Debug_Color = (ConsoleColor)(r.Next(1, 15));
-        }
-    }
-
-    public JDBullet SpawnBullet(int bulletIndex)
-    {
-        if (bulletIndex < 0 || bulletIndex > NumberOfLoadedBullets)
-        {
-            return null;
-        }
-        
-        JDBullet bullet = BulletReferences[bulletIndex].SpawnCopy();
-        BulletCollection.Add(bullet);
-
-        return bullet;
-    }
-
-    public void DestroyBullet(JDBullet bulletReference)
-    {
-        if(this.BulletCollection.Contains(bulletReference))
-        {
-            this.BulletCollection.Remove(bulletReference);
         }
     }
 }

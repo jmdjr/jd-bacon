@@ -37,7 +37,16 @@ public class JDBullet : JDIObject
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
-        throw new NotImplementedException();
+        if (GameStatistics.Instance.GetStatistic(this.bulletDebugChar) == -1)
+        {
+            GameStatistics.Instance.CreateStatistic(this.bulletDebugChar, valueShift);
+        }
+        else
+        {
+            GameStatistics.Instance.UpdateStatistic(this.bulletDebugChar, valueShift);
+        }
+
+        return true;
     }
 
     public JDBullet SpawnCopy() 

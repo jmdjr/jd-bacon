@@ -64,9 +64,11 @@
     <Compile Include="BaseClasses\JDStateMachineSystem.cs" />
     <Compile Include="Bullet Logic\BulletFactory.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
+    <Compile Include="DebugBuffer\ScreenBuffer.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />
     <Compile Include="JewelMatrix\MatrixJewelLogic.cs" />
+    <Compile Include="Statistics\GameStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Definitions\BulletDefinitions.xml">
