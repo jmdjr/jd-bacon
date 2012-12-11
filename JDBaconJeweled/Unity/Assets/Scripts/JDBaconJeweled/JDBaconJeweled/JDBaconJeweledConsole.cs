@@ -18,18 +18,18 @@ namespace JDBaconJeweled
         public static void Main()
         {
             Regex rex = new Regex("[0-1]?[0-9]x[0-1]?[0-9]");
-            string dimensions = "";
+            string command = "";
             do
             {
-                Console.WriteLine("Please specify the dimensions of the grid (must be greater than a 5x5):");
-                dimensions = Console.ReadLine();
+                Console.WriteLine("Please specify the dimensions of the grid (must be >= 5x5):");
+                command = Console.ReadLine();
                 Console.WriteLine();
 
-            } while (!rex.IsMatch(dimensions));
+                if (command == "") command = "5x5";
 
-            //string dimensions = "9x9";
+            } while (!rex.IsMatch(command));
 
-            var stuffs = dimensions.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
+            var stuffs = command.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
 
             int w = int.Parse(stuffs[0]);
             int h = int.Parse(stuffs[1]);
@@ -38,8 +38,8 @@ namespace JDBaconJeweled
 
             frame.Load();
 
-            List<Vector2> matches = frame.CollectMatchedBullets();
-            frame.enablePrinting = true;
+            List<Tuple<int, int>> matches = frame.CollectMatchedBullets();
+            frame.enablePrinting = false;
             do
             {
                 frame.DropMatchedBullets(matches);
@@ -49,21 +49,43 @@ namespace JDBaconJeweled
             while (matches.Count > 0);
             BulletFactory.Instance.ResetStatistics();
 
-            Console.Clear();
-            frame.Debug_PrintBulletMatrix();
-            string command = "";
-            rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]");
+            rex = new Regex("I|U");
+            do
+            {
+                Console.WriteLine("Please specify whether each bullet is counted (I) or only 1 from that type (U):");
+                command = Console.ReadLine();
+                Console.WriteLine();
 
-            frame.enablePrinting = true;
+                if (command == "") command = "U";
+
+            }
+            while(!rex.IsMatch(command));
+
+            switch (command)
+            {
+                case "I":
+                    GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
+                    break;
+
+                case "U":
+                    GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.UNIQUES;
+                    break;
+            }
+
+            command = "";
+            rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|quit");
             do
             {
                 do
                 {
+                    Console.Clear();
+                    frame.Debug_PrintBulletMatrix();
+                    Console.WriteLine();
                     Console.WriteLine("Please specify two adjacent pieces to swap, or type quit to leave.");
                     Console.WriteLine("(example: 5Ax52):");
                     command = Console.ReadLine();
 
-                } while (!rex.IsMatch(command) || command == "quit");
+                } while (!rex.IsMatch(command) && command != "quit");
 
                 if (command != "quit")
                 {
@@ -74,7 +96,7 @@ namespace JDBaconJeweled
                     if (!frame.CanSwapPositions(start, end))
                     {
                         Console.WriteLine("these pieces can't be swapped...");
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(750);
                         Console.Clear();
                         continue;
                     }
@@ -89,8 +111,14 @@ namespace JDBaconJeweled
                     System.Threading.Thread.Sleep(100);
 
                     matches = frame.CollectMatchedBullets();
+                    if (matches.Count == 0)
+                    {
+                        Console.WriteLine("Bad Swap...");
+                        System.Threading.Thread.Sleep(750);
+                        frame.SwapPositions(start, end);
+                        Console.Clear();
+                    }
                     frame.enablePrinting = true;
-
                     do
                     {
                         frame.DropMatchedBullets(matches);

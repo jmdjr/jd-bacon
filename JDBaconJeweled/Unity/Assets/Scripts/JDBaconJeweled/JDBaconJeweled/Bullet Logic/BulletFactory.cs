@@ -53,7 +53,7 @@ public sealed class BulletFactory : JDIObject
         }
 
         JDBullet bullet = BulletReferences[bulletIndex].SpawnCopy();
-        bullet.ReportStatistics(JDIStatTypes.GENERIC, 0);
+        bullet.ReportStatistics(JDIStatTypes.UNIQUES, 0);
         BulletCollection.Add(bullet);
 
         return bullet;
@@ -63,9 +63,8 @@ public sealed class BulletFactory : JDIObject
     {
         if (this.BulletCollection.Contains(bulletReference))
         {
-
+            bulletReference.ReportStatistics(JDIStatTypes.INDIVIDUALS, 1);
             this.BulletCollection.Remove(bulletReference);
-            bulletReference.ReportStatistics(JDIStatTypes.GENERIC, 1);
         }
     }
 

@@ -18,7 +18,8 @@ public enum TagTypes
 
 public enum JDIStatTypes
 {
-    GENERIC
+    UNIQUES,
+    INDIVIDUALS
 }
 
 public enum JDIBulletTypes

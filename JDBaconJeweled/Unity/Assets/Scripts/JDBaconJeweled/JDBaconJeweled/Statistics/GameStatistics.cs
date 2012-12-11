@@ -19,11 +19,12 @@ public class GameStatistics
         }
     }
 
+    public JDIStatTypes AllowedBulletStat;
+
     private GameStatistics()
     {
         stats = new Dictionary<string, int>();
     }
-
     public int GetStatistic(string name)
     {
         if (stats.ContainsKey(name))
@@ -33,7 +34,6 @@ public class GameStatistics
 
         return -1;
     }
-
     public void UpdateStatistic(string name, int updateByAmount)
     {
         if (stats.ContainsKey(name))
@@ -41,7 +41,6 @@ public class GameStatistics
             stats[name] += updateByAmount;
         }
     }
-
     public void CreateStatistic(string name, int initialValue)
     {
         if (!stats.ContainsKey(name))
@@ -53,7 +52,6 @@ public class GameStatistics
             stats[name] = initialValue;
         }
     }
-
     public string GetStatisticNameByIndex(int keyIndex)
     {
         if (keyIndex >= 0 || keyIndex < stats.Keys.Count)
@@ -63,7 +61,6 @@ public class GameStatistics
 
         return "";
     }
-
     public int GetStatisticValueByIndex(int keyIndex)
     {
         if (keyIndex >= 0 || keyIndex < stats.Values.Count)
@@ -73,7 +70,6 @@ public class GameStatistics
 
         return -1;
     }
-
     public bool HasStatisticByIndex(int index)
     {
         return index >= 0 && index < this.stats.Count;

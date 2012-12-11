@@ -60,9 +60,9 @@ public class BulletMatrix
         );
     }
 
-    public List<Vector2> CollectMatchedBullets()
+    public List<Tuple<int, int>> CollectMatchedBullets()
     {
-        List<Vector2> collectedMatchedBullets = new List<Vector2>();
+        List<Tuple<int, int>> collectedMatchedBullets = new List<Tuple<int, int>>();
 
         StepThroughGrid(
             ((i, j) =>
@@ -72,7 +72,7 @@ public class BulletMatrix
                     int streak = 0;
                     while (streak < this.totalToMatch)
                     {
-                        collectedMatchedBullets.Add(new Vector2(i + streak, j));
+                        collectedMatchedBullets.Add(new Tuple<int, int>(i + streak, j));
                         ++streak;
                     }
                 }
@@ -82,31 +82,43 @@ public class BulletMatrix
                     int streak = 0;
                     while (streak < this.totalToMatch)
                     {
-                        collectedMatchedBullets.Add(new Vector2(i, j + streak));
+                        collectedMatchedBullets.Add(new Tuple<int, int>(i, j + streak));
                         ++streak;
                     }
                 }
             }));
         ;
 
-        return collectedMatchedBullets.OrderBy(v => v.x).Distinct().ToList();
+        return collectedMatchedBullets.OrderBy(v => v.Item1).Distinct().ToList();
     }
-    public void DropMatchedBullets(List<Vector2> collectedBullets)
+    public void DropMatchedBullets(List<Tuple<int, int>> collectedBullets)
     {
-        foreach (Vector2 pos in collectedBullets)
+        List<JDBullet> uniqueBullets = new List<JDBullet>();
+
+        foreach (Tuple<int, int> pos in collectedBullets)
         {
-            dropBullet((int)pos.x, (int)pos.y);
+            if (!uniqueBullets.Any(bullet => bullet.BulletType == grid[pos.Item1, pos.Item2].BulletType))
+            {
+                uniqueBullets.Add(grid[pos.Item1, pos.Item2]);
+            }
+
+            dropBullet(pos.Item1, pos.Item2);
+        }
+        
+        foreach (JDBullet bullet in uniqueBullets)
+        {
+            bullet.ReportStatistics(JDIStatTypes.UNIQUES, 1);
         }
     }
-    public void ShiftItemsDown(List<Vector2> collectedBullets) 
+    public void ShiftItemsDown(List<Tuple<int, int>> collectedBullets) 
     {
         int i = 0;
         int j = 0;
 
-        foreach (Vector2 pos in collectedBullets)
+        foreach (Tuple<int, int> pos in collectedBullets)
         {
-            i = (int)pos.x;
-            j = (int)pos.y;
+            i = pos.Item1;
+            j = pos.Item2;
             bubblePositionUp(ref i, j);
             SpawnBullet(i, j);
         }
@@ -130,12 +142,12 @@ public class BulletMatrix
             new Tuple<int, int>(i, j - 1)
         };
 
-        return !IsOutOfBounds(first) && !IsOutOfBounds(second) && first != second && compass.Any(a => a == second);
+        return !IsOutOfBounds(first) && !IsOutOfBounds(second) && first != second && compass.Any(a => a.Equals(second));
     }
     private bool IsOutOfBounds(Tuple<int, int> position)
     {
-        return position.Item1 >= 0 && position.Item1 < this.Height
-            && position.Item2 >= 0 && position.Item2 < this.Width;
+        return position.Item1 < 0 || position.Item1 >= this.Height
+            || position.Item2 < 0 || position.Item2 >= this.Width;
     }
     public void SwapPositions(Tuple<int, int> first, Tuple<int, int> second)
     {
@@ -143,7 +155,7 @@ public class BulletMatrix
     }
     public void SwapPositions(int i, int j, int i2, int j2)
     {
-        if (i == i2 && j == j2 || i != i2 && j != j2)
+        if (!CanSwapPositions(i, j, i2, j2)) //i == i2 && j == j2 || i != i2 && j != j2)
         {
             // one of the two components must be the same, forcing horizontal or vertical positions only
             return;
@@ -163,7 +175,7 @@ public class BulletMatrix
             {
                 Console.SetCursorPosition(0, 0);
                 this.Debug_PrintBulletMatrix();
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(100);
             }
         }
     }
@@ -238,7 +250,7 @@ public class BulletMatrix
     {
         char[] commandSplit = command.ToCharArray();
 
-        return new Tuple<int,int>(CharToNumber(command[0]), CharToNumber(command[1]));
+        return new Tuple<int,int>(CharToNumber(command[1]), CharToNumber(command[0]));
 
     }
     private int CharToNumber(char command) 
