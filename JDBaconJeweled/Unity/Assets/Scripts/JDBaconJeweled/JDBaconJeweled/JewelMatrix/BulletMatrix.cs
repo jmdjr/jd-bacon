@@ -25,7 +25,7 @@ public class BulletMatrix
         this.Height = height;
         this.Width = width;
 
-        r = new Random(10);
+        r = new Random();
         min = 0;
         max = BulletFactory.NumberOfLoadedBullets;
         
@@ -294,7 +294,7 @@ public class BulletMatrix
     private string Debug_CoordChar(int index)
     {
         if (index < 10 && index >= 0) return index.ToString();
-        if (index >= 10 && index < 36) return ((char)('A' + index)).ToString();
+        if (index >= 10 && index < 36) return ((char)('A' + index - 10)).ToString();
         return "?";
     }
     public void Debug_PrintBulletMatrix()
