@@ -17,6 +17,7 @@ namespace JDBaconJeweled
     {
         public static void Main()
         {
+#if DEBUG || RELEASE
             Regex rex = new Regex("[0-1]?[0-9]x[0-1]?[0-9]");
             string command = "";
             do
@@ -38,7 +39,7 @@ namespace JDBaconJeweled
 
             frame.Load();
 
-            List<Tuple<int, int>> matches = frame.CollectMatchedBullets();
+            List<KeyValuePair<int, int>> matches = frame.CollectMatchedBullets();
             frame.enablePrinting = false;
             do
             {
@@ -59,7 +60,7 @@ namespace JDBaconJeweled
                 if (command == "") command = "U";
 
             }
-            while(!rex.IsMatch(command));
+            while (!rex.IsMatch(command));
 
             switch (command)
             {
@@ -90,8 +91,8 @@ namespace JDBaconJeweled
                 if (command != "quit")
                 {
                     stuffs = command.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
-                    Tuple<int, int> start = frame.CommandToPosition(stuffs[0]);
-                    Tuple<int, int> end = frame.CommandToPosition(stuffs[1]);
+                    KeyValuePair<int, int> start = frame.CommandToPosition(stuffs[0]);
+                    KeyValuePair<int, int> end = frame.CommandToPosition(stuffs[1]);
 
                     if (!frame.CanSwapPositions(start, end))
                     {
@@ -126,11 +127,23 @@ namespace JDBaconJeweled
                         matches = frame.CollectMatchedBullets();
                     }
                     while (matches.Count > 0);
+
+                    Console.SetCursorPosition(0, 0);
+                    frame.Debug_PrintBulletMatrix();
+
+                    if (!frame.CanMatchMore())
+                    {
+                        Console.WriteLine("No more available matches :'(...");
+                        System.Threading.Thread.Sleep(750);
+                        break;
+                    }
                 }
             } while (command != "quit");
 
+            Console.WriteLine("GameOver!");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);
+#endif
         }
     }
 }
