@@ -63,9 +63,12 @@
     <Compile Include="BaseClasses\JDMonoGUIBodyBehavior.cs" />
     <Compile Include="BaseClasses\JDStateMachineSystem.cs" />
     <Compile Include="Bullet Logic\BulletFactory.cs" />
+    <Compile Include="Bullet Logic\GunStore.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
+    <Compile Include="GameObjects\Frame.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />
+    <Compile Include="JewelMatrix\Position2D.cs" />
     <Compile Include="Statistics\GameStatistics.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,8 @@ public class BulletMatrix
     private Random r;
     private int min;
     private int max;
+    private delegate void GridStepper(int x, int y);
+
     public BulletMatrix(int height, int width)
     {
         this.Height = height;
@@ -32,64 +34,7 @@ public class BulletMatrix
         grid = new JDBullet[this.Height, this.Width];
     }
 
-    private delegate void GridStepper(int x, int y);
-
-    // will run through and fill the grid with a random collection of the bullets.
-    public void Load()
-    {
-        StepThroughGrid(
-            ((i, j) =>
-            {
-                //int bulletIndex = Random.Range(min, max);
-                int bulletIndex = r.Next(min, max);
-
-                if (grid[i, j] == null)
-                {
-                    grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
-                }
-            })
-        );
-    }
-    public void UnLoad()
-    {
-        StepThroughGrid(
-            ((i, j) =>
-            {
-                dropBullet(i, j);
-            })
-        );
-    }
-    public List<KeyValuePair<int, int>> CollectMatchedBullets()
-    {
-        List<KeyValuePair<int, int>> collectedMatchedBullets = new List<KeyValuePair<int, int>>();
-
-        StepThroughGrid(
-            ((i, j) =>
-            {
-                if (isVerticalStreak(i, j))
-                {
-                    int streak = 0;
-                    while (streak < this.totalToMatch)
-                    {
-                        collectedMatchedBullets.Add(new KeyValuePair<int, int>(i + streak, j));
-                        ++streak;
-                    }
-                }
-
-                if (isHorizontalStreak(i, j))
-                {
-                    int streak = 0;
-                    while (streak < this.totalToMatch)
-                    {
-                        collectedMatchedBullets.Add(new KeyValuePair<int, int>(i, j + streak));
-                        ++streak;
-                    }
-                }
-            }));
-        ;
-
-        return collectedMatchedBullets.OrderBy(v => v.Key).Distinct().ToList();
-    }
+    #region Checks
     public bool CanMatchMore()
     {
         bool thereIsAMatch = false;
@@ -109,28 +54,22 @@ public class BulletMatrix
     }
     private bool positionCanMakeMatches(int i, int j)
     {
-        return positionCanMakeMatches(new KeyValuePair<int, int>(i, j));
+        return positionCanMakeMatches(new Position2D(j, i));
     }
-    private bool positionCanMakeMatches(KeyValuePair<int, int> position)
+    private bool positionCanMakeMatches(Position2D position)
     {
-        int i = position.Key, j = position.Value;
-        KeyValuePair<int, int>[] compass = new KeyValuePair<int, int>[]
-        {
-            new KeyValuePair<int, int>(i + 1, j),
-            new KeyValuePair<int, int>(i - 1, j),
-            new KeyValuePair<int, int>(i, j + 1),
-            new KeyValuePair<int, int>(i, j - 1)
-        };
+        Position2D[] compass = createCompass(position);
 
-        foreach (KeyValuePair<int, int> direction in compass)
+        foreach (Position2D direction in compass)
         {
             if (CanSwapPositions(direction, position))
             {
                 SwapPositions(position, direction);
+                bool swapSuccess = CollectMatchedBullets().Count > 0;
+                SwapPositions(position, direction);
 
-                if (isStreak(position) || isStreak(direction))
+                if (swapSuccess)
                 {
-                    SwapPositions(position, direction);
                     return true;
                 }
             }
@@ -138,101 +77,47 @@ public class BulletMatrix
 
         return false;
     }
-
-    public void DropMatchedBullets(List<KeyValuePair<int, int>> collectedBullets)
+    public bool IsBadSwap(Position2D first, Position2D second)
     {
-        List<JDBullet> uniqueBullets = new List<JDBullet>();
+        SwapPositions(first, second);
 
-        foreach (KeyValuePair<int, int> pos in collectedBullets)
+#if DEBUG || RELEASE
+        if (this.enablePrinting)
         {
-            if (!uniqueBullets.Any(bullet => bullet.BulletType == grid[pos.Key, pos.Value].BulletType))
-            {
-                uniqueBullets.Add(grid[pos.Key, pos.Value]);
-            }
+            Debug_PrintAndSleep();
+        }
+#endif
+        bool anyMatches = CollectMatchedBullets().Count > 0;
+        SwapPositions(first, second);
 
-            dropBullet(pos.Key, pos.Value);
-        }
-        
-        foreach (JDBullet bullet in uniqueBullets)
+#if DEBUG || RELEASE
+        if (this.enablePrinting)
         {
-            bullet.ReportStatistics(JDIStatTypes.UNIQUES, 1);
+            Debug_PrintAndSleep();
         }
-    }
-    public void ShiftItemsDown(List<KeyValuePair<int, int>> collectedBullets) 
-    {
-        int i = 0;
-        int j = 0;
-
-        foreach (KeyValuePair<int, int> pos in collectedBullets)
-        {
-            i = pos.Key;
-            j = pos.Value;
-            bubblePositionUp(ref i, j);
-            SpawnBullet(i, j);
-        }
+#endif
+        return anyMatches;
     }
     public bool CanSwapPositions(int i, int j, int i2, int j2)
     {
-            KeyValuePair<int, int> first = new KeyValuePair<int, int>(i, j);
-            KeyValuePair<int, int> second = new KeyValuePair<int, int>(i2, j2);
-            return CanSwapPositions(first, second);
+        Position2D first = new Position2D(j, i);
+        Position2D second = new Position2D(j2, i2);
+        return CanSwapPositions(first, second);
     }
-    public bool CanSwapPositions(KeyValuePair<int, int> first, KeyValuePair<int, int> second)
+    public bool CanSwapPositions(Position2D first, Position2D second)
     {
-        int i = first.Key;
-        int j = first.Value;
-
-        KeyValuePair<int, int>[] compass = new KeyValuePair<int, int>[]
-        {
-            new KeyValuePair<int, int>(i + 1, j),
-            new KeyValuePair<int, int>(i - 1, j),
-            new KeyValuePair<int, int>(i, j + 1),
-            new KeyValuePair<int, int>(i, j - 1)
-        };
-        bool areNotEqual = !(first.Key == second.Key && first.Value == second.Value);
+        Position2D[] compass = createCompass(first);
+        bool areNotEqual = !(first.Equals(second));
         return !IsOutOfBounds(first) && !IsOutOfBounds(second) && areNotEqual && compass.Any(a => a.Equals(second));
     }
-    private bool IsOutOfBounds(KeyValuePair<int, int> position)
+    private bool IsOutOfBounds(Position2D position)
     {
-        return position.Key < 0 || position.Key >= this.Height
-            || position.Value < 0 || position.Value >= this.Width;
+        return position.Y < 0 || position.Y >= this.Height
+            || position.X < 0 || position.X >= this.Width;
     }
-    public void SwapPositions(KeyValuePair<int, int> first, KeyValuePair<int, int> second)
+    private bool isStreak(Position2D pos)
     {
-        SwapPositions(first.Key, first.Value, second.Key, second.Value);
-    }
-    public void SwapPositions(int i, int j, int i2, int j2)
-    {
-        if (!CanSwapPositions(i, j, i2, j2)) //i == i2 && j == j2 || i != i2 && j != j2)
-        {
-            // one of the two components must be the same, forcing horizontal or vertical positions only
-            return;
-        }
-
-        JDBullet holder = grid[i, j];
-
-        grid[i, j] = grid[i2, j2];
-        grid[i2, j2] = holder;
-    }
-    private void bubblePositionUp(ref int i, int j)
-    {
-        while (i > 0)
-        {
-            SwapPositions(i, j, --i, j);
-            if (enablePrinting)
-            {
-#if DEBUG || RELEASE
-                Console.SetCursorPosition(0, 0);
-                this.Debug_PrintBulletMatrix();
-                System.Threading.Thread.Sleep(100);
-#endif
-            }
-        }
-    }
-
-    private bool isStreak(KeyValuePair<int, int> pos)
-    {
-        return isStreak(pos.Key, pos.Value);
+        return isStreak(pos.Y, pos.X);
     }
     private bool isStreak(int i, int j)
     {
@@ -289,6 +174,141 @@ public class BulletMatrix
         
         return matches >= this.totalToMatch;
     }
+    #endregion
+    
+    #region Accessors
+    #endregion
+
+    #region Load and Balancing
+    // will run through and fill the grid with a random collection of the bullets.
+    public void Load(bool printEnabled)
+    {
+        this.enablePrinting = printEnabled;
+
+        StepThroughGrid(
+            ((i, j) =>
+            {
+                //int bulletIndex = Random.Range(min, max);
+                int bulletIndex = r.Next(min, max);
+
+                if (grid[i, j] == null)
+                {
+                    grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
+                    Debug_PrintAndSleep();
+                }
+            })
+        );
+
+        BalanceGrid(printEnabled, true);
+    }
+    public void UnLoad()
+    {
+        StepThroughGrid(
+            ((i, j) =>
+            {
+                dropBullet(i, j);
+            })
+        );
+    }
+    public List<Position2D> CollectMatchedBullets()
+    {
+        List<Position2D> collectedMatchedBullets = new List<Position2D>();
+
+        StepThroughGrid(
+            ((i, j) =>
+            {
+                if (isVerticalStreak(i, j))
+                {
+                    int streak = 0;
+                    while (streak < this.totalToMatch)
+                    {
+                        collectedMatchedBullets.Add(new Position2D(j, i + streak));
+                        ++streak;
+                    }
+                }
+
+                if (isHorizontalStreak(i, j))
+                {
+                    int streak = 0;
+                    while (streak < this.totalToMatch)
+                    {
+                        collectedMatchedBullets.Add(new Position2D(j + streak, i));
+                        ++streak;
+                    }
+                }
+            }));
+        ;
+
+        return collectedMatchedBullets.OrderBy(v => v.Y).Distinct().ToList();
+    }
+    public void DropMatchedBullets(List<Position2D> collectedBullets)
+    {
+        List<JDBullet> uniqueBullets = new List<JDBullet>();
+
+        foreach (Position2D pos in collectedBullets)
+        {
+            JDBullet gridBullet = grid[pos.Y, pos.X];
+            if (gridBullet != null && !uniqueBullets.Any(bullet => bullet.BulletType == gridBullet.BulletType))
+            {
+                uniqueBullets.Add(gridBullet);
+            }
+
+            dropBullet(pos.Y, pos.X);
+        }
+
+        foreach (JDBullet bullet in uniqueBullets)
+        {
+            bullet.ReportStatistics(JDIStatTypes.UNIQUES, 1);
+        }
+    }
+    public void ShiftItemsDown(List<Position2D> collectedBullets)
+    {
+        int i = 0;
+        int j = 0;
+
+        foreach (Position2D pos in collectedBullets)
+        {
+            i = pos.Y;
+            j = pos.X;
+            bubblePositionUp(ref i, j);
+            SpawnBullet(i, j);
+            Debug_PrintAndSleep();
+        }
+    }
+    public void SwapPositions(Position2D first, Position2D second)
+    {
+        SwapPositions(first.Y, first.X, second.Y, second.X);
+    }
+    public void SwapPositions(int i, int j, int i2, int j2)
+    {
+        if (!CanSwapPositions(i, j, i2, j2)) //i == i2 && j == j2 || i != i2 && j != j2)
+        {
+            // one of the two components must be the same, forcing horizontal or vertical positions only
+            return;
+        }
+
+        JDBullet holder = grid[i, j];
+
+        grid[i, j] = grid[i2, j2];
+        grid[i2, j2] = holder;
+    }
+    public void BalanceGrid(bool printEnabled, bool resetStatistics)
+    {
+        this.enablePrinting = printEnabled;
+        List<Position2D> matches = this.CollectMatchedBullets();
+        do
+        {
+            this.DropMatchedBullets(matches);
+            this.ShiftItemsDown(matches);
+            matches = this.CollectMatchedBullets();
+        }
+        while (matches.Count > 0);
+
+        if (resetStatistics)
+        {
+            BulletFactory.Instance.ResetStatistics();
+        }
+    }
     private void SpawnBullet(int i, int j)
     {
         if (grid[i, j] == null)
@@ -297,32 +317,34 @@ public class BulletMatrix
             grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
         }
     }
-
-    #region Utility
     private void dropBullet(int i, int j)
     {
         BulletFactory.Instance.DestroyBullet(grid[i, j]);
         grid[i, j] = null;
     }
-    public KeyValuePair<int, int> CommandToPosition(string command)
+    private void bubblePositionUp(ref int i, int j)
     {
-        char[] commandSplit = command.ToCharArray();
-
-        return new KeyValuePair<int, int>(CharToNumber(command[1]), CharToNumber(command[0]));
-
+        while (i > 0)
+        {
+            SwapPositions(i, j, --i, j);
+            Debug_PrintAndSleep();
+        }
     }
-    private int CharToNumber(char command) 
-    {
-        if (command >= '0' && command <= '9')
-        {
-            return int.Parse(command.ToString());
-        }
-        else if (command >= 'A' && command <= 'Z')
-        {
-            return 10 + (command - 'A');
-        }
+    #endregion
 
-        return -1;
+    #region Utility
+    private Position2D[] createCompass(Position2D center)
+    {
+        int i = center.X;
+        int j = center.Y;
+
+        return new Position2D[]
+        {
+            new Position2D(i + 1, j),
+            new Position2D(i - 1, j),
+            new Position2D(i, j + 1),
+            new Position2D(i, j - 1)
+        };
     }
     private void StepThroughGrid(GridStepper onColumn) { StepThroughGrid(null, onColumn, null); }
     private void StepThroughGrid(GridStepper enterRow, GridStepper onColumn) { StepThroughGrid(enterRow, onColumn, null); }
@@ -349,11 +371,15 @@ public class BulletMatrix
             }
         }
     }
-    private string Debug_CoordChar(int index)
+    #endregion Utility
+
+    #region Debug Functions
+    public Position2D CommandToPosition(string command)
     {
-        if (index < 10 && index >= 0) return index.ToString();
-        if (index >= 10 && index < 36) return ((char)('A' + index - 10)).ToString();
-        return "?";
+        char[] commandSplit = command.ToCharArray();
+
+        return new Position2D(CharToNumber(command[0]), CharToNumber(command[1]));
+
     }
     public void Debug_PrintBulletMatrix()
     {
@@ -378,7 +404,9 @@ public class BulletMatrix
                 }
                 else
                 {
+                    Console.BackgroundColor = ConsoleColor.Cyan;
                     Console.Write(" ");
+                    Console.ResetColor();
                 }
 
                 Console.Write(" ");
@@ -395,5 +423,35 @@ public class BulletMatrix
         );
 #endif
     }
-    #endregion Utility
+    private int CharToNumber(char command) 
+    {
+        if (command >= '0' && command <= '9')
+        {
+            return int.Parse(command.ToString());
+        }
+        else if (command >= 'A' && command <= 'Z')
+        {
+            return 10 + (command - 'A');
+        }
+
+        return -1;
+    }
+    private string Debug_CoordChar(int index)
+    {
+        if (index < 10 && index >= 0) return index.ToString();
+        if (index >= 10 && index < 36) return ((char)('A' + index - 10)).ToString();
+        return "?";
+    }
+    private void Debug_PrintAndSleep()
+    {
+        if (enablePrinting)
+        {
+#if DEBUG || RELEASE
+            Console.SetCursorPosition(0, 0);
+            this.Debug_PrintBulletMatrix();
+            System.Threading.Thread.Sleep(100);
+#endif
+        }
+    }
+    #endregion
 }

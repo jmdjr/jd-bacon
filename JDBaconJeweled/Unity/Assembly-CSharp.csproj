@@ -59,11 +59,14 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDMonoGuiBehavior.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDStateMachineSystem.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\BulletFactory.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\GunStore.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\IBullet.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\JDBullet.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Frame.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JDBaconJeweledConsole.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JewelMatrix\BulletMatrix.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JewelMatrix\MatrixJewelLogic.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JewelMatrix\Position2D.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\GameStatistics.cs" />
      <Compile Include="Assets\SmoothMoves\Demo\Scripts\Knight.cs" />
      <None Include="Assets\SmoothMoves\PlayMaker Scripts\readme.txt" />

@@ -22,6 +22,10 @@ public class JDBullet : JDIObject
     public int Id { get { return this.id; } set { this.id = value; } }
     public string bulletDebugChar { get; set; }
 
+    //public bool Unlocked { get; set; }
+    //public int PointCost { get; set; }
+    //public int ZombieDamage { get; set; }
+
     public JDIObjectTypes JDType
     {
         get { return JDIObjectTypes.OBJECT; }
@@ -33,6 +37,7 @@ public class JDBullet : JDIObject
     {
         get { return TagTypeExtension.ToBulletTagType(BulletTypeString); }
     }
+
     #endregion Properties
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
@@ -56,11 +61,14 @@ public class JDBullet : JDIObject
     {
         return new JDBullet()
         {
-            name = this.name,
-            id = this.id,
-            bulletType = this.bulletType,
-            bulletDebugChar = this.bulletDebugChar,
-            Debug_Color = this.Debug_Color
+            name = this.name
+            , id = this.id
+            , bulletType = this.bulletType
+            , bulletDebugChar = this.bulletDebugChar
+            , Debug_Color = this.Debug_Color
+            //, Unlocked = this.Unlocked
+            //, PointCost = this.PointCost
+            //, ZombieDamage = this.ZombieDamage
         };
     }
 }

@@ -30,5 +30,11 @@
     <bulletDebugChar>X</bulletDebugChar>
     <Id>5</Id>
   </JDBullet>
+  <JDBullet>
+    <Name>Bullet 6</Name>
+    <BulletTypeString>BULLET_6</BulletTypeString>
+    <bulletDebugChar>$</bulletDebugChar>
+    <Id>5</Id>
+  </JDBullet>
 
 </bulletDefinitions>
