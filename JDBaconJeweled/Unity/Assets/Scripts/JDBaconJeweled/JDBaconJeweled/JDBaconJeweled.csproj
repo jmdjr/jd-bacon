@@ -72,7 +72,7 @@
     <Compile Include="Statistics\GameStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Definitions\BulletDefinitions.xml">
+    <Content Include="Assets\Definitions\BulletDefinitions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>

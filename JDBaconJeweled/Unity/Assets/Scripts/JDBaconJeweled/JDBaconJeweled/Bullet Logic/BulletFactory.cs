@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public sealed class BulletFactory : JDIObject
 {
-    string BulletDefinitionFile = "./Definitions/BulletDefinitions.xml";
+    string BulletDefinitionFile = "../Unity/Assets/Definitions/BulletDefinitions.xml";
 
     private List<JDBullet> BulletReferences;
     private List<JDBullet> BulletCollection;
