@@ -46,6 +46,7 @@
   <ItemGroup>
      <Compile Include="Assets\SmoothMoves\Editor\KnightInspector.cs" />
      <None Include="Assets\SmoothMoves\PlayMaker Scripts\readme.txt" />
+     <None Include="Assets\Definitions\BulletDefinitions.xml" />
      <None Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Definitions\BulletDefinitions.xml" />
      <None Include="Assets\Editor Default Resources\README.txt" />
      <None Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\obj\x86\Debug\JDBaconJeweled.csproj.FileListAbsolute.txt" />

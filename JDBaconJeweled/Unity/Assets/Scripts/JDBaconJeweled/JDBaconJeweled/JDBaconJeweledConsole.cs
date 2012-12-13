@@ -34,6 +34,8 @@ namespace JDBaconJeweled
                 command = "";
                 rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|quit");
                 command = PromptForCommand(rex, command, frame);
+                
+                frame.enablePrinting = true;
 
                 if (!Regex.IsMatch(command, "quit"))
                 {
