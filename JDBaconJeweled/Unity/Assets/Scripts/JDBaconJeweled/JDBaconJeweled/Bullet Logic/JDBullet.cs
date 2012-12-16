@@ -10,21 +10,10 @@ using System.Collections.Generic;
 public class JDBullet : JDIObject
 {
     #region Properties
-    [SerializeField]
-    private int id;
-    [SerializeField]
-    private string name;
-    [SerializeField]
-    private string bulletType;
-
-    public string Name { get { return this.name; } set { this.name = value; } }
-    public string BulletTypeString { get { return this.bulletType; } set { this.bulletType = value; } }
-    public int Id { get { return this.id; } set { this.id = value; } }
+    public bool Unlocked { get; set; }
+    public string Name { get; set; }
+    public int Id { get; set; }
     public string bulletDebugChar { get; set; }
-
-    //public bool Unlocked { get; set; }
-    //public int PointCost { get; set; }
-    //public int ZombieDamage { get; set; }
 
     public JDIObjectTypes JDType
     {
@@ -32,11 +21,6 @@ public class JDBullet : JDIObject
     }
 
     public ConsoleColor Debug_Color { get; set; }
-
-    public JDIBulletTypes BulletType
-    {
-        get { return TagTypeExtension.ToBulletTagType(BulletTypeString); }
-    }
 
     #endregion Properties
 
@@ -61,12 +45,11 @@ public class JDBullet : JDIObject
     {
         return new JDBullet()
         {
-            name = this.name
-            , id = this.id
-            , bulletType = this.bulletType
+            Name = this.Name
+            , Id = this.Id
             , bulletDebugChar = this.bulletDebugChar
             , Debug_Color = this.Debug_Color
-            //, Unlocked = this.Unlocked
+            , Unlocked = this.Unlocked
             //, PointCost = this.PointCost
             //, ZombieDamage = this.ZombieDamage
         };

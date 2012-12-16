@@ -9,7 +9,8 @@ using System.Collections.Generic;
 
 public sealed class BulletFactory : JDIObject
 {
-    string BulletDefinitionFile = "../Unity/Assets/Definitions/BulletDefinitions.xml";
+    //string BulletDefinitionFile = "../Unity/Assets/Definitions/BulletDefinitions.xml";
+    string BulletDefinitionFile = "./Assets/Definitions/BulletDefinitions.xml";
 
     private List<JDBullet> BulletReferences;
     private List<JDBullet> BulletCollection;
@@ -44,10 +45,18 @@ public sealed class BulletFactory : JDIObject
             return instance;
         }
     }
-
-    public JDBullet SpawnBullet(int bulletIndex)
+    public bool CanSpawnBullet(int bulletIndex)
     {
         if (bulletIndex < 0 || bulletIndex > NumberOfLoadedBullets)
+        {
+            return false;
+        }
+
+        return BulletReferences[bulletIndex].Unlocked;
+    }
+    public JDBullet SpawnBullet(int bulletIndex)
+    {
+        if (!CanSpawnBullet(bulletIndex))
         {
             return null;
         }
@@ -87,6 +96,8 @@ public sealed class BulletFactory : JDIObject
 
         BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
             "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
+
+        // string Serial = JDGameUtilz.SerializeObject(BulletReferences, "BulletReferences", typeof(List<JDBullet>));
 
         Random r = new Random(0);
 

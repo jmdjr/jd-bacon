@@ -137,7 +137,7 @@ public class BulletMatrix
             while (i < this.Height && steps < this.totalToMatch)
             {
 
-                if (grid[i, j] != null && grid[i, j].BulletType == toMatch.BulletType)
+                if (grid[i, j] != null && grid[i, j].Id == toMatch.Id)
                 {
                     ++matches;
                 }
@@ -162,7 +162,7 @@ public class BulletMatrix
             while (j < this.Width && steps < this.totalToMatch)
             {
 
-                if (grid[i, j] != null && grid[i, j].BulletType == toMatch.BulletType)
+                if (grid[i, j] != null && grid[i, j].Id == toMatch.Id)
                 {
                     ++matches;
                 }
@@ -189,7 +189,13 @@ public class BulletMatrix
             ((i, j) =>
             {
                 //int bulletIndex = Random.Range(min, max);
-                int bulletIndex = r.Next(min, max);
+                int bulletIndex = 0;
+
+                do
+                {
+                    bulletIndex = r.Next(min, max);
+                }
+                while (!BulletFactory.Instance.CanSpawnBullet(bulletIndex));
 
                 if (grid[i, j] == null)
                 {
@@ -248,7 +254,7 @@ public class BulletMatrix
         foreach (Position2D pos in collectedBullets)
         {
             JDBullet gridBullet = grid[pos.Y, pos.X];
-            if (gridBullet != null && !uniqueBullets.Any(bullet => bullet.BulletType == gridBullet.BulletType))
+            if (gridBullet != null && !uniqueBullets.Any(bullet => bullet.Id == gridBullet.Id))
             {
                 uniqueBullets.Add(gridBullet);
             }
