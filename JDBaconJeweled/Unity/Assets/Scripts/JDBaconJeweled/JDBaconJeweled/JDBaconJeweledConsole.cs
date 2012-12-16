@@ -28,11 +28,10 @@ namespace JDBaconJeweled
             frame.Load(false);
             Console.Clear();
             frame.BalanceGrid(true, true);
-
             do
             {
                 command = "";
-                rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|quit");
+                rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|[" + BulletFactory.Instance.Debug_DebugChars + "]|quit");
                 command = PromptForCommand(rex, command, frame);
                 
                 frame.enablePrinting = true;

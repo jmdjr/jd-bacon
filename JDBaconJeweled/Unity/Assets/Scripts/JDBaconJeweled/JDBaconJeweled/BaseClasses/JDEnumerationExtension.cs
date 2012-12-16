@@ -43,30 +43,4 @@ public static class TagTypeExtension
                 return TagTypes.UNTAGGED;
         }
     }
-
-    public static JDIBulletTypes ToBulletTagType(string bulletString)
-    {
-        switch (bulletString)
-        {
-            default:
-                return JDIBulletTypes.UNKOWN;
-
-            case "BULLET_1":
-                return JDIBulletTypes.BULLET_1;
-            case "BULLET_2":
-                return JDIBulletTypes.BULLET_2;
-            case "BULLET_3":
-                return JDIBulletTypes.BULLET_3;
-            case "BULLET_4":
-                return JDIBulletTypes.BULLET_4;
-            case "BULLET_5":
-                return JDIBulletTypes.BULLET_5;
-            case "BULLET_6":
-                return JDIBulletTypes.BULLET_6;
-            case "BULLET_7":
-                return JDIBulletTypes.BULLET_7;
-            case "BULLET_8":
-                return JDIBulletTypes.BULLET_8;
-        }
-    }
 }

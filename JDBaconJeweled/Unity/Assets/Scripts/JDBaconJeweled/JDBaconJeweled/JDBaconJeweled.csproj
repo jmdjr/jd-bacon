@@ -48,7 +48,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseClasses\EventDelegates.cs" />
+    <Compile Include="BaseClasses\JDDelegates.cs" />
+    <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="BaseClasses\JDEnumeration.cs" />
     <Compile Include="BaseClasses\JDEnumerationExtension.cs" />
     <Compile Include="BaseClasses\JDGame.cs" />
@@ -66,15 +67,21 @@
     <Compile Include="Bullet Logic\GunStore.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
     <Compile Include="GameObjects\Frame.cs" />
+    <Compile Include="GameObjects\GameLogic\GameProgression.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />
     <Compile Include="JewelMatrix\Position2D.cs" />
+    <Compile Include="LevelProgression\JDLevel.cs" />
+    <Compile Include="LevelProgression\LevelManager.cs" />
     <Compile Include="Statistics\GameStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Definitions\BulletDefinitions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Assets\Definitions\LevelWaves.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

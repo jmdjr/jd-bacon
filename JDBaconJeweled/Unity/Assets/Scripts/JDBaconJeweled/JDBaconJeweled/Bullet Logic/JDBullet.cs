@@ -14,7 +14,8 @@ public class JDBullet : JDIObject
     public string Name { get; set; }
     public int Id { get; set; }
     public string bulletDebugChar { get; set; }
-
+    public int AccessedLevel { get; set; }
+    public int ZombieKillNumber { get; set; }
     public JDIObjectTypes JDType
     {
         get { return JDIObjectTypes.OBJECT; }
@@ -41,6 +42,15 @@ public class JDBullet : JDIObject
         return true;
     }
 
+    public bool IsUnlocked()
+    {
+        if (this.AccessedLevel >= LevelManager.Instance.CurrentLevel())
+        {
+            this.Unlocked = true;
+        }
+        return this.Unlocked;
+    }
+
     public JDBullet SpawnCopy() 
     {
         return new JDBullet()
@@ -50,8 +60,8 @@ public class JDBullet : JDIObject
             , bulletDebugChar = this.bulletDebugChar
             , Debug_Color = this.Debug_Color
             , Unlocked = this.Unlocked
-            //, PointCost = this.PointCost
-            //, ZombieDamage = this.ZombieDamage
+            , AccessedLevel = this.AccessedLevel
+            , ZombieKillNumber = this.ZombieKillNumber
         };
     }
 }

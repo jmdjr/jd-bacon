@@ -1,34 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bulletDefinitions>
   <JDBullet>
-    <Unlocked>false</Unlocked>
-    <Name>Bullet 1</Name>
     <Id>1</Id>
+    <Name>Bullet 1</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>1</ZombieKillNumber>
     <bulletDebugChar>@</bulletDebugChar>
   </JDBullet>
   <JDBullet>
-    <Unlocked>true</Unlocked>
-    <Name>Bullet 2</Name>
-    <bulletDebugChar>#</bulletDebugChar>
     <Id>2</Id>
+    <Name>Bullet 2</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>2</ZombieKillNumber>
+    <bulletDebugChar>#</bulletDebugChar>
   </JDBullet>
   <JDBullet>
-    <Unlocked>true</Unlocked>
-    <Name>Bullet 3</Name>
-    <bulletDebugChar>%</bulletDebugChar>
     <Id>3</Id>
+    <Name>Bullet 3</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>3</ZombieKillNumber>
+    <bulletDebugChar>%</bulletDebugChar>
   </JDBullet>
   <JDBullet>
-    <Unlocked>true</Unlocked>
-    <Name>Bullet 4</Name>
-    <bulletDebugChar>*</bulletDebugChar>
     <Id>4</Id>
+    <Name>Bullet 4</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>4</ZombieKillNumber>
+    <bulletDebugChar>*</bulletDebugChar>
   </JDBullet>
   <JDBullet>
-    <Unlocked>true</Unlocked>
-    <Name>Bullet 5</Name>
-    <bulletDebugChar>X</bulletDebugChar>
     <Id>5</Id>
+    <Name>Bullet 5</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
   </JDBullet>
 
 </bulletDefinitions>

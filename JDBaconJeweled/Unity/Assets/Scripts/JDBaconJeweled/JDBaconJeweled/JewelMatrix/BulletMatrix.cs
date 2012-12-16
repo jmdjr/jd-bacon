@@ -22,6 +22,8 @@ public class BulletMatrix
     private int max;
     private delegate void GridStepper(int x, int y);
 
+    public BulletSpawned BulletSpawned;
+
     public BulletMatrix(int height, int width)
     {
         this.Height = height;
@@ -188,18 +190,9 @@ public class BulletMatrix
         StepThroughGrid(
             ((i, j) =>
             {
-                //int bulletIndex = Random.Range(min, max);
-                int bulletIndex = 0;
-
-                do
-                {
-                    bulletIndex = r.Next(min, max);
-                }
-                while (!BulletFactory.Instance.CanSpawnBullet(bulletIndex));
-
                 if (grid[i, j] == null)
                 {
-                    grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
+                    SpawnBullet(i, j);
                     Debug_PrintAndSleep();
                 }
             })
@@ -307,6 +300,7 @@ public class BulletMatrix
             this.DropMatchedBullets(matches);
             this.ShiftItemsDown(matches);
             matches = this.CollectMatchedBullets();
+            Debug_PrintAndSleep();
         }
         while (matches.Count > 0);
 
@@ -317,9 +311,15 @@ public class BulletMatrix
     }
     private void SpawnBullet(int i, int j)
     {
+        int bulletIndex = 0;
+        do
+        {
+            bulletIndex = r.Next(min, max);
+        }
+        while (!BulletFactory.Instance.CanSpawnBullet(bulletIndex));
+
         if (grid[i, j] == null)
         {
-            int bulletIndex = r.Next(min, max);
             grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
         }
     }
@@ -382,14 +382,14 @@ public class BulletMatrix
     #region Debug Functions
     public Position2D CommandToPosition(string command)
     {
-        char[] commandSplit = command.ToCharArray();
-
         return new Position2D(CharToNumber(command[0]), CharToNumber(command[1]));
-
     }
     public void Debug_PrintBulletMatrix()
     {
 #if DEBUG || RELEASE
+        Console.WriteLine(LevelManager.Instance.CurrentLevelName());
+        Console.WriteLine("Zombies: " + LevelManager.Instance.CurrentLevelZombieKillCount());
+        Console.WriteLine();
         Console.Write("  ");
         for (int j = 0; j < this.Width; ++j)
         {

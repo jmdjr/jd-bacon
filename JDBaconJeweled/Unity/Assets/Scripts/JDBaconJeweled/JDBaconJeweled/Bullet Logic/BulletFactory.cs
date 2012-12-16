@@ -15,25 +15,11 @@ public sealed class BulletFactory : JDIObject
     private List<JDBullet> BulletReferences;
     private List<JDBullet> BulletCollection;
 
-    public string Name
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
-    public JDIObjectTypes JDType
-    {
-        get { return JDIObjectTypes.OBJECT; }
-    }
+    public string Name { get; set; }
+    public JDIObjectTypes JDType { get { return JDIObjectTypes.OBJECT; } }
     public static int NumberOfLoadedBullets { get { return Instance.BulletReferences.Count; } }
 
     private static BulletFactory instance;
-
     public static BulletFactory Instance
     {
         get
@@ -45,6 +31,24 @@ public sealed class BulletFactory : JDIObject
             return instance;
         }
     }
+
+    private BulletFactory()
+    {
+        BulletCollection = new List<JDBullet>();
+
+        BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
+            "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
+
+        // string Serial = JDGameUtilz.SerializeObject(BulletReferences, "BulletReferences", typeof(List<JDBullet>));
+
+        Random r = new Random(0);
+
+        foreach (JDBullet bullet in BulletReferences)
+        {
+            bullet.Debug_Color = (ConsoleColor)(r.Next(1, 15));
+        }
+    }
+
     public bool CanSpawnBullet(int bulletIndex)
     {
         if (bulletIndex < 0 || bulletIndex > NumberOfLoadedBullets)
@@ -52,7 +56,7 @@ public sealed class BulletFactory : JDIObject
             return false;
         }
 
-        return BulletReferences[bulletIndex].Unlocked;
+        return BulletReferences[bulletIndex].IsUnlocked();
     }
     public JDBullet SpawnBullet(int bulletIndex)
     {
@@ -90,20 +94,21 @@ public sealed class BulletFactory : JDIObject
         }
     }
 
-    private BulletFactory()
+    private string debugChars = "";
+    public string Debug_DebugChars 
     {
-        BulletCollection = new List<JDBullet>();
-
-        BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
-            "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
-
-        // string Serial = JDGameUtilz.SerializeObject(BulletReferences, "BulletReferences", typeof(List<JDBullet>));
-
-        Random r = new Random(0);
-
-        foreach (JDBullet bullet in BulletReferences)
+        get 
         {
-            bullet.Debug_Color = (ConsoleColor)(r.Next(1, 15));
+            if (debugChars == "")
+            {
+                foreach (var bullet in BulletReferences)
+                {
+                    debugChars += "\\" + bullet.bulletDebugChar;
+                }
+            }
+
+            return debugChars;
         }
+    
     }
 }

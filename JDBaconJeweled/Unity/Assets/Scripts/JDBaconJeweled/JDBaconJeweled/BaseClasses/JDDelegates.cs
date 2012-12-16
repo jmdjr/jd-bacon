@@ -26,7 +26,7 @@ public class CollisionEventArgs : MonoScriptEventArgs
     public JDCollisionObject JdOther { get { return this.jdOther; } }
 
     public CollisionEventArgs(JDMonoBehavior scriptReference, Collision other)
-    : base(scriptReference)
+        : base(scriptReference)
     {
         this.other = other;
         this.jdOther = new JDCollisionObject(other);
@@ -39,11 +39,10 @@ public class JDCollisionObject
     public TagTypes ObjectTagType { get; protected set; }
     public JDIObject ScriptObject { get; protected set; }
 
-    public JDCollisionObject(Collision other) 
+    public JDCollisionObject(Collision other)
     {
         JDMonoBehavior behavior = other.gameObject.GetComponent<JDMonoBehavior>();
         this.ObjectTagType = TagTypeExtension.ToTagType(other.collider.tag);
         Debug.Log(behavior != null);
     }
-
 }
