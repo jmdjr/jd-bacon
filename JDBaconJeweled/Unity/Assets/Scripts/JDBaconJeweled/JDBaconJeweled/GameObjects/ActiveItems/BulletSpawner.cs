@@ -10,17 +10,17 @@ using Random = System.Random;
 
 public class BulletSpawner : JDMonoBehavior
 {
-    private Queue<JDBullet> toSpawn;
-    private Queue<Position2D> toSpawnPosition;
-    private int delay = 500;
+    private Stack<JDBullet> toSpawn;
+    private Stack<Position2D> toSpawnPosition;
+    private int delay = 30;
     private int tick = 0;
 
     public event GameObjectTransferEvent SpawnedBulletGameObject;
 
     public override void Awake()
     {
-        toSpawn = new Queue<JDBullet>();
-        toSpawnPosition = new Queue<Position2D>();
+        toSpawn = new Stack<JDBullet>();
+        toSpawnPosition = new Stack<Position2D>();
         base.Awake();
     }
 
@@ -28,13 +28,14 @@ public class BulletSpawner : JDMonoBehavior
     {
         var position = this.gameObject.transform.position;
         var rotation = this.gameObject.transform.rotation;
+        Debug.Log("Spawned: " + bullet.bulletDebugChar + " Position: " + position);
         return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), position, rotation);
     }
 
     public void QueueBullet(JDBullet bullet, Position2D position) 
     {
-        this.toSpawn.Enqueue(bullet);
-        this.toSpawnPosition.Enqueue(position);
+        this.toSpawn.Push(bullet);
+        this.toSpawnPosition.Push(position);
     }
 
     public override void Update()
@@ -43,10 +44,10 @@ public class BulletSpawner : JDMonoBehavior
         if (tick >= delay)
         {
             tick = 0;
-            if (SpawnedBulletGameObject != null)
+            if (SpawnedBulletGameObject != null && toSpawn.Count > 0 && toSpawn.Count == toSpawnPosition.Count)
             {
-                JDBullet bullet = toSpawn.Dequeue();
-                Position2D point = toSpawnPosition.Dequeue();
+                JDBullet bullet = toSpawn.Pop();
+                Position2D point = toSpawnPosition.Pop();
 
                 GameObjectTransferEventArgs args = new GameObjectTransferEventArgs(SpawnBullet(bullet), point);
                 SpawnedBulletGameObject(args);

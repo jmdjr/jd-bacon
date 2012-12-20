@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class JDMonoBehavior : MonoBehaviour, JDIHaveScriptHandles, JDIObject
 {
     public event MonoScriptEventHandler ScriptAwake;
+    public event MonoScriptEventHandler ScriptStart;
     public event MonoScriptEventHandler ScriptUpdate;
     public event MonoScriptEventHandler ScriptDestroy;
 
@@ -21,6 +22,13 @@ public class JDMonoBehavior : MonoBehaviour, JDIHaveScriptHandles, JDIObject
         if (ScriptAwake != null)
         {
             ScriptAwake(new MonoScriptEventArgs(this));
+        }
+    }
+    public virtual void Start()
+    {
+        if (ScriptStart != null)
+        {
+            ScriptStart(new MonoScriptEventArgs(this));
         }
     }
 

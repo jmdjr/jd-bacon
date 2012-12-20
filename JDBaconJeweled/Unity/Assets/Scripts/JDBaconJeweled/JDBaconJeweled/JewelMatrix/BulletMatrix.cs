@@ -22,20 +22,34 @@ public class BulletMatrix
     private int max;
     private delegate void GridStepper(int x, int y);
 
-    public event BulletSpawnedEvent BulletSpawned;
+    public event BulletActionEvent BulletSpawned;
+    public event BulletActionEvent BulletDestroyed;
 
     public BulletMatrix(int height, int width)
     {
         this.Height = height;
         this.Width = width;
 
-        r = new Random();
+        r = new Random(10);
         min = 0;
         max = BulletFactory.NumberOfLoadedBullets;
         
         grid = new JDBullet[this.Height, this.Width];
     }
 
+    public override string ToString()
+    {
+        string frameString = "";
+
+        StepThroughGrid(
+            (i, j) => {
+                frameString += "\n";
+            }, 
+            (i, j) => {
+                frameString += grid[i, j].bulletDebugChar;
+            });
+        return frameString;
+    }
     #region Checks
     public bool CanMatchMore()
     {
@@ -188,6 +202,21 @@ public class BulletMatrix
 
         return grid[position.Y, position.X];
     }
+    public void SpawnFullGrid()
+    {
+        if (this.BulletSpawned != null)
+        {
+            StepThroughGrid((i, j) => 
+            { 
+                var position = new Position2D(j, i);
+                var bullet = GetBulletAt(position);
+                Debug.Log(position);
+
+                BulletSpawned(new BulletActionEventArgs(position, bullet));
+            });
+        }
+
+    }
     #endregion
 
     #region Load and Balancing
@@ -333,12 +362,18 @@ public class BulletMatrix
 
             if (this.BulletSpawned != null)
             {
-                this.BulletSpawned(new BulletSpawnedEventArgs(new Position2D(j, i), grid[i,j]));
+                this.BulletSpawned(new BulletActionEventArgs(new Position2D(j, i), grid[i, j]));
             }
         }
     }
     private void dropBullet(int i, int j)
     {
+        if (BulletDestroyed != null)
+        {
+            BulletActionEventArgs eventArgs = new BulletActionEventArgs(new Position2D(j, i), grid[i, j]);
+            BulletDestroyed(eventArgs);
+        }
+
         BulletFactory.Instance.DestroyBullet(grid[i, j]);
         grid[i, j] = null;
     }

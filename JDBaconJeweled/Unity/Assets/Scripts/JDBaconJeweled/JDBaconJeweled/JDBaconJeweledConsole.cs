@@ -31,7 +31,7 @@ namespace JDBaconJeweled
             do
             {
                 command = "";
-                rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|[" + BulletFactory.Instance.Debug_DebugChars + "]|quit");
+                rex = new Regex("[0-9A-Z][0-9A-Z]x[0-9A-Z][0-9A-Z]|quit");
                 command = PromptForCommand(rex, command, frame);
                 
                 frame.enablePrinting = true;
@@ -129,11 +129,11 @@ namespace JDBaconJeweled
         {
             do
             {
-                Console.WriteLine("Please specify the dimensions of the grid (must be >= 5x5):");
+                Console.WriteLine("Please specify the dimensions of the grid (ex. 10x10):");
                 command = Console.ReadLine();
                 Console.WriteLine();
 
-                if (command == "") command = "5x5";
+                if (command == "") command = "10x10";
 
             } while (!rex.IsMatch(command));
 

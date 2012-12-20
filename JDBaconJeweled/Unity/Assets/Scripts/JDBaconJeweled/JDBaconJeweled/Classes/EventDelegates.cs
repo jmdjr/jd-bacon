@@ -6,8 +6,8 @@ using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
 
-public delegate void BulletSpawnedEvent(BulletSpawnedEventArgs eventArgs);
-public class BulletSpawnedEventArgs
+public delegate void BulletActionEvent(BulletActionEventArgs eventArgs);
+public class BulletActionEventArgs
 {
     private Position2D point;
     private JDBullet bulletSpawned;
@@ -15,7 +15,7 @@ public class BulletSpawnedEventArgs
     public Position2D Point { get { return point; } }
     public JDBullet Bullet { get { return bulletSpawned; } }
 
-    public BulletSpawnedEventArgs(Position2D point, JDBullet bulletSpawned) 
+    public BulletActionEventArgs(Position2D point, JDBullet bulletSpawned) 
     {
         this.point = point;
         this.bulletSpawned = bulletSpawned;

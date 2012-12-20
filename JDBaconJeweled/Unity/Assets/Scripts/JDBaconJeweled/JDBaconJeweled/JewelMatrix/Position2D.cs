@@ -37,4 +37,9 @@ public class Position2D
     {
         return base.GetHashCode();
     }
+
+    public override string ToString()
+    {
+        return "<X: " + this.X + ", Y: " + this.Y + ">";
+    }
 }
