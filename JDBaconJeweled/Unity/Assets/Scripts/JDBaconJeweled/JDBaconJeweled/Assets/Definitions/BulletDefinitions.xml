@@ -7,6 +7,7 @@
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>1</ZombieKillNumber>
     <bulletDebugChar>@</bulletDebugChar>
+    <ResourceName>Bullets/CyanBullet</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>2</Id>
@@ -15,6 +16,7 @@
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>2</ZombieKillNumber>
     <bulletDebugChar>#</bulletDebugChar>
+    <ResourceName>Bullets/BlueBullet</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>3</Id>
@@ -23,6 +25,7 @@
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>3</ZombieKillNumber>
     <bulletDebugChar>%</bulletDebugChar>
+    <ResourceName>Bullets/RedBullet</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>4</Id>
@@ -31,6 +34,7 @@
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>4</ZombieKillNumber>
     <bulletDebugChar>*</bulletDebugChar>
+    <ResourceName>Bullets/YellowBullet</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>5</Id>
@@ -39,6 +43,7 @@
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>5</ZombieKillNumber>
     <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>Bullets/GreenBullet</ResourceName>
   </JDBullet>
 
 </bulletDefinitions>

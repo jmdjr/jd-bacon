@@ -10,4 +10,13 @@ using Random = System.Random;
 
 public class GameProgression : JDMonoBehavior
 {
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    }
 }

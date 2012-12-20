@@ -22,7 +22,7 @@ public class BulletMatrix
     private int max;
     private delegate void GridStepper(int x, int y);
 
-    public BulletSpawned BulletSpawned;
+    public event BulletSpawnedEvent BulletSpawned;
 
     public BulletMatrix(int height, int width)
     {
@@ -179,6 +179,15 @@ public class BulletMatrix
     #endregion
     
     #region Accessors
+    public JDBullet GetBulletAt(Position2D position)
+    {
+        if (position.X >= this.Width || position.X < 0 || position.Y >= this.Height || position.Y < 0)
+        {
+            return null;
+        }
+
+        return grid[position.Y, position.X];
+    }
     #endregion
 
     #region Load and Balancing
@@ -321,6 +330,11 @@ public class BulletMatrix
         if (grid[i, j] == null)
         {
             grid[i, j] = BulletFactory.Instance.SpawnBullet(bulletIndex);
+
+            if (this.BulletSpawned != null)
+            {
+                this.BulletSpawned(new BulletSpawnedEventArgs(new Position2D(j, i), grid[i,j]));
+            }
         }
     }
     private void dropBullet(int i, int j)

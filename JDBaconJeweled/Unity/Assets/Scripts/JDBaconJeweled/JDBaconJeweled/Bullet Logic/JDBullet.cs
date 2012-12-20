@@ -16,6 +16,8 @@ public class JDBullet : JDIObject
     public string bulletDebugChar { get; set; }
     public int AccessedLevel { get; set; }
     public int ZombieKillNumber { get; set; }
+    public string ResourceName { get; set; }
+
     public JDIObjectTypes JDType
     {
         get { return JDIObjectTypes.OBJECT; }
@@ -62,6 +64,7 @@ public class JDBullet : JDIObject
             , Unlocked = this.Unlocked
             , AccessedLevel = this.AccessedLevel
             , ZombieKillNumber = this.ZombieKillNumber
+            , ResourceName = this.ResourceName
         };
     }
 }

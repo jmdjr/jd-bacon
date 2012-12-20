@@ -66,8 +66,10 @@
     <Compile Include="Bullet Logic\BulletFactory.cs" />
     <Compile Include="Bullet Logic\GunStore.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
-    <Compile Include="GameObjects\Frame.cs" />
+    <Compile Include="GameObjects\ActiveItems\BulletSpawner.cs" />
+    <Compile Include="GameObjects\Frame10x10.cs" />
     <Compile Include="GameObjects\GameLogic\GameProgression.cs" />
+    <Compile Include="GameObjects\JewelGameBaseFunctions.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />
     <Compile Include="JewelMatrix\Position2D.cs" />
@@ -82,6 +84,7 @@
     </Content>
     <Content Include="Assets\Definitions\LevelWaves.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
