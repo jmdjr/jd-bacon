@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class BulletGameGlobal
 {
 
-
     private static BulletGameGlobal instance;
     public static BulletGameGlobal Instance
     {
@@ -28,4 +27,5 @@ public class BulletGameGlobal
     }
 
     public bool PreventBulletBouncing { get; set; }
+    public bool PauseSpawners { get; set; }
 }

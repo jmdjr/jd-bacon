@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClasses\GrimReaper.cs" />
     <Compile Include="BaseClasses\JDDelegates.cs" />
     <Compile Include="Classes\BulletGameGlobal.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="GameObjects\GameLogic\GameObjectGrabber.cs" />
     <Compile Include="GameObjects\GameLogic\Frame10x10.cs" />
     <Compile Include="GameObjects\GameLogic\GameProgression.cs" />
+    <Compile Include="GameObjects\GameLogic\ZeroZoneScript.cs" />
     <Compile Include="GameObjects\JewelGameBaseFunctions.cs" />
     <Compile Include="JewelMatrix\BulletMatrix.cs" />
     <Compile Include="JDBaconJeweledConsole.cs" />

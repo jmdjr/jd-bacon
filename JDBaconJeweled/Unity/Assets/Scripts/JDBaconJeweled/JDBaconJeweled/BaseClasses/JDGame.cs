@@ -35,7 +35,21 @@ public static class JDGame
             }
 
             return levelMaster;
-        } 
+        }
+    }
+
+    private static GrimReaper reaper;
+    public static GrimReaper GrimReaper
+    {
+        get
+        {
+            if (reaper == null)
+            {
+                reaper = ((GrimReaper)GameMaster.GetComponent<GrimReaper>());
+            }
+
+            return reaper;
+        }
     }
 
     public static JDIObject GetJDIObject(JDMonoBodyBehavior script, JDIObjectTypes JDType)

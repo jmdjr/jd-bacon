@@ -57,8 +57,6 @@ public class GameObjectGrabber : JDMonoGuiBehavior
                 if (DroppedGameObject != null)
                 {
                     DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                    this.heldGameObject = hit.transform.gameObject;
-
                 }
             }
         }

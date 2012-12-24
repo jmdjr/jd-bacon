@@ -28,7 +28,7 @@ public class BulletSpawner : JDMonoBehavior
     {
         var position = this.gameObject.transform.position;
         var rotation = this.gameObject.transform.rotation;
-        Debug.Log("Spawned: " + bullet.bulletDebugChar + " Position: " + position);
+        //Debug.Log("Spawned: " + bullet.bulletDebugChar + " Position: " + position);
         return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), position, rotation);
     }
 
@@ -44,7 +44,8 @@ public class BulletSpawner : JDMonoBehavior
         if (tick >= delay)
         {
             tick = 0;
-            if (SpawnedBulletGameObject != null && toSpawn.Count > 0 && toSpawn.Count == toSpawnPosition.Count)
+            Debug.Log("Pause Spawners: " + BulletGameGlobal.Instance.PauseSpawners);
+            if (!BulletGameGlobal.Instance.PauseSpawners && SpawnedBulletGameObject != null && toSpawn.Count > 0 && toSpawn.Count == toSpawnPosition.Count)
             {
                 JDBullet bullet = toSpawn.Pop();
                 Position2D point = toSpawnPosition.Pop();
@@ -62,6 +63,11 @@ public class BulletSpawner : JDMonoBehavior
         }
 
         base.Update();
+    }
+
+    public int RemainningBullet()
+    {
+        return toSpawn.Count;
     }
 
     public bool HasBulletsToSpawn()

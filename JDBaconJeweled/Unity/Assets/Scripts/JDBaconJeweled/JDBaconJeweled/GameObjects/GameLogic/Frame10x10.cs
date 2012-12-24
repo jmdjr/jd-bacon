@@ -38,10 +38,6 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
 
         bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
-        //foreach (var b in bulletSpawners)
-        //{
-        //    Debug.Log(b.transform.position.ToString());
-        //}
 
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
@@ -52,8 +48,9 @@ public class Frame10x10 : JDMonoGuiBehavior
         base.Start();
         BulletGameGlobal.Instance.PreventBulletBouncing = true;
         frame.SpawnFullGrid();
-        //Debug.Log(frame.ToString());
     }
+
+    #region Events
     private void spawner_SpawnedBulletGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var pos = eventArgs.Position;
@@ -62,6 +59,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         {
             grid[eventArgs.Position.Y, eventArgs.Position.X] = eventArgs.GameObject;
         }
+
     }
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
     {
@@ -72,7 +70,78 @@ public class Frame10x10 : JDMonoGuiBehavior
         var x = eventArgs.Point.X;
         var y = eventArgs.Point.Y;
         toMoveAndDestroy.Enqueue(eventArgs.Point);
+        BulletGameGlobal.Instance.PauseSpawners = true;
     }
+    #endregion
+
+    #region Checks
+    public bool IsFrameStable()
+    {
+        bool FrameStable = true;
+        bool FrameMissingBullets = false;
+        bool FrameBulletsStillFalling = false;
+
+        foreach (GameObject bullet in grid)
+        {
+            if (bullet != null)
+            {
+                FallingBullet fBullet = bullet.GetComponent<FallingBullet>();
+
+                if (fBullet != null)
+                {
+                    FrameStable &= !fBullet.IsFalling;
+                    if (fBullet.IsFalling)
+                    {
+                        FrameBulletsStillFalling = true;
+                    }
+                }
+            }
+            else
+            {
+                FrameStable &= false;
+                FrameMissingBullets = true;
+            }
+        }
+        Debug.Log("Frame10x10 - IsFrameStable(): " + FrameStable + " Cause? missing bullets: " + FrameMissingBullets + " still falling: " + FrameBulletsStillFalling );
+        return FrameStable;
+    }
+
+    public int RemainningBulletsToSpawn()
+    {
+        int count = 0;
+        foreach (BulletSpawner spawner in bulletSpawners)
+        {
+            count += spawner.RemainningBullet();
+        }
+
+        return count;
+    }
+
+    public bool HasMatches()
+    {
+        return frame.CollectMatchedBullets().Count > 0;
+    }
+    #endregion
+
+    #region public Mechanics
+    public List<Position2D> DropAnyMatches()
+    {
+        var matches = frame.CollectMatchedBullets();
+        Debug.Log(matches.Count);
+
+        if (matches != null)
+        {
+            frame.DropMatchedBullets(matches);
+        }
+
+        return matches;
+    }
+    public void BubbleUpAndSpawn(List<Position2D> matches)
+    {
+        frame.ShiftItemsDown(matches);
+    }
+    #endregion
+
     private void QueueBulletInSpawner(JDBullet bullet, Position2D point)
     {
         BulletSpawner spawner = null;
@@ -91,42 +160,47 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
     }
 
-    public bool HasMatches()
+    private bool DropBullet(int i, int j)
     {
-        return frame.CollectMatchedBullets().Count > 0;
-    }
-
-    public void DropAnyMatches()
-    {
-        var matches = frame.CollectMatchedBullets();
-        if (matches != null)
+        var gridBullet = grid[i, j];
+        if (gridBullet != null)
         {
-            frame.DropMatchedBullets(matches);
+            gridBullet.transform.position = new Vector3(40, 3, 1);
+            gridBullet.rigidbody.collider.isTrigger = true;
+            return true;
         }
+
+        return false;
     }
 
     public override void Update()
     {
         base.Update();
+        Debug.Log("frame Stable: " + this.IsFrameStable());
 
-        if (toMoveAndDestroy.Count > 0)
+        if (toMoveAndDestroy.Count > 0 && this.IsFrameStable())
         {
-            var point = toMoveAndDestroy.Peek();
-            if (grid[point.Y, point.X] != null)
+            Debug.Log("Dropping Bullets");
+            BulletGameGlobal.Instance.PauseSpawners = true;
+            
+            for( var point = toMoveAndDestroy.GetEnumerator(); point.MoveNext(); )
             {
-                point = toMoveAndDestroy.Dequeue();
-                grid[point.Y, point.X].transform.position.Set(0, 0, 100);
+                Position2D spot = point.Current;
+                this.DropBullet(spot.Y, spot.X);
             }
+
+            BulletGameGlobal.Instance.PauseSpawners = false;
         }
     }
 
+    #region Debug
     public void Debug_PrintGrid()
     {
         string gridString = "";
 
-        for(int i = 0; i < dimension.Y; ++i)
+        for (int i = 0; i < dimension.Y; ++i)
         {
-            for(int j = 0; j < dimension.X; ++j)
+            for (int j = 0; j < dimension.X; ++j)
             {
                 GameObject go = grid[i, j];
 
@@ -153,4 +227,5 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         Debug.Log(gridString);
     }
+    #endregion
 }

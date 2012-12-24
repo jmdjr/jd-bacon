@@ -10,39 +10,43 @@ using Random = System.Random;
 
 public class GameProgression : JDMonoGuiBehavior
 {
+    Frame10x10 gameFrame;
+    Frame10x10 GameFrame
+    {
+        get
+        {
+            if (gameFrame == null)
+            {
+                var g = GameObject.Find("Frame");
+
+                if (g != null)
+                {
+                    gameFrame = g.GetComponent<Frame10x10>();
+                }
+            }
+
+            return gameFrame;
+        }
+    }
+
     public override void Awake()
     {
         base.Awake();
         GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
     }
-    private bool hasPrinted = false;
 
     public override void Update()
     {
         base.Update();
 
-        if (!hasPrinted)
+        if (GameFrame != null)
         {
-            var g = GameObject.Find("Frame");
-
-            if (g != null)
+            if (GameFrame.IsFrameStable() && GameFrame.HasMatches())
             {
-                var f = g.GetComponent<Frame10x10>();
-                if (f != null)
-                {
-                    f.Debug_PrintGrid();
-                    hasPrinted = true;
-
-                }
-                else
-                {
-                    Debug.Log("Did not find Script");
-                }
-            }
-            else
-            {
-                Debug.Log("Did not find Frame");
+                var matches = GameFrame.DropAnyMatches();
+                GameFrame.BubbleUpAndSpawn(matches);
             }
         }
     }
+
 }

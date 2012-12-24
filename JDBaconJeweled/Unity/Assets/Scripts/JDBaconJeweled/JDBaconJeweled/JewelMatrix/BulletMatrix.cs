@@ -211,7 +211,6 @@ public class BulletMatrix
             { 
                 var position = new Position2D(j, i);
                 var bullet = GetBulletAt(position);
-                Debug.Log(position);
 
                 BulletSpawned(new BulletActionEventArgs(position, bullet));
             });
