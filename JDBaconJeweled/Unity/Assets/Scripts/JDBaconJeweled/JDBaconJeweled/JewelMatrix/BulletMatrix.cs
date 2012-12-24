@@ -50,6 +50,7 @@ public class BulletMatrix
             });
         return frameString;
     }
+
     #region Checks
     public bool CanMatchMore()
     {
@@ -236,7 +237,7 @@ public class BulletMatrix
             })
         );
 
-        BalanceGrid(printEnabled, true);
+        //BalanceGrid(printEnabled, true);
     }
     public void UnLoad()
     {

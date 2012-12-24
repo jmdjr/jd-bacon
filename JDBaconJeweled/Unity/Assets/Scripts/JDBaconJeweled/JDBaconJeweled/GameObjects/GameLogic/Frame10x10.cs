@@ -16,6 +16,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     private Position2D dimension = new Position2D(10, 10);
     private List<BulletSpawner> bulletSpawners;
     private Queue<Position2D> toMoveAndDestroy;
+
     public override void Awake()
     {
         base.Awake();
@@ -32,15 +33,15 @@ public class Frame10x10 : JDMonoGuiBehavior
         foreach (var comp in childrenComps)
         {
             BulletSpawner spawner = comp.gameObject.GetComponentInChildren<BulletSpawner>();
-            spawner.SpawnedBulletGameObject += new GameObjectTransferEvent(Frame10x10_SpawnedBulletGameObject);
+            spawner.SpawnedBulletGameObject += new GameObjectTransferEvent(spawner_SpawnedBulletGameObject);
             bulletSpawners.Add(spawner);
         }
 
         bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
-        foreach (var b in bulletSpawners)
-        {
-            Debug.Log(b.transform.position.ToString());
-        }
+        //foreach (var b in bulletSpawners)
+        //{
+        //    Debug.Log(b.transform.position.ToString());
+        //}
 
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
@@ -49,10 +50,11 @@ public class Frame10x10 : JDMonoGuiBehavior
     public override void Start()
     {
         base.Start();
+        BulletGameGlobal.Instance.PreventBulletBouncing = true;
         frame.SpawnFullGrid();
-        Debug.Log(frame.ToString());
+        //Debug.Log(frame.ToString());
     }
-    private void Frame10x10_SpawnedBulletGameObject(GameObjectTransferEventArgs eventArgs)
+    private void spawner_SpawnedBulletGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var pos = eventArgs.Position;
         var dim = this.dimension;
@@ -61,19 +63,16 @@ public class Frame10x10 : JDMonoGuiBehavior
             grid[eventArgs.Position.Y, eventArgs.Position.X] = eventArgs.GameObject;
         }
     }
-
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
     {
         QueueBulletInSpawner(eventArgs.Bullet, eventArgs.Point);
     }
-
     private void frame_BulletDestroyed(BulletActionEventArgs eventArgs)
     {
         var x = eventArgs.Point.X;
         var y = eventArgs.Point.Y;
         toMoveAndDestroy.Enqueue(eventArgs.Point);
     }
-
     private void QueueBulletInSpawner(JDBullet bullet, Position2D point)
     {
         BulletSpawner spawner = null;
@@ -92,6 +91,20 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
     }
 
+    public bool HasMatches()
+    {
+        return frame.CollectMatchedBullets().Count > 0;
+    }
+
+    public void DropAnyMatches()
+    {
+        var matches = frame.CollectMatchedBullets();
+        if (matches != null)
+        {
+            frame.DropMatchedBullets(matches);
+        }
+    }
+
     public override void Update()
     {
         base.Update();
@@ -102,9 +115,42 @@ public class Frame10x10 : JDMonoGuiBehavior
             if (grid[point.Y, point.X] != null)
             {
                 point = toMoveAndDestroy.Dequeue();
-
                 grid[point.Y, point.X].transform.position.Set(0, 0, 100);
             }
         }
+    }
+
+    public void Debug_PrintGrid()
+    {
+        string gridString = "";
+
+        for(int i = 0; i < dimension.Y; ++i)
+        {
+            for(int j = 0; j < dimension.X; ++j)
+            {
+                GameObject go = grid[i, j];
+
+                if (go != null)
+                {
+                    FallingBullet goScript = go.GetComponent<FallingBullet>();
+
+                    if (goScript != null)
+                    {
+                        gridString += goScript.BulletReference.bulletDebugChar;
+                    }
+                    else
+                    {
+                        gridString += ".";
+                    }
+                }
+                else
+                {
+                    Debug.Log("null");
+                }
+            }
+            gridString += '\n';
+        }
+
+        Debug.Log(gridString);
     }
 }

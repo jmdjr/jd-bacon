@@ -46,7 +46,7 @@ public class JDBullet : JDIObject
 
     public bool IsUnlocked()
     {
-        if (this.AccessedLevel >= LevelManager.Instance.CurrentLevel())
+        if (this.AccessedLevel <= LevelManager.Instance.CurrentLevel())
         {
             this.Unlocked = true;
         }

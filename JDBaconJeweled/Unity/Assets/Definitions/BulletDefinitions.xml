@@ -21,8 +21,8 @@
   <JDBullet>
     <Id>3</Id>
     <Name>Bullet 3</Name>
-    <Unlocked>true</Unlocked>
-    <AccessedLevel>0</AccessedLevel>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>2</AccessedLevel>
     <ZombieKillNumber>3</ZombieKillNumber>
     <bulletDebugChar>%</bulletDebugChar>
     <ResourceName>Bullets/RedBullet</ResourceName>

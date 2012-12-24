@@ -48,12 +48,24 @@ public class BulletSpawner : JDMonoBehavior
             {
                 JDBullet bullet = toSpawn.Pop();
                 Position2D point = toSpawnPosition.Pop();
+                GameObject spawned = SpawnBullet(bullet);
+                FallingBullet spawnedScript = spawned.GetComponent<FallingBullet>();
 
-                GameObjectTransferEventArgs args = new GameObjectTransferEventArgs(SpawnBullet(bullet), point);
+                if (spawnedScript != null)
+                {
+                    spawnedScript.BulletReference = bullet;
+                }
+
+                GameObjectTransferEventArgs args = new GameObjectTransferEventArgs(spawned, point);
                 SpawnedBulletGameObject(args);
             }
         }
 
         base.Update();
+    }
+
+    public bool HasBulletsToSpawn()
+    {
+        return toSpawn.Count > 0;
     }
 }
