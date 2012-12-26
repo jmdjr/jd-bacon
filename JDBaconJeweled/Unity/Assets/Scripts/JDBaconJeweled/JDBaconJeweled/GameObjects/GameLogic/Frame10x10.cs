@@ -41,6 +41,8 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
+
+        ConsoleCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "Stuffs", Frame10x10_PrintGridCommand));
     }
 
     public override void Start()
@@ -59,7 +61,6 @@ public class Frame10x10 : JDMonoGuiBehavior
         {
             grid[eventArgs.Position.Y, eventArgs.Position.X] = eventArgs.GameObject;
         }
-
     }
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
     {
@@ -194,6 +195,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     }
 
     #region Debug
+
     public void Debug_PrintGrid()
     {
         string gridString = "";
@@ -214,18 +216,23 @@ public class Frame10x10 : JDMonoGuiBehavior
                     }
                     else
                     {
-                        gridString += ".";
+                        gridString += "?";
                     }
                 }
                 else
                 {
-                    Debug.Log("null");
+                    gridString += "_";
                 }
             }
-            gridString += '\n';
+            gridString +=  ";" + '\n';
         }
 
         Debug.Log(gridString);
+    }
+
+    public void Frame10x10_PrintGridCommand(string[] Params)
+    {
+        this.Debug_PrintGrid();
     }
     #endregion
 }
