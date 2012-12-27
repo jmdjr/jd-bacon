@@ -22,7 +22,6 @@ public class Position2D
 
     public override bool Equals(object obj)
     {
-        if (obj == this) return true;
         Position2D o = obj as Position2D;
 
         if (o != null)
@@ -30,14 +29,8 @@ public class Position2D
             return o.X == this.X && o.Y == this.Y;
         }
 
-        return base.Equals(obj);
+        return false;
     }
-
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-
     public override string ToString()
     {
         return "<X: " + this.X + ", Y: " + this.Y + ">";

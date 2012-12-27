@@ -12,6 +12,7 @@ public class BulletMatrix
 {
     public int Height;
     public int Width;
+    private int sleepTime = 100;
 
     private int totalToMatch = 3;
     public bool enablePrinting = false;
@@ -274,9 +275,8 @@ public class BulletMatrix
                     }
                 }
             }));
-        ;
 
-        return collectedMatchedBullets.OrderBy(v => v.Y).Distinct().ToList();
+        return collectedMatchedBullets.OrderBy(v => v.Y).Distinct((a, b) => { return a.Equals(b); }).ToList();
     }
     public void DropMatchedBullets(List<Position2D> collectedBullets)
     {
@@ -504,7 +504,7 @@ public class BulletMatrix
 #if DEBUG || RELEASE
             Console.SetCursorPosition(0, 0);
             this.Debug_PrintBulletMatrix();
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(sleepTime);
 #endif
         }
     }

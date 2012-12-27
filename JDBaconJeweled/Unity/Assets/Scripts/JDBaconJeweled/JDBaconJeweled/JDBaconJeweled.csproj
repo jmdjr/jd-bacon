@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClasses\Compare.cs" />
     <Compile Include="BaseClasses\DebugManager.cs" />
     <Compile Include="BaseClasses\GrimReaper.cs" />
     <Compile Include="BaseClasses\JDDelegates.cs" />
