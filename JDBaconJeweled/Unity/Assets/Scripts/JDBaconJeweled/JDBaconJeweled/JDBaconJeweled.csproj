@@ -48,12 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseClasses\Compare.cs" />
+    <Compile Include="BaseClasses\PredicateEqualityComparer.cs" />
     <Compile Include="BaseClasses\DebugManager.cs" />
     <Compile Include="BaseClasses\GrimReaper.cs" />
     <Compile Include="BaseClasses\JDDelegates.cs" />
     <Compile Include="Classes\BulletGameGlobal.cs" />
-    <Compile Include="Classes\ConsoleCommands.cs" />
+    <Compile Include="Classes\DebugCommands.cs" />
     <Compile Include="Classes\EventDelegates.cs" />
     <Compile Include="BaseClasses\JDEnumeration.cs" />
     <Compile Include="BaseClasses\JDEnumerationExtension.cs" />

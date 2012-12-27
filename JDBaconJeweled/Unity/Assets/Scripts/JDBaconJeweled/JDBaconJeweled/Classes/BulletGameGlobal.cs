@@ -24,8 +24,46 @@ public class BulletGameGlobal
 
     private BulletGameGlobal()
     {
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("GlobalSetFlag", "Sets global variables from the BulletGameGlobal context", BulletGameGlobal_Debug_GlobalSet));
     }
 
     public bool PreventBulletBouncing { get; set; }
     public bool PauseSpawners { get; set; }
+
+    private void BulletGameGlobal_Debug_GlobalSet(string[] Params)
+    {
+        if(Params.Length == 0 || DebugCommands.IsHelpSwitch(Params[0]))
+        {
+            Debug.Log(
+                "GlobalSetFlag [/?][/x:PropertySwitch] T|F \n"
+                + "Sets the value of some global flags that control the game mechanics.\n"
+                + "Property Switches: \n"
+                + "/B  Prevent Bullets from bouncing. \n"
+                + "/S  Pauses the Spawners, essentially preventing the game from continuing.\n"
+                );
+            return;
+        }
+
+        if (Params.Length > 2 || (Params[1] != "T" && Params[1] != "F"))
+        {
+            Debug.LogWarning("GlobalSetFlag command improperly formatted.");
+            return;
+        }
+
+        string switchCommand = Params[0];
+        bool switchValue = Params[1] == "T";
+        
+
+        switch (switchCommand)
+        {
+            case "/B":
+            case "/b":
+                this.PreventBulletBouncing = switchValue;
+                break;
+            case "/S":
+            case "/s":
+                this.PauseSpawners = switchValue;
+                break;
+        }
+    }
 }

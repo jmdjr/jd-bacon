@@ -42,7 +42,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
 
-        ConsoleCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "Prints an ascii interpretation of the grid.\n", Frame10x10_PrintGridCommand));
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "Prints an ascii interpretation of the grid.\n", Frame10x10_PrintGridCommand));
     }
 
     public override void Start()

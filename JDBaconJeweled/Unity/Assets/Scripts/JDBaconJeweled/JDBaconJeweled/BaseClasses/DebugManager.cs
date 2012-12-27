@@ -72,7 +72,7 @@ public class DebugConsole
 
     private ConsoleCommand GetCommand(string CommandText)
     {
-        foreach (ConsoleCommand Command in ConsoleCommands.Instance.Commands)
+        foreach (ConsoleCommand Command in DebugCommands.Instance.Commands)
         {
             if (Command.CommandText.Equals(CommandText, StringComparison.CurrentCultureIgnoreCase))
             {
@@ -103,7 +103,7 @@ public class DebugConsole
         if (AutoCompleteOptionsIndex < 0)
         {
             AutoCompleteOptions.Clear();
-            foreach (ConsoleCommand Command in ConsoleCommands.Instance.Commands)
+            foreach (ConsoleCommand Command in DebugCommands.Instance.Commands)
             {
                 if (Command.CommandText.ToLower().StartsWith(AutoCompleteText))
                 {
@@ -164,7 +164,7 @@ public class DebugConsole
                     if (CurrentEvent.keyCode == KeyCode.Return || CurrentEvent.keyCode == KeyCode.KeypadEnter)
                     {
                         ExecuteCommand(BaseText);
-                        DisplayConsole = false;
+                        //DisplayConsole = false;
                         return;
                     }
 
@@ -224,6 +224,7 @@ public class DebugConsole
                 PreviousCommandIndex = -1;
                 ClearAutoComplete();
             }
+
             GUI.FocusControl("ConsoleTextBox");
         }
     }
