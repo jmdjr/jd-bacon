@@ -25,6 +25,7 @@ public class BulletMatrix
 
     public event BulletActionEvent BulletSpawned;
     public event BulletActionEvent BulletDestroyed;
+    public event PositionTransferEvent BulletSwapped;
 
     public BulletMatrix(int height, int width)
     {
@@ -312,22 +313,24 @@ public class BulletMatrix
             Debug_PrintAndSleep();
         }
     }
-    public void SwapPositions(Position2D first, Position2D second)
+    public bool SwapPositions(Position2D first, Position2D second)
     {
-        SwapPositions(first.Y, first.X, second.Y, second.X);
+        return SwapPositions(first.Y, first.X, second.Y, second.X);
     }
-    public void SwapPositions(int i, int j, int i2, int j2)
+    public bool SwapPositions(int i, int j, int i2, int j2)
     {
         if (!CanSwapPositions(i, j, i2, j2)) //i == i2 && j == j2 || i != i2 && j != j2)
         {
             // one of the two components must be the same, forcing horizontal or vertical positions only
-            return;
+            return false;
         }
 
         JDBullet holder = grid[i, j];
 
         grid[i, j] = grid[i2, j2];
         grid[i2, j2] = holder;
+
+        return true;
     }
     public void BalanceGrid(bool printEnabled, bool resetStatistics)
     {
@@ -381,7 +384,10 @@ public class BulletMatrix
     {
         while (i > 0)
         {
-            SwapPositions(i, j, --i, j);
+            var first = new Position2D(j, i);
+            var second = new Position2D(j, --i);
+
+            SwapPositions(first, second);
             Debug_PrintAndSleep();
         }
     }

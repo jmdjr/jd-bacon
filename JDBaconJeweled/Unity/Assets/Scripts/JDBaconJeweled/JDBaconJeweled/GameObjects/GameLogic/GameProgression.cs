@@ -39,13 +39,10 @@ public class GameProgression : JDMonoGuiBehavior
     {
         base.Update();
 
-        if (GameFrame != null)
+        if (GameFrame != null && GameFrame.IsFrameStable() && GameFrame.HasMatches())
         {
-            if (GameFrame.IsFrameStable() && GameFrame.HasMatches())
-            {
-                var matches = GameFrame.DropAnyMatches();
-                GameFrame.BubbleUpAndSpawn(matches);
-            }
+            var matches = GameFrame.DropAnyMatches();
+            GameFrame.BubbleUpAndSpawn(matches);
         }
     }
 

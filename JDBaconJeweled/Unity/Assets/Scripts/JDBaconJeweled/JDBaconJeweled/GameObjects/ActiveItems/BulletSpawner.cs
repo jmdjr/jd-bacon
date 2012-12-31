@@ -15,6 +15,24 @@ public class BulletSpawner : JDMonoBehavior
     private int delay = 30;
     private int tick = 0;
 
+    Frame10x10 gameFrame;
+    Frame10x10 GameFrame
+    {
+        get
+        {
+            if (gameFrame == null)
+            {
+                var g = GameObject.Find("Frame");
+
+                if (g != null)
+                {
+                    gameFrame = g.GetComponent<Frame10x10>();
+                }
+            }
+
+            return gameFrame;
+        }
+    }
     public event GameObjectTransferEvent SpawnedBulletGameObject;
 
     public override void Awake()
@@ -28,7 +46,6 @@ public class BulletSpawner : JDMonoBehavior
     {
         var position = this.gameObject.transform.position;
         var rotation = this.gameObject.transform.rotation;
-        //Debug.Log("Spawned: " + bullet.bulletDebugChar + " Position: " + position);
         return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), position, rotation);
     }
 
@@ -44,7 +61,6 @@ public class BulletSpawner : JDMonoBehavior
         if (tick >= delay)
         {
             tick = 0;
-            Debug.Log("Pause Spawners: " + BulletGameGlobal.Instance.PauseSpawners);
             if (!BulletGameGlobal.Instance.PauseSpawners && SpawnedBulletGameObject != null && toSpawn.Count > 0 && toSpawn.Count == toSpawnPosition.Count)
             {
                 JDBullet bullet = toSpawn.Pop();

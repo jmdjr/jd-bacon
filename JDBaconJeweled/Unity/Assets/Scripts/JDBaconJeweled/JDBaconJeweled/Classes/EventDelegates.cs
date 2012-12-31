@@ -37,3 +37,19 @@ public class GameObjectTransferEventArgs
         this.position = position;
     }
 }
+
+public delegate void PositionTransferEvent(PositionTransferEventArgs eventArgs);
+public class PositionTransferEventArgs
+{
+    private Position2D origin;
+    private Position2D next;
+
+    public Position2D Origin { get { return origin; } }
+    public Position2D Next { get { return next; } }
+
+    public PositionTransferEventArgs(Position2D origin, Position2D next)
+    {
+        this.origin = origin;
+        this.next = next;
+    }
+}
