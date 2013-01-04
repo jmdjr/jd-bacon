@@ -15,6 +15,8 @@ public class Frame10x10 : JDMonoGuiBehavior
     private BulletMatrix frame;
     private Position2D dimension = new Position2D(10, 10);
     private List<BulletSpawner> bulletSpawners;
+    private List<FallingBullet> bulletGroups;
+
     private Queue<Position2D> toMoveAndDestroy;
 
     public override void Awake()
@@ -25,6 +27,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         frame = new BulletMatrix(dimension.Y, dimension.X);
         grid = new GameObject[dimension.Y, dimension.X];
         bulletSpawners = new List<BulletSpawner>();
+        this.bulletGroups = new List<FallingBullet>();
 
         frame.Load(false);
 
@@ -36,6 +39,15 @@ public class Frame10x10 : JDMonoGuiBehavior
             spawner.SpawnedBulletGameObject += new GameObjectTransferEvent(spawner_SpawnedBulletGameObject);
             bulletSpawners.Add(spawner);
         }
+
+        childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(FallingBullet));
+
+        foreach (var comp in childrenComps)
+        {
+            FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
+            bulletGroups.Add(bullet);
+        }
+
 
         bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
 

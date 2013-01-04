@@ -14,6 +14,8 @@ public class BulletSpawner : JDMonoBehavior
     private Stack<Position2D> toSpawnPosition;
     private int delay = 30;
     private int tick = 0;
+    private Vector3 Position;
+    private Quaternion Rotation;
 
     Frame10x10 gameFrame;
     Frame10x10 GameFrame
@@ -39,15 +41,19 @@ public class BulletSpawner : JDMonoBehavior
     {
         toSpawn = new Stack<JDBullet>();
         toSpawnPosition = new Stack<Position2D>();
+
+        this.Position = this.gameObject.transform.position;
+        this.Rotation = this.gameObject.transform.rotation;
+
         base.Awake();
     }
 
     private GameObject SpawnBullet(JDBullet bullet)
     {
-        var position = this.gameObject.transform.position;
-        var rotation = this.gameObject.transform.rotation;
-        return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), position, rotation);
+        return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), this.Position, this.Rotation);
     }
+
+
 
     public void QueueBullet(JDBullet bullet, Position2D position) 
     {
