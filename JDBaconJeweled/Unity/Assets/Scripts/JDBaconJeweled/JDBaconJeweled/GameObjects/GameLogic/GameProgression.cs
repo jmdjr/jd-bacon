@@ -10,24 +10,6 @@ using Random = System.Random;
 
 public class GameProgression : JDMonoGuiBehavior
 {
-    Frame10x10 gameFrame;
-    Frame10x10 GameFrame
-    {
-        get
-        {
-            if (gameFrame == null)
-            {
-                var g = GameObject.Find("Frame");
-
-                if (g != null)
-                {
-                    gameFrame = g.GetComponent<Frame10x10>();
-                }
-            }
-
-            return gameFrame;
-        }
-    }
     private int delay;
     private int tick;
 
@@ -37,18 +19,24 @@ public class GameProgression : JDMonoGuiBehavior
         delay = 5;
         tick = 0;
         GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
+        GameObjectGrabber.Instance.DroppedGameObject += new GameObjectTransferEvent(GameObjectGrabber_DroppedGameObject);
     }
 
+    void GameObjectGrabber_DroppedGameObject(GameObjectTransferEventArgs eventArgs)
+    {
+        GameObject held = GameObjectGrabber.Instance.HeldGameObject;
+        Frame10x10.Instance.SwapBullets(held, eventArgs.GameObject);
+    }
     public override void Update()
     {
         base.Update();
 
-        if (Time.timeScale > 0f && tick >= delay && GameFrame != null && GameFrame.IsFrameStable() && GameFrame.HasMatches())
+        if (Time.timeScale > 0f && tick >= delay && Frame10x10.Instance != null && Frame10x10.Instance.IsFrameStable() && Frame10x10.Instance.HasMatches())
         {
             tick = 0;
 
-            var matches = GameFrame.DropAnyMatches();
-            GameFrame.BubbleUpAndSpawn(matches);
+            var matches = Frame10x10.Instance.DropAnyMatches();
+            Frame10x10.Instance.BubbleUpAndSpawn(matches);
         }
 
         ++tick;

@@ -204,6 +204,23 @@ public class BulletMatrix
 
         return grid[position.Y, position.X];
     }
+    public Position2D GetBulletPosition(JDBullet bullet)
+    {
+        Position2D position = new Position2D();
+
+        StepThroughGrid(
+            (i, j) => 
+            {
+                if (grid[i, j] == bullet)
+                {
+                    position.X = j;
+                    position.Y = i;
+                }
+            });
+
+        return position;
+
+    }
     public void SpawnFullGrid()
     {
         if (this.BulletSpawned != null)
@@ -236,7 +253,7 @@ public class BulletMatrix
             })
         );
 
-        //BalanceGrid(printEnabled, true);
+        BalanceGrid(printEnabled, true);
     }
     public void UnLoad()
     {

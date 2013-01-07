@@ -10,6 +10,25 @@ using System.Collections.Generic;
 
 public class Frame10x10 : JDMonoGuiBehavior
 {
+    static Frame10x10 instance;
+    public static Frame10x10 Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                var g = GameObject.Find("Frame");
+
+                if (g != null)
+                {
+                    instance = g.GetComponent<Frame10x10>();
+                }
+            }
+
+            return instance;
+        }
+    }
+
     private struct SpawningBullet
     {
         public Position2D position;
@@ -32,7 +51,6 @@ public class Frame10x10 : JDMonoGuiBehavior
     public override void Awake()
     {
         base.Awake();
-        Time.timeScale = 1f;
         frame = new BulletMatrix(dimension.Y, dimension.X);
         bulletSpawners = new List<BulletSpawner>();
         this.bulletGroups = new List<FallingBullet>();
@@ -228,6 +246,50 @@ public class Frame10x10 : JDMonoGuiBehavior
                 fallingBullet.MySpawner.QueueBullet(spawn);
             }
         }
+    }
+
+    public bool CanMatchMore() { return frame.CanMatchMore(); }
+
+    public bool SwapBullets(GameObject firstBullet, GameObject SecondBullet)
+    {
+        if (firstBullet == null || SecondBullet == null)
+        {
+            return false;
+        }
+
+        FallingBullet first = firstBullet.GetComponent<FallingBullet>();
+        FallingBullet second = SecondBullet.GetComponent<FallingBullet>();
+
+        if (first == null || second == null || first == second || first.BulletReference == null || second.BulletReference == null)
+        {
+            return false;
+        }
+        
+        Position2D firstPos = frame.GetBulletPosition(first.BulletReference);
+        Position2D secondPos = frame.GetBulletPosition(second.BulletReference);
+
+        bool canSwap = frame.CanSwapPositions(firstPos, secondPos);
+        bool shouldSwap = frame.IsBadSwap(firstPos, secondPos);
+
+        if (canSwap)
+        {
+            Vector3 firstGOPosition = firstBullet.transform.position;
+            firstBullet.transform.position = SecondBullet.transform.position;
+            SecondBullet.transform.position = firstGOPosition;
+
+            if (!shouldSwap)
+            {
+                firstGOPosition = firstBullet.transform.position;
+                firstBullet.transform.position = SecondBullet.transform.position;
+                SecondBullet.transform.position = firstGOPosition;
+            }
+            else
+            {
+                frame.SwapPositions(firstPos, secondPos);
+            }
+        }
+
+        return canSwap;
     }
 
     #region Debug

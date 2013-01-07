@@ -42,7 +42,7 @@ public class BulletSpawner : JDMonoBehavior
         delay = 15;
         tick = 0;
 
-        BulletGameGlobal.Instance.PreventBulletBouncing = true;
+        BulletGameGlobal.Instance.PreventBulletBouncing = false;
         this.Position = this.gameObject.transform.position - new Vector3(0, 1, 0);
         this.Rotation = this.gameObject.transform.rotation;
 
