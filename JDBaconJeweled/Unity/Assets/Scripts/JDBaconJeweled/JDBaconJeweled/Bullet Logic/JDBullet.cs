@@ -17,13 +17,13 @@ public class JDBullet : JDIObject
     public int AccessedLevel { get; set; }
     public int ZombieKillNumber { get; set; }
     public string ResourceName { get; set; }
+    public ConsoleColor Debug_Color { get; set; }
 
     public JDIObjectTypes JDType
     {
         get { return JDIObjectTypes.OBJECT; }
     }
 
-    public ConsoleColor Debug_Color { get; set; }
 
     #endregion Properties
 

@@ -8,15 +8,14 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class BulletSpawner : JDMonoBehavior
+[RequireComponent(typeof(Rigidbody))]
+public class BulletSpawner : JDMonoBodyBehavior
 {
-    private Stack<JDBullet> toSpawn;
-    private Stack<Position2D> toSpawnPosition;
-    private int delay = 30;
-    private int tick = 0;
+    private Stack<GameObject> toSpawn;
     private Vector3 Position;
     private Quaternion Rotation;
-
+    private bool pauseThisSpawner;
+    private int delay;
     Frame10x10 gameFrame;
     Frame10x10 GameFrame
     {
@@ -35,55 +34,73 @@ public class BulletSpawner : JDMonoBehavior
             return gameFrame;
         }
     }
-    public event GameObjectTransferEvent SpawnedBulletGameObject;
 
+    private int tick;
     public override void Awake()
     {
-        toSpawn = new Stack<JDBullet>();
-        toSpawnPosition = new Stack<Position2D>();
+        toSpawn = new Stack<GameObject>();
+        delay = 15;
+        tick = 0;
 
-        this.Position = this.gameObject.transform.position;
+        BulletGameGlobal.Instance.PreventBulletBouncing = true;
+        this.Position = this.gameObject.transform.position - new Vector3(0, 1, 0);
         this.Rotation = this.gameObject.transform.rotation;
 
         base.Awake();
     }
 
-    private GameObject SpawnBullet(JDBullet bullet)
+    public GameObject SpawnBullet(JDBullet bullet)
     {
-        return (GameObject)Instantiate(Resources.Load(bullet.ResourceName), this.Position, this.Rotation);
+        GameObject loadedBullet = (GameObject)Instantiate(Resources.Load(bullet.ResourceName), this.Position, this.Rotation);
+        FallingBullet loadedBulletScript = loadedBullet.GetComponent<FallingBullet>();
+
+        if (loadedBulletScript != null)
+        {
+            loadedBulletScript.BulletReference = bullet;
+        }
+
+        return loadedBullet;
     }
 
-
-
-    public void QueueBullet(JDBullet bullet, Position2D position) 
+    public void QueueBullet(GameObject spawnedBullet) 
     {
-        this.toSpawn.Push(bullet);
-        this.toSpawnPosition.Push(position);
+        toSpawn.Push(spawnedBullet);
     }
 
     public override void Update()
     {
-        ++tick;
         if (tick >= delay)
         {
             tick = 0;
-            if (!BulletGameGlobal.Instance.PauseSpawners && SpawnedBulletGameObject != null && toSpawn.Count > 0 && toSpawn.Count == toSpawnPosition.Count)
+            if (!pauseThisSpawner && !BulletGameGlobal.Instance.PauseSpawners && toSpawn.Count > 0)
             {
-                JDBullet bullet = toSpawn.Pop();
-                Position2D point = toSpawnPosition.Pop();
-                GameObject spawned = SpawnBullet(bullet);
-                FallingBullet spawnedScript = spawned.GetComponent<FallingBullet>();
+                GameObject bullet = toSpawn.Pop();
+                BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
 
-                if (spawnedScript != null)
+                if (boxCollider != null && !boxCollider.enabled)
                 {
-                    spawnedScript.BulletReference = bullet;
+                    boxCollider.enabled = true;
                 }
 
-                GameObjectTransferEventArgs args = new GameObjectTransferEventArgs(spawned, point);
-                SpawnedBulletGameObject(args);
+                MeshRenderer renderer = bullet.GetComponent<MeshRenderer>();
+
+                if (renderer != null && !renderer.enabled)
+                {
+                    renderer.enabled = true;
+                }
+
+                Rigidbody body = bullet.GetComponent<Rigidbody>();
+
+                if (body != null)
+                {
+                    body.useGravity = true;
+                }
+
+                this.pauseThisSpawner = true;
             }
         }
 
+        ++tick;
         base.Update();
     }
 
@@ -95,5 +112,23 @@ public class BulletSpawner : JDMonoBehavior
     public bool HasBulletsToSpawn()
     {
         return toSpawn.Count > 0;
+    }
+
+    public override void OnCollisionEnter(Collision other)
+    {
+        FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
+        if (bullet != null)
+        {
+            pauseThisSpawner = true;
+        }
+    }
+
+    public override void OnCollisionExit(Collision other)
+    {
+        FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
+        if (bullet != null)
+        {
+            pauseThisSpawner = false;
+        }
     }
 }

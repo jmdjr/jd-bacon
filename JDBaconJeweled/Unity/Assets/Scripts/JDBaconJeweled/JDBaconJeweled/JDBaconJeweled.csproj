@@ -73,6 +73,7 @@
     <Compile Include="Bullet Logic\BulletFactory.cs" />
     <Compile Include="Bullet Logic\GunStore.cs" />
     <Compile Include="Bullet Logic\JDBullet.cs" />
+    <Compile Include="GameObjects\ActiveItems\BulletRackDropper.cs" />
     <Compile Include="GameObjects\ActiveItems\BulletSpawner.cs" />
     <Compile Include="GameObjects\ActiveItems\FallingBullet.cs" />
     <Compile Include="GameObjects\GameLogic\GameObjectGrabber.cs" />

@@ -11,7 +11,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 public class FallingBullet : JDMonoBodyBehavior
 {
+    public string ManualName;
+
+    [NonSerialized]
     public JDBullet BulletReference;
+    [NonSerialized]
+    public BulletSpawner MySpawner;
     public bool IsFalling
     { 
         get 

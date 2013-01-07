@@ -10,24 +10,34 @@ using System.Collections.Generic;
 
 public class Frame10x10 : JDMonoGuiBehavior
 {
-    private GameObject[,] grid;
+    private struct SpawningBullet
+    {
+        public Position2D position;
+        public JDBullet bullet;
+
+        public SpawningBullet(JDBullet bullet, Position2D position)
+        {
+            this.bullet = bullet;
+            this.position = position;
+        }
+    }
 
     private BulletMatrix frame;
     private Position2D dimension = new Position2D(10, 10);
     private List<BulletSpawner> bulletSpawners;
     private List<FallingBullet> bulletGroups;
-
-    private Queue<Position2D> toMoveAndDestroy;
+    private List<FallingBullet> AllBullets;
+    private Queue<GameObject> toSpawn;
 
     public override void Awake()
     {
         base.Awake();
-        toMoveAndDestroy = new Queue<Position2D>();
 
         frame = new BulletMatrix(dimension.Y, dimension.X);
-        grid = new GameObject[dimension.Y, dimension.X];
         bulletSpawners = new List<BulletSpawner>();
         this.bulletGroups = new List<FallingBullet>();
+        toSpawn = new Queue<GameObject>();
+        AllBullets = new List<FallingBullet>();
 
         frame.Load(false);
 
@@ -36,7 +46,6 @@ public class Frame10x10 : JDMonoGuiBehavior
         foreach (var comp in childrenComps)
         {
             BulletSpawner spawner = comp.gameObject.GetComponentInChildren<BulletSpawner>();
-            spawner.SpawnedBulletGameObject += new GameObjectTransferEvent(spawner_SpawnedBulletGameObject);
             bulletSpawners.Add(spawner);
         }
 
@@ -47,14 +56,12 @@ public class Frame10x10 : JDMonoGuiBehavior
             FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
             bulletGroups.Add(bullet);
         }
-
-
         bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
 
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
 
-        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "Prints an ascii interpretation of the grid.\n", Frame10x10_PrintGridCommand));
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "stuffs", Debug_PrintGrid));
     }
 
     public override void Start()
@@ -65,81 +72,73 @@ public class Frame10x10 : JDMonoGuiBehavior
     }
 
     #region Events
-    private void spawner_SpawnedBulletGameObject(GameObjectTransferEventArgs eventArgs)
-    {
-        var pos = eventArgs.Position;
-        var dim = this.dimension;
-        if (pos.X < dim.X && pos.X >= 0 && pos.Y < dim.Y && pos.Y >= 0)
-        {
-            grid[eventArgs.Position.Y, eventArgs.Position.X] = eventArgs.GameObject;
-        }
-    }
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
     {
         QueueBulletInSpawner(eventArgs.Bullet, eventArgs.Point);
     }
     private void frame_BulletDestroyed(BulletActionEventArgs eventArgs)
     {
-        var x = eventArgs.Point.X;
-        var y = eventArgs.Point.Y;
-        toMoveAndDestroy.Enqueue(eventArgs.Point);
-        BulletGameGlobal.Instance.PauseSpawners = true;
+        FallingBullet b = this.AllBullets.Find(fb => eventArgs.Bullet.Name == fb.BulletReference.Name);
+        DropBullet(b);
     }
     #endregion
 
-    private void bubblePositionUp(int i, int j)
+    private BulletSpawner GetBulletSpawner(int xPos)
     {
-        while (i > 0)
+        BulletSpawner spawner = null;
+        for (int i = 0; i < bulletSpawners.Count; ++i)
         {
-            var first = new Position2D(j, i);
-            var second = new Position2D(j, --i);
-
-            SwapBullets(first, second);
-            this.Debug_PrintGrid();
+            if (xPos == i)
+            {
+                spawner = bulletSpawners[i];
+                break;
+            }
         }
+
+        return spawner;
     }
-    private void SwapBullets(Position2D first, Position2D second)
+    private FallingBullet GetBulletGroup(JDBullet bulletType)
     {
-        GameObject temp = grid[first.Y, first.X];
-        grid[first.Y, first.X] = grid[second.Y, second.X];
-        grid[second.Y, second.X] = temp;
+        FallingBullet group = null;
+        for (int i = 0; i < bulletGroups.Count; ++i)
+        {
+            if ((bulletGroups[i].BulletReference != null && bulletGroups[i].BulletReference.Name == bulletType.Name) || bulletGroups[i].ManualName == bulletType.Name)
+            {
+                group = bulletGroups[i];
+                break;
+            }
+        }
+
+        return group;
     }
+
     #region Checks
 
-    public bool FrameStableCheck_FrameMissingBullets;
-    public bool FrameStableCheck_FrameBulletsStillFalling;
     public bool IsFrameStable()
     {
         bool FrameStable = true;
-        bool FrameMissingBullets = false;
-        bool FrameBulletsStillFalling = false;
 
-        foreach (GameObject bullet in grid)
+        foreach (FallingBullet bullet in AllBullets)
         {
             if (bullet != null)
             {
-                FallingBullet fBullet = bullet.GetComponent<FallingBullet>();
-
-                if (fBullet != null)
-                {
-                    FrameStable &= !fBullet.IsFalling;
-                    if (fBullet.IsFalling)
-                    {
-                        FrameBulletsStillFalling = true;
-                    }
-                }
+                FrameStable &= !bullet.IsFalling;
             }
             else
             {
                 FrameStable &= false;
-                FrameMissingBullets = true;
             }
         }
-        
-        //Debug.Log("Frame10x10 - IsFrameStable(): " + FrameStable + " Cause? missing bullets: " + FrameMissingBullets + " still falling: " + FrameBulletsStillFalling );
-        
-        FrameStableCheck_FrameMissingBullets = FrameMissingBullets;
-        FrameStableCheck_FrameBulletsStillFalling = FrameBulletsStillFalling;
+        if (RemainningBulletsToSpawn() > 0)
+        {
+            FrameStable &= false;
+        }
+
+        if (this.AllBullets.Count < dimension.X * dimension.Y)
+        {
+            FrameStable = false;
+        }
+
 
         return FrameStable;
     }
@@ -162,6 +161,18 @@ public class Frame10x10 : JDMonoGuiBehavior
     #endregion
 
     #region public Mechanics
+    private bool DropBullet(FallingBullet bullet)
+    {
+        if (bullet != null)
+        {
+            bullet.transform.position = bullet.transform.parent.transform.position;
+            bullet.rigidbody.collider.isTrigger = true;
+            this.AllBullets.Remove(bullet);
+            return true;
+        }
+
+        return false;
+    }
     public List<Position2D> DropAnyMatches()
     {
         var matches = frame.CollectMatchedBullets();
@@ -178,100 +189,66 @@ public class Frame10x10 : JDMonoGuiBehavior
         frame.ShiftItemsDown(matches);
     }
     #endregion
-
+    
     private void QueueBulletInSpawner(JDBullet bullet, Position2D point)
     {
-        BulletSpawner spawner = null;
-        for (int i = 0; i < bulletSpawners.Count; ++i)
+        BulletSpawner spawner = GetBulletSpawner(point.X);
+        GameObject fallingBullet = spawner.SpawnBullet(bullet);
+        FallingBullet group = this.GetBulletGroup(bullet);
+
+        if(group != null)
         {
-            if (point.X == i)
-            {
-                spawner = bulletSpawners[i];
-                break;
-            }
+            fallingBullet.transform.parent = group.gameObject.transform;
+        }
+        
+        FallingBullet fallingBulletScript = fallingBullet.GetComponent<FallingBullet>();
+        
+        if(fallingBulletScript != null)
+        {
+            fallingBulletScript.MySpawner = spawner;
+            this.AllBullets.Add(fallingBulletScript);
         }
 
-        if (spawner != null)
-        {
-            spawner.QueueBullet(bullet, point);
-        }
-    }
-
-    private bool DropBullet(int i, int j)
-    {
-        var gridBullet = grid[i, j];
-        if (gridBullet != null)
-        {
-            gridBullet.transform.position = new Vector3(40, 3, 1);
-            gridBullet.rigidbody.collider.isTrigger = true;
-            grid[i, j] = null;
-            return true;
-        }
-
-        return false;
+        toSpawn.Enqueue(fallingBullet);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (toMoveAndDestroy.Count > 0 && this.IsFrameStable())
+        if (toSpawn.Count > 0)
         {
-            BulletGameGlobal.Instance.PauseSpawners = true;
-            
-            for( var point = toMoveAndDestroy.GetEnumerator(); point.MoveNext(); )
+            while (toSpawn.Count() > 0)
             {
-                Position2D spot = point.Current;
+                GameObject spawn = toSpawn.Dequeue();
+                FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
 
-                this.Debug_PrintGrid();
-                this.DropBullet(spot.Y, spot.X);
-                this.bubblePositionUp(spot.Y, spot.X);
-                this.Debug_PrintGrid();
+                if (fallingBullet != null)
+                {
+                    fallingBullet.MySpawner.QueueBullet(spawn);
+                }
             }
-
-            BulletGameGlobal.Instance.PauseSpawners = false;
         }
     }
 
     #region Debug
 
-    public void Debug_PrintGrid()
+    public void Debug_PauseGameplay(string[] Params)
     {
-        string gridString = "";
-
-        for (int i = 0; i < dimension.Y; ++i)
+        if(Time.timeScale == 0)
         {
-            for (int j = 0; j < dimension.X; ++j)
-            {
-                GameObject go = grid[i, j];
-
-                if (go != null)
-                {
-                    FallingBullet goScript = go.GetComponent<FallingBullet>();
-
-                    if (goScript != null)
-                    {
-                        gridString += goScript.BulletReference.bulletDebugChar;
-                    }
-                    else
-                    {
-                        gridString += "?";
-                    }
-                }
-                else
-                {
-                    gridString += "_";
-                }
-            }
-            gridString += ";" + '\n';
+            Time.timeScale = 1;
         }
-
-        Debug.Log(gridString);
+        else
+        {
+            Time.timeScale = 0;
+        }
     }
 
-    public void Frame10x10_PrintGridCommand(string[] Params)
+    public void Debug_PrintGrid(string[] Params)
     {
-        this.Debug_PrintGrid();
+        Debug.Log(frame.Debug_PrintGrid());
     }
+
     #endregion
 }

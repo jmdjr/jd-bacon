@@ -28,10 +28,14 @@ public class GameProgression : JDMonoGuiBehavior
             return gameFrame;
         }
     }
+    private int delay;
+    private int tick;
 
     public override void Awake()
     {
         base.Awake();
+        delay = 20;
+        tick = 0;
         GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
     }
 
@@ -39,11 +43,15 @@ public class GameProgression : JDMonoGuiBehavior
     {
         base.Update();
 
-        if (GameFrame != null && GameFrame.IsFrameStable() && GameFrame.HasMatches())
+        if (tick >= delay && GameFrame != null && GameFrame.IsFrameStable() && GameFrame.HasMatches())
         {
+            GameFrame.Debug_PrintGrid(null);
+            tick = 0;
             var matches = GameFrame.DropAnyMatches();
             GameFrame.BubbleUpAndSpawn(matches);
         }
+
+        ++tick;
     }
 
 }

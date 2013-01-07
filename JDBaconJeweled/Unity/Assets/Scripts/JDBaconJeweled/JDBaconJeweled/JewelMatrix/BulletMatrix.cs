@@ -18,23 +18,22 @@ public class BulletMatrix
     public bool enablePrinting = false;
 
     private JDBullet[,] grid;
-    private Random r;
     private int min;
     private int max;
     private delegate void GridStepper(int x, int y);
-
+    private Random r;
     public event BulletActionEvent BulletSpawned;
     public event BulletActionEvent BulletDestroyed;
-    public event PositionTransferEvent BulletSwapped;
-
+    public event BulletActionEvent BulletBubbling;
+    
     public BulletMatrix(int height, int width)
     {
         this.Height = height;
         this.Width = width;
 
-        r = new Random(10);
         min = 0;
         max = BulletFactory.NumberOfLoadedBullets;
+        r = new Random(10);
         
         grid = new JDBullet[this.Height, this.Width];
     }
@@ -365,7 +364,7 @@ public class BulletMatrix
 
             if (this.BulletSpawned != null)
             {
-                this.BulletSpawned(new BulletActionEventArgs(new Position2D(j, i), grid[i, j]));
+                this.BulletSpawned(new BulletActionEventArgs(new Position2D(j, 0), grid[i, j]));
             }
         }
     }
@@ -382,6 +381,11 @@ public class BulletMatrix
     }
     private void bubblePositionUp(ref int i, int j)
     {
+        if (BulletBubbling != null)
+        {
+            BulletBubbling(new BulletActionEventArgs(new Position2D(j, i), null));
+        }
+
         while (i > 0)
         {
             var first = new Position2D(j, i);
@@ -483,6 +487,29 @@ public class BulletMatrix
             })
         );
 #endif
+    }
+    public string Debug_PrintGrid()
+    {
+        string gridPrint = "";
+        StepThroughGrid(
+            ((i, j) =>
+            {
+                if (grid[i, j] != null)
+                {
+                    gridPrint += (grid[i, j].bulletDebugChar);
+                }
+                else
+                {
+                    gridPrint += ("_");
+                }
+            }),
+            ((i, j) =>
+            {
+                gridPrint += (";\n");
+            })
+        );
+
+        return gridPrint;
     }
     private int CharToNumber(char command) 
     {

@@ -14,7 +14,7 @@ public class Position2D
     public int X;
     public int Y;
 
-    public Position2D(int x, int y)
+    public Position2D(int x = 0, int y = 0)
     {
         this.X = x;
         this.Y = y;
