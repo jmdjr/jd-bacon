@@ -32,7 +32,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     public override void Awake()
     {
         base.Awake();
-
+        Time.timeScale = 1f;
         frame = new BulletMatrix(dimension.Y, dimension.X);
         bulletSpawners = new List<BulletSpawner>();
         this.bulletGroups = new List<FallingBullet>();
@@ -62,6 +62,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
 
         DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "stuffs", Debug_PrintGrid));
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("TogglePause", "stuffs", Debug_PauseGameplay));
     }
 
     public override void Start()
@@ -78,8 +79,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     }
     private void frame_BulletDestroyed(BulletActionEventArgs eventArgs)
     {
-        FallingBullet b = this.AllBullets.Find(fb => eventArgs.Bullet.Name == fb.BulletReference.Name);
-        DropBullet(b);
+        DropBullet(eventArgs.Bullet);
     }
     #endregion
 
@@ -161,13 +161,15 @@ public class Frame10x10 : JDMonoGuiBehavior
     #endregion
 
     #region public Mechanics
-    private bool DropBullet(FallingBullet bullet)
+    private bool DropBullet(JDBullet bullet)
     {
-        if (bullet != null)
+        FallingBullet b = this.AllBullets.Find(fb => bullet == fb.BulletReference);
+
+        if (b != null)
         {
-            bullet.transform.position = bullet.transform.parent.transform.position;
-            bullet.rigidbody.collider.isTrigger = true;
-            this.AllBullets.Remove(bullet);
+            b.transform.position = b.transform.parent.transform.position;
+            b.rigidbody.collider.isTrigger = true;
+            this.AllBullets.Remove(b);
             return true;
         }
 
@@ -216,17 +218,14 @@ public class Frame10x10 : JDMonoGuiBehavior
     {
         base.Update();
 
-        if (toSpawn.Count > 0)
+        while (toSpawn.Count() > 0)
         {
-            while (toSpawn.Count() > 0)
-            {
-                GameObject spawn = toSpawn.Dequeue();
-                FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
+            GameObject spawn = toSpawn.Dequeue();
+            FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
 
-                if (fallingBullet != null)
-                {
-                    fallingBullet.MySpawner.QueueBullet(spawn);
-                }
+            if (fallingBullet != null)
+            {
+                fallingBullet.MySpawner.QueueBullet(spawn);
             }
         }
     }

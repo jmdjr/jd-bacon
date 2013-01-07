@@ -21,7 +21,7 @@ public class FallingBullet : JDMonoBodyBehavior
     { 
         get 
         {
-            return previousPosition.magnitude > 0.001;
+            return Math.Abs(previousPosition.magnitude) > 0.01;
         }
     }
     private Vector3 previousPosition;

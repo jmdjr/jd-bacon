@@ -10,9 +10,19 @@ using Random = System.Random;
 
 public class BulletRackDropper : JDMonoBodyBehavior
 {
-    public override void OnScriptTriggerEnter(Collision other)
+    public override void OnTriggerEnter(Collider other)
     {
-        base.OnScriptTriggerEnter(other);
+        base.OnTriggerEnter(other);
 
+        FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
+        if (bullet != null)
+        {
+            MeshRenderer renderer = bullet.GetComponent<MeshRenderer>();
+
+            if (renderer != null && !renderer.enabled)
+            {
+                renderer.enabled = true;
+            }
+        }
     }
 }

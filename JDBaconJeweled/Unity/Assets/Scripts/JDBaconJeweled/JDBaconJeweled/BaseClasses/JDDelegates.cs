@@ -46,3 +46,33 @@ public class JDCollisionObject
         Debug.Log(behavior != null);
     }
 }
+
+public delegate void MonoTriggerScriptEventHanlder(ColliderEventArgs eventArgs);
+public class ColliderEventArgs : MonoScriptEventArgs
+{
+    private Collider other;
+    public Collider Other { get { return this.other; } }
+    private JDColliderObject jdOther;
+    public JDColliderObject JdOther { get { return this.jdOther; } }
+
+    public ColliderEventArgs(JDMonoBehavior scriptReference, Collider other)
+        : base(scriptReference)
+    {
+        this.other = other;
+        this.jdOther = new JDColliderObject(other);
+    }
+}
+
+public class JDColliderObject
+{
+    public JDIObjectTypes ObjectType { get; protected set; }
+    public TagTypes ObjectTagType { get; protected set; }
+    public JDIObject ScriptObject { get; protected set; }
+
+    public JDColliderObject(Collider other)
+    {
+        JDMonoBehavior behavior = other.gameObject.GetComponent<JDMonoBehavior>();
+        this.ObjectTagType = TagTypeExtension.ToTagType(other.collider.tag);
+        Debug.Log(behavior != null);
+    }
+}

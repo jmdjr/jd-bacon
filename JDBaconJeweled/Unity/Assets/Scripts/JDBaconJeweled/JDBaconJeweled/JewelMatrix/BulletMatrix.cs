@@ -33,7 +33,7 @@ public class BulletMatrix
 
         min = 0;
         max = BulletFactory.NumberOfLoadedBullets;
-        r = new Random(10);
+        r = new Random();
         
         grid = new JDBullet[this.Height, this.Width];
     }
@@ -210,9 +210,8 @@ public class BulletMatrix
         {
             StepThroughGrid((i, j) => 
             { 
-                var position = new Position2D(j, i);
+                var position = new Position2D(j, (Height - 1) - i);
                 var bullet = GetBulletAt(position);
-
                 BulletSpawned(new BulletActionEventArgs(position, bullet));
             });
         }
@@ -492,6 +491,7 @@ public class BulletMatrix
     {
         string gridPrint = "";
         StepThroughGrid(
+            null,
             ((i, j) =>
             {
                 if (grid[i, j] != null)

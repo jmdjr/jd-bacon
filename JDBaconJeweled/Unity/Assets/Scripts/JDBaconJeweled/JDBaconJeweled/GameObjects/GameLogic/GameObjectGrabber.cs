@@ -31,7 +31,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
-                //Debug.Log(hit.transform.gameObject.name);
+                Debug.Log(hit.transform.gameObject.name);
 
                 //Debug.Log(hit.point);
                 if (GrabbedGameObject != null)

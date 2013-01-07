@@ -10,9 +10,9 @@ public class JDMonoBodyBehavior : JDMonoBehavior, JDIAmCollidable
     public event MonoBodyScriptEventHanlder ScriptCollisionStay;
     public event MonoBodyScriptEventHanlder ScriptCollisionExit;
 
-    public event MonoBodyScriptEventHanlder ScriptTriggerEnter;
-    public event MonoBodyScriptEventHanlder ScriptTriggerStay;
-    public event MonoBodyScriptEventHanlder ScriptTriggerExit;
+    public event MonoTriggerScriptEventHanlder ScriptTriggerEnter;
+    public event MonoTriggerScriptEventHanlder ScriptTriggerStay;
+    public event MonoTriggerScriptEventHanlder ScriptTriggerExit;
 
     public virtual void OnCollisionEnter(Collision other)
     {
@@ -36,25 +36,25 @@ public class JDMonoBodyBehavior : JDMonoBehavior, JDIAmCollidable
         }
     }
 
-    public virtual void OnScriptTriggerEnter(Collision other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (ScriptTriggerEnter != null)
         {
-            ScriptTriggerEnter(new CollisionEventArgs(this, other));
+            ScriptTriggerEnter(new ColliderEventArgs(this, other));
         }
     }
-    public virtual void OnScriptTriggerStay(Collision other)
+    public virtual void OnTriggerStay(Collider other)
     {
         if (ScriptTriggerStay != null)
         {
-            ScriptTriggerStay(new CollisionEventArgs(this, other));
+            ScriptTriggerStay(new ColliderEventArgs(this, other));
         }
     }
-    public virtual void OnScriptTriggerExit(Collision other)
+    public virtual void OnTriggerExit(Collider other)
     {
         if (ScriptTriggerExit != null)
         {
-            ScriptTriggerExit(new CollisionEventArgs(this, other));
+            ScriptTriggerExit(new ColliderEventArgs(this, other));
         }
     }
 }

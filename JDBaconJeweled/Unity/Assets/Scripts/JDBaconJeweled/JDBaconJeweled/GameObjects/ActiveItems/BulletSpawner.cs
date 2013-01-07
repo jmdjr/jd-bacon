@@ -8,13 +8,13 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-[RequireComponent(typeof(Rigidbody))]
-public class BulletSpawner : JDMonoBodyBehavior
+public class BulletSpawner : JDMonoBehavior
 {
-    private Stack<GameObject> toSpawn;
+    private Queue<GameObject> toSpawn;
+
     private Vector3 Position;
     private Quaternion Rotation;
-    private bool pauseThisSpawner;
+    
     private int delay;
     Frame10x10 gameFrame;
     Frame10x10 GameFrame
@@ -38,7 +38,7 @@ public class BulletSpawner : JDMonoBodyBehavior
     private int tick;
     public override void Awake()
     {
-        toSpawn = new Stack<GameObject>();
+        toSpawn = new Queue<GameObject>();
         delay = 15;
         tick = 0;
 
@@ -64,43 +64,37 @@ public class BulletSpawner : JDMonoBodyBehavior
 
     public void QueueBullet(GameObject spawnedBullet) 
     {
-        toSpawn.Push(spawnedBullet);
+        toSpawn.Enqueue(spawnedBullet);
     }
 
     public override void Update()
     {
-        if (tick >= delay)
+        if (Time.timeScale > 0)
         {
-            tick = 0;
-            if (!pauseThisSpawner && !BulletGameGlobal.Instance.PauseSpawners && toSpawn.Count > 0)
+            if (tick >= delay)
             {
-                GameObject bullet = toSpawn.Pop();
-                BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
-
-                if (boxCollider != null && !boxCollider.enabled)
+                tick = 0;
+                if (!BulletGameGlobal.Instance.PauseSpawners && toSpawn.Count > 0)
                 {
-                    boxCollider.enabled = true;
+                    GameObject bullet = toSpawn.Dequeue();
+                    BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
+
+                    if (boxCollider != null)
+                    {
+                        boxCollider.enabled = true;
+                    }
+
+                    Rigidbody body = bullet.GetComponent<Rigidbody>();
+
+                    if (body != null)
+                    {
+                        body.useGravity = true;
+                    }
                 }
-
-                MeshRenderer renderer = bullet.GetComponent<MeshRenderer>();
-
-                if (renderer != null && !renderer.enabled)
-                {
-                    renderer.enabled = true;
-                }
-
-                Rigidbody body = bullet.GetComponent<Rigidbody>();
-
-                if (body != null)
-                {
-                    body.useGravity = true;
-                }
-
-                this.pauseThisSpawner = true;
             }
-        }
 
-        ++tick;
+            ++tick;
+        }
         base.Update();
     }
 
@@ -112,23 +106,5 @@ public class BulletSpawner : JDMonoBodyBehavior
     public bool HasBulletsToSpawn()
     {
         return toSpawn.Count > 0;
-    }
-
-    public override void OnCollisionEnter(Collision other)
-    {
-        FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
-        if (bullet != null)
-        {
-            pauseThisSpawner = true;
-        }
-    }
-
-    public override void OnCollisionExit(Collision other)
-    {
-        FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
-        if (bullet != null)
-        {
-            pauseThisSpawner = false;
-        }
     }
 }
