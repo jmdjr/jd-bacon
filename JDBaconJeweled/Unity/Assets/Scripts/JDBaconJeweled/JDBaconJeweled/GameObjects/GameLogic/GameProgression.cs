@@ -22,7 +22,7 @@ public class GameProgression : JDMonoGuiBehavior
         GameObjectGrabber.Instance.DroppedGameObject += new GameObjectTransferEvent(GameObjectGrabber_DroppedGameObject);
     }
 
-    void GameObjectGrabber_DroppedGameObject(GameObjectTransferEventArgs eventArgs)
+    private void GameObjectGrabber_DroppedGameObject(GameObjectTransferEventArgs eventArgs)
     {
         GameObject held = GameObjectGrabber.Instance.HeldGameObject;
         Frame10x10.Instance.SwapBullets(held, eventArgs.GameObject);

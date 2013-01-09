@@ -53,6 +53,11 @@ public class GameObjectGrabber : JDMonoGuiBehavior
                 DragDropSwap();
                 break;
         }
+
+        if (this.heldGameObject != null)
+        {
+
+        }
     }
 
     private void DragDropSwap()
