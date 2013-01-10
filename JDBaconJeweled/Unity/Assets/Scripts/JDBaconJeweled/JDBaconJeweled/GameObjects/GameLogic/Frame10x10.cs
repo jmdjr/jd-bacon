@@ -29,20 +29,9 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
     }
 
-    private struct SpawningBullet
-    {
-        public Position2D position;
-        public JDBullet bullet;
-
-        public SpawningBullet(JDBullet bullet, Position2D position)
-        {
-            this.bullet = bullet;
-            this.position = position;
-        }
-    }
-
     private BulletMatrix frame;
-    private Position2D dimension = new Position2D(10, 10);
+
+    public Position2D dimension = new Position2D(10, 10);
     private List<BulletSpawner> bulletSpawners;
     private List<FallingBullet> bulletGroups;
     private List<FallingBullet> AllBullets;
