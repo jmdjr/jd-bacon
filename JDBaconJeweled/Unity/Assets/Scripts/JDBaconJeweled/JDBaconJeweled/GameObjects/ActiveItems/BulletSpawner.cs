@@ -62,8 +62,12 @@ public class BulletSpawner : JDMonoBehavior
         return loadedBullet;
     }
 
-    public void QueueBullet(GameObject spawnedBullet) 
+    public void QueueBullet(GameObject spawnedBullet)
     {
+        if (spawnedBullet.transform.parent != null)
+        {
+            spawnedBullet.transform.rotation = spawnedBullet.transform.parent.rotation;
+        }
         toSpawn.Enqueue(spawnedBullet);
     }
 

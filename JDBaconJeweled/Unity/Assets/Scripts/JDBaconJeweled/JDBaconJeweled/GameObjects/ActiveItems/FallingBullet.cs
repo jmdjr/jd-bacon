@@ -21,14 +21,17 @@ public class FallingBullet : JDMonoBodyBehavior
     { 
         get 
         {
-            return Math.Abs(previousPosition.magnitude) > 0.01;
+            return Math.Abs(previousPosition.magnitude) > 0.1;
         }
     }
     private Vector3 previousPosition;
     public override void Update()
     {
         base.Update();
+
+        // Apart of determining if bullet is falling, apart of frame stability
         previousPosition = this.rigidbody.velocity;
+
         if (BulletGameGlobal.Instance.PreventBulletBouncing)
         {
             Vector3 velocity = this.rigidbody.velocity;

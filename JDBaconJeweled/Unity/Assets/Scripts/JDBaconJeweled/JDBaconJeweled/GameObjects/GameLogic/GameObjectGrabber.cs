@@ -37,7 +37,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
     public override void Awake()
     {
         base.Awake();
-        SwapType = SwapTypes.DRAG_DROP;
+        SwapType = SwapTypes.CLICK;
     }
 
     public override void Update()
@@ -69,8 +69,6 @@ public class GameObjectGrabber : JDMonoGuiBehavior
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
-                Debug.Log(hit.transform.gameObject.name);
-
                 if (GrabbedGameObject != null)
                 {
                     GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
@@ -94,8 +92,6 @@ public class GameObjectGrabber : JDMonoGuiBehavior
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
-                Debug.Log(hit.transform.gameObject.name);
-
                 if (DroppedGameObject != null)
                 {
                     DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
@@ -121,17 +117,33 @@ public class GameObjectGrabber : JDMonoGuiBehavior
             {
                 Debug.Log(hit.transform.gameObject.name);
 
-                if (this.heldGameObject == null && GrabbedGameObject != null)
+                if (this.heldGameObject == null)
                 {
-                    GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
+                    if (GrabbedGameObject != null)
+                    {
+                        GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
+                    }
+                    if (this.heldGameObject != null && this.heldGameObject.layer != 1)
+                    {
+                        this.heldGameObject.layer = 1;
+                        this.heldGameObject = null;
+                    }
+                    
                     this.heldGameObject = hit.transform.gameObject;
                     this.heldGameObject.layer = 2;
                 }
-                else if (this.heldGameObject != null && DroppedGameObject != null)
+                else if (this.heldGameObject != null)
                 {
-                    DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                    this.heldGameObject.layer = 1;
-                    this.heldGameObject = null;
+                    if (DroppedGameObject != null)
+                    {
+                        DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
+                    }
+
+                    if (this.heldGameObject != null)
+                    {
+                        this.heldGameObject.layer = 1;
+                        this.heldGameObject = null;
+                    }
                 }
             }
         }
