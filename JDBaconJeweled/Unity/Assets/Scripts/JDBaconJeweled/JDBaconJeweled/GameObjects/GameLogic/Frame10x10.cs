@@ -55,6 +55,20 @@ public class Frame10x10 : JDMonoGuiBehavior
             BulletSpawner spawner = comp.gameObject.GetComponentInChildren<BulletSpawner>();
             bulletSpawners.Add(spawner);
         }
+        
+        bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
+        if (bulletSpawners.Count > 0)
+        {
+            var x = bulletSpawners[0].transform.position.x;
+            var y = bulletSpawners[0].transform.position.y;
+            var z = bulletSpawners[0].transform.position.z;
+
+            for (int i = 1; i < bulletSpawners.Count; ++i)
+            {
+                var spawner = bulletSpawners[i];
+                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x, y, z);
+            }
+        }
 
         childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(FallingBullet));
 
@@ -63,7 +77,6 @@ public class Frame10x10 : JDMonoGuiBehavior
             FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
             bulletGroups.Add(bullet);
         }
-        bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
 
         frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
         frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);

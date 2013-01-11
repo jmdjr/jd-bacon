@@ -12,8 +12,10 @@ public class BulletSpawner : JDMonoBehavior
 {
     private Queue<GameObject> toSpawn;
 
-    private Vector3 Position;
-    private Quaternion Rotation;
+    private Vector3 myPosition;
+    private Vector3 Position { get { if (myPosition == Vector3.zero) { myPosition = this.gameObject.transform.position - new Vector3(0, this.transform.localScale.y, 0); } return this.myPosition; } }
+    private Quaternion myRotation;
+    private Quaternion Rotation { get { if (myRotation == Quaternion.identity) { myRotation = this.gameObject.transform.rotation; } return this.myRotation; } }
     
     private int delay;
     Frame10x10 gameFrame;
@@ -34,23 +36,25 @@ public class BulletSpawner : JDMonoBehavior
             return gameFrame;
         }
     }
-
     private int tick;
     public override void Awake()
     {
         toSpawn = new Queue<GameObject>();
-        delay = 15;
+        delay = 30;
         tick = 0;
 
         BulletGameGlobal.Instance.PreventBulletBouncing = false;
-        this.Position = this.gameObject.transform.position - new Vector3(0, 1, 0);
-        this.Rotation = this.gameObject.transform.rotation;
 
         base.Awake();
     }
+    public override void Start()
+    {
+        base.Start();
 
+    }
     public GameObject SpawnBullet(JDBullet bullet)
     {
+
         GameObject loadedBullet = (GameObject)Instantiate(Resources.Load(bullet.ResourceName), this.Position, this.Rotation);
         FallingBullet loadedBulletScript = loadedBullet.GetComponent<FallingBullet>();
 
