@@ -69,7 +69,7 @@ public class Frame10x10 : JDMonoGuiBehavior
             for (int i = 1; i < bulletSpawners.Count; ++i)
             {
                 var spawner = bulletSpawners[i];
-                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x, y, z);
+                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x + 0.01f, y, z);
             }
         }
 
