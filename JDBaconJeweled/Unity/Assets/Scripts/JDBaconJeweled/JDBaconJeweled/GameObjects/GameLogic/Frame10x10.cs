@@ -10,6 +10,9 @@ using System.Collections.Generic;
 
 public class Frame10x10 : JDMonoGuiBehavior
 {
+    public Position2D dimension = new Position2D(10, 10);
+    public float SwapDelayTime = 0.25f;
+
     static Frame10x10 instance;
     public static Frame10x10 Instance
     {
@@ -31,7 +34,6 @@ public class Frame10x10 : JDMonoGuiBehavior
 
     private BulletMatrix frame;
 
-    public Position2D dimension = new Position2D(10, 10);
     private List<BulletSpawner> bulletSpawners;
     private List<FallingBullet> bulletGroups;
     private List<FallingBullet> AllBullets;
@@ -45,6 +47,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         this.bulletGroups = new List<FallingBullet>();
         toSpawn = new Queue<GameObject>();
         AllBullets = new List<FallingBullet>();
+        
 
         frame.Load(false);
 
@@ -88,6 +91,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     public override void Start()
     {
         base.Start();
+        BulletGameGlobal.Instance.PauseFrame = false;
         BulletGameGlobal.Instance.PreventBulletBouncing = true;
         frame.SpawnFullGrid();
     }
@@ -160,7 +164,19 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
 
 
-        return FrameStable;
+        return FrameStable && !BulletGameGlobal.Instance.PauseFrame;
+    }
+
+    public List<GameObject> RemainningSpawnBullets()
+    {
+        List<GameObject> collection = new List<GameObject>();
+
+        foreach (BulletSpawner spawner in bulletSpawners)
+        {
+            collection.AddRange(spawner.BulletsToSpawn());
+        }
+
+        return collection;
     }
 
     public int RemainningBulletsToSpawn()
@@ -234,11 +250,26 @@ public class Frame10x10 : JDMonoGuiBehavior
         toSpawn.Enqueue(fallingBullet);
     }
 
+    public void ToggleBulletsFalling(bool toggle)
+    {
+        this.AllBullets.ForEach(bullet =>
+        {
+            bullet.rigidbody.useGravity = toggle;
+        });
+    }
+
     public override void Update()
     {
         base.Update();
-
-        while (toSpawn.Count() > 0)
+        if (BulletGameGlobal.Instance.PauseFrame)
+        {
+            Physics.gravity = Vector3.zero;
+        }
+        else
+        {
+            Physics.gravity = new Vector3(0, -9.81f, 0);
+        }
+        while (!BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
         {
             GameObject spawn = toSpawn.Dequeue();
             FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
@@ -254,7 +285,7 @@ public class Frame10x10 : JDMonoGuiBehavior
 
     public bool SwapBullets(GameObject firstBullet, GameObject SecondBullet)
     {
-        if (firstBullet == null || SecondBullet == null)
+        if (firstBullet == null || SecondBullet == null || !this.IsFrameStable())
         {
             return false;
         }
@@ -273,25 +304,53 @@ public class Frame10x10 : JDMonoGuiBehavior
         bool canSwap = frame.CanSwapPositions(firstPos, secondPos);
         bool shouldSwap = frame.IsBadSwap(firstPos, secondPos);
 
-        if (canSwap)
+        if (canSwap && shouldSwap)
         {
-            Vector3 firstGOPosition = firstBullet.transform.position;
-            firstBullet.transform.position = SecondBullet.transform.position;
-            SecondBullet.transform.position = firstGOPosition;
+            this.StartCoroutine(SwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
 
-            if (!shouldSwap)
-            {
-                firstGOPosition = firstBullet.transform.position;
-                firstBullet.transform.position = SecondBullet.transform.position;
-                SecondBullet.transform.position = firstGOPosition;
-            }
-            else
-            {
-                frame.SwapPositions(firstPos, secondPos);
-            }
+            frame.SwapPositions(firstPos, secondPos);
+        }
+        else if(canSwap)
+        {
+            this.StartCoroutine(BadSwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
         }
 
         return canSwap;
+    }
+
+    IEnumerator BadSwapDelay(Transform first, Transform second, float HalfTimeDelay) 
+    {
+        BulletGameGlobal.Instance.PauseFrame = true;
+        Vector3 firstPosition = first.transform.position;
+        Vector3 secondPosition = second.transform.position;
+
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(first, second, HalfTimeDelay));
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(second, first, HalfTimeDelay));
+        yield return new WaitForSeconds(HalfTimeDelay);
+
+        first.transform.position = secondPosition;
+        second.transform.position = firstPosition;
+
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(first, second, HalfTimeDelay));
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(second, first, HalfTimeDelay));
+        yield return new WaitForSeconds(HalfTimeDelay);
+        BulletGameGlobal.Instance.PauseFrame = false;
+
+        first.transform.position = firstPosition;
+        second.transform.position = secondPosition;
+        yield return 0;
+    }
+
+    IEnumerator SwapDelay(Transform first, Transform second, float TimeDelay)
+    {
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(first, second, TimeDelay));
+        this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(second, first, TimeDelay));
+        BulletGameGlobal.Instance.PauseFrame = true;
+
+        yield return new WaitForSeconds(TimeDelay);
+        BulletGameGlobal.Instance.PauseFrame = false;
+        
+        yield return 0;
     }
 
     #region Debug

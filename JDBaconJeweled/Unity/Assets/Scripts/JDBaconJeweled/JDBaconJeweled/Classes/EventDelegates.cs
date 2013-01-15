@@ -53,3 +53,16 @@ public class PositionTransferEventArgs
         this.next = next;
     }
 }
+
+public delegate void GenericStatusEvent(GenericStatusEventArgs eventArgs);
+public class GenericStatusEventArgs
+{
+    private GenericStatusFlags flag;
+
+    public GenericStatusFlags Flag { get { return flag; } }
+
+    public GenericStatusEventArgs(GenericStatusFlags flag)
+    {
+        this.flag = flag;
+    }
+}

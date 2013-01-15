@@ -15,6 +15,7 @@ public class BulletRackDropper : JDMonoBodyBehavior
         base.OnTriggerEnter(other);
 
         FallingBullet bullet = other.gameObject.GetComponent<FallingBullet>();
+
         if (bullet != null)
         {
             MeshRenderer renderer = bullet.GetComponent<MeshRenderer>();

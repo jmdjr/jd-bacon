@@ -77,12 +77,12 @@ public class BulletSpawner : JDMonoBehavior
 
     public override void Update()
     {
-        if (Time.timeScale > 0)
+        if (!BulletGameGlobal.Instance.PauseFrame && Time.timeScale > 0)
         {
             if (tick >= delay)
             {
                 tick = 0;
-                if (!BulletGameGlobal.Instance.PauseSpawners && toSpawn.Count > 0)
+                if (toSpawn.Count > 0)
                 {
                     GameObject bullet = toSpawn.Dequeue();
                     BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
@@ -109,6 +109,10 @@ public class BulletSpawner : JDMonoBehavior
     public int RemainningBullet()
     {
         return toSpawn.Count;
+    }
+    public List<GameObject> BulletsToSpawn()
+    {
+        return toSpawn.ToList();
     }
 
     public bool HasBulletsToSpawn()

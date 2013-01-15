@@ -54,6 +54,7 @@
     <Compile Include="BaseClasses\DebugManager.cs" />
     <Compile Include="BaseClasses\GrimReaper.cs" />
     <Compile Include="BaseClasses\JDDelegates.cs" />
+    <Compile Include="BaseClasses\SLerpTransitions.cs" />
     <Compile Include="Classes\BulletGameEnumerations.cs" />
     <Compile Include="Classes\BulletGameGlobal.cs" />
     <Compile Include="Classes\DebugCommands.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="GameObjects\ActiveItems\BulletRackDropper.cs" />
     <Compile Include="GameObjects\ActiveItems\BulletSpawner.cs" />
     <Compile Include="GameObjects\ActiveItems\FallingBullet.cs" />
+    <Compile Include="GameObjects\ActiveItems\ZombieTimer.cs" />
+    <Compile Include="GameObjects\GameLogic\DroppedBulletCounter.cs" />
     <Compile Include="GameObjects\GameLogic\GameObjectGrabber.cs" />
     <Compile Include="GameObjects\GameLogic\Frame10x10.cs" />
     <Compile Include="GameObjects\GameLogic\GameProgression.cs" />

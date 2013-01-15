@@ -29,6 +29,7 @@ public class BulletGameGlobal
 
     public bool PreventBulletBouncing { get; set; }
     public bool PauseSpawners { get; set; }
+    public bool PauseFrame { get; set; }
 
     private void BulletGameGlobal_Debug_GlobalSet(string[] Params)
     {
