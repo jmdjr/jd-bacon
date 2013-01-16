@@ -69,7 +69,7 @@ public class Frame10x10 : JDMonoGuiBehavior
             for (int i = 1; i < bulletSpawners.Count; ++i)
             {
                 var spawner = bulletSpawners[i];
-                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x + 0.01f, y, z);
+                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x, y, z);
             }
         }
 
@@ -343,11 +343,16 @@ public class Frame10x10 : JDMonoGuiBehavior
 
     IEnumerator SwapDelay(Transform first, Transform second, float TimeDelay)
     {
+        Vector3 firstPosition = first.transform.position;
+        Vector3 secondPosition = second.transform.position;
+
         this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(first, second, TimeDelay));
         this.StartCoroutine(SLerpTransitions.MoveWithConstantTimeTo(second, first, TimeDelay));
         BulletGameGlobal.Instance.PauseFrame = true;
 
         yield return new WaitForSeconds(TimeDelay);
+        first.transform.position = secondPosition;
+        second.transform.position = firstPosition;
         BulletGameGlobal.Instance.PauseFrame = false;
         
         yield return 0;
