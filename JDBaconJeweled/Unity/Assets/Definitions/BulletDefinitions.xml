@@ -2,48 +2,66 @@
 <bulletDefinitions>
   <JDBullet>
     <Id>1</Id>
-    <Name>Bullet 1</Name>
+    <Name>9mm</Name>
     <Unlocked>true</Unlocked>
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>1</ZombieKillNumber>
     <bulletDebugChar>@</bulletDebugChar>
-    <ResourceName>GameObject Prefabs/Bullets/CyanBullet</ResourceName>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/9mm</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>2</Id>
-    <Name>Bullet 2</Name>
+    <Name>22Caliber</Name>
     <Unlocked>true</Unlocked>
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>2</ZombieKillNumber>
     <bulletDebugChar>#</bulletDebugChar>
-    <ResourceName>GameObject Prefabs/Bullets/BlueBullet</ResourceName>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/22Caliber</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>3</Id>
-    <Name>Bullet 3</Name>
+    <Name>44Caliber</Name>
     <Unlocked>false</Unlocked>
     <AccessedLevel>2</AccessedLevel>
     <ZombieKillNumber>3</ZombieKillNumber>
     <bulletDebugChar>%</bulletDebugChar>
-    <ResourceName>GameObject Prefabs/Bullets/RedBullet</ResourceName>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/44Caliber</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>4</Id>
-    <Name>Bullet 4</Name>
+    <Name>50Caliber</Name>
     <Unlocked>true</Unlocked>
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>4</ZombieKillNumber>
     <bulletDebugChar>*</bulletDebugChar>
-    <ResourceName>GameObject Prefabs/Bullets/YellowBullet</ResourceName>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/50Caliber</ResourceName>
   </JDBullet>
   <JDBullet>
     <Id>5</Id>
-    <Name>Bullet 5</Name>
+    <Name>AK47</Name>
     <Unlocked>true</Unlocked>
     <AccessedLevel>0</AccessedLevel>
     <ZombieKillNumber>5</ZombieKillNumber>
     <bulletDebugChar>X</bulletDebugChar>
-    <ResourceName>GameObject Prefabs/Bullets/GreenBullet</ResourceName>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/AK47</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>6</Id>
+    <Name>P90</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/P90</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>7</Id>
+    <Name>ShotgunShell</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/ShotgunShell</ResourceName>
   </JDBullet>
 
 </bulletDefinitions>

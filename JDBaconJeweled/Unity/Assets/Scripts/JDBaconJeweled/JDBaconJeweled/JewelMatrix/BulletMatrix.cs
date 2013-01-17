@@ -12,7 +12,9 @@ public class BulletMatrix
 {
     public int Height;
     public int Width;
+#if DEBUG || RELEASE
     private int sleepTime = 100;
+#endif
 
     private int totalToMatch = 3;
     public bool enablePrinting = false;
@@ -463,7 +465,7 @@ public class BulletMatrix
     {
 #if DEBUG || RELEASE
         Console.WriteLine(LevelManager.Instance.CurrentLevelName());
-        Console.WriteLine("Zombies: " + LevelManager.Instance.CurrentLevelZombieKillCount());
+        Console.WriteLine("Zombies: " + LevelManager.Instance.CurrentZombieCount());
         Console.WriteLine();
         Console.Write("  ");
         for (int j = 0; j < this.Width; ++j)

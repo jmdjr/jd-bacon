@@ -13,8 +13,8 @@ public class JDLevel : JDIObject
 {
     public string Name { get; set; }
     public int Id { get; set; }
-    public int ZombieCollectRate { get; set; }
-    public int ZombieLimit { get; set; }
+    public float ZombieCollectRate { get; set; }
+    public float ZombieLimit { get; set; }
 
     public JDIObjectTypes JDType { get { return JDIObjectTypes.OBJECT; } }
 

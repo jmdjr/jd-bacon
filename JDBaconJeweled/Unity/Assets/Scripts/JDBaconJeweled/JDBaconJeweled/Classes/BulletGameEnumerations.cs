@@ -14,3 +14,9 @@ public enum GenericStatusFlags
     ACTIVE,
     INACTIVE
 }
+
+public enum GameScenes
+{
+    BULLET_FRAME,
+    GUN_SHOP
+}

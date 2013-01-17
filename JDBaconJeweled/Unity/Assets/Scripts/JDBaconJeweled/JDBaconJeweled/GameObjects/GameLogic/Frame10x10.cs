@@ -20,7 +20,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         {
             if (instance == null)
             {
-                var g = GameObject.Find("Frame");
+                var g = GameObject.Find("NewFrame");
 
                 if (g != null)
                 {
@@ -47,19 +47,17 @@ public class Frame10x10 : JDMonoGuiBehavior
         this.bulletGroups = new List<FallingBullet>();
         toSpawn = new Queue<GameObject>();
         AllBullets = new List<FallingBullet>();
-        
 
         frame.Load(false);
 
-        var childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(BulletSpawner));
+        var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
 
         foreach (var comp in childrenComps)
         {
-            BulletSpawner spawner = comp.gameObject.GetComponentInChildren<BulletSpawner>();
-            bulletSpawners.Add(spawner);
+            bulletSpawners.Add(comp.gameObject.GetComponentInChildren<BulletSpawner>());
         }
         
-        bulletSpawners = bulletSpawners.OrderBy(o => o.transform.position.x).ToList();
+        bulletSpawners = bulletSpawners.OrderByDescending(o => o.transform.position.x).ToList();
         if (bulletSpawners.Count > 0)
         {
             var x = bulletSpawners[0].transform.position.x;
@@ -68,8 +66,7 @@ public class Frame10x10 : JDMonoGuiBehavior
 
             for (int i = 1; i < bulletSpawners.Count; ++i)
             {
-                var spawner = bulletSpawners[i];
-                bulletSpawners[i].transform.position = new Vector3(i * bulletSpawners[0].transform.localScale.x + x, y, z);
+                bulletSpawners[i].transform.position = new Vector3(x - i * bulletSpawners[0].transform.localScale.x, y, z);
             }
         }
 

@@ -13,7 +13,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
     public event GameObjectTransferEvent GrabbedGameObject;
     public event GameObjectTransferEvent DroppedGameObject;
     private GameObject heldGameObject;
-    private SwapTypes SwapType;
+    public SwapTypes SwapType = SwapTypes.DRAG_DROP;
 
     static GameObjectGrabber instance;
     public static GameObjectGrabber Instance
@@ -37,7 +37,6 @@ public class GameObjectGrabber : JDMonoGuiBehavior
     public override void Awake()
     {
         base.Awake();
-        SwapType = SwapTypes.CLICK;
     }
 
     public override void Update()
@@ -66,6 +65,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
@@ -80,6 +80,8 @@ public class GameObjectGrabber : JDMonoGuiBehavior
                     this.heldGameObject = null;
                 }
 
+                Debug.Log(hit.distance);
+
                 this.heldGameObject = hit.transform.gameObject;
                 this.heldGameObject.layer = 2;
             }
@@ -89,7 +91,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
+            Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
                 if (DroppedGameObject != null)
@@ -102,6 +104,7 @@ public class GameObjectGrabber : JDMonoGuiBehavior
                     this.heldGameObject.layer = 1;
                     this.heldGameObject = null;
                 }
+                Debug.Log(this.heldGameObject.GetComponent<FallingBullet>().Name);
             }
         }
     }

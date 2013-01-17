@@ -15,8 +15,63 @@ using Random = System.Random;
 public class ZombieTimer : JDMonoBodyBehavior
 {
     public event GenericStatusEvent StartTimer;
-    public event GenericStatusEvent StoppedTimer;
-    public event GenericStatusEvent EndedTimer;
+    //public event GenericStatusEvent StoppedTimer;
+    //public event GenericStatusEvent EndedTimer;
+
+    private bool isRunning = false;
+
+    #region Cached References
+    private GameObject sgo;
+    private GameObject startGO
+    {
+        get
+        {
+            if (sgo == null)
+            {
+                sgo = GameObject.Find("Start");
+            }
+            return sgo;
+        }
+    }
+    private GameObject zbar;
+    private GameObject zombieBarGO
+    {
+        get
+        {
+            if (zbar == null)
+            {
+                zbar = GameObject.Find("Zombies");
+            }
+            return zbar;
+        }
+    }
+    private GameObject ego;
+    private GameObject endGO
+    {
+        get
+        {
+            if (ego == null)
+            {
+                ego = GameObject.Find("End");
+            }
+            return ego;
+        }
+    }
+
+    private float distanceSE;
+    private float DistanceSE
+    {
+        get
+        {
+            if (distanceSE == 0)
+            {
+                distanceSE = Math.Abs(endGO.transform.position.x - startGO.transform.position.x);
+            }
+
+            return distanceSE;
+        }
+    }
+    #endregion
 
     static ZombieTimer instance;
     public static ZombieTimer Instance
@@ -30,5 +85,45 @@ public class ZombieTimer : JDMonoBodyBehavior
 
             return instance;
         }
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        LevelManager.Instance.FirstLevel();
+        this.StartTimerCycle();
+    }
+
+    public void StartTimerCycle()
+    {
+        if (StartTimer != null)
+        {
+            this.StartTimer(new GenericStatusEventArgs(GenericStatusFlags.START));
+        }
+
+        isRunning = true;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (isRunning)
+        {
+            LevelManager.Instance.StepZombieCount();
+            float xScale = zombieBarGO.transform.localScale.x, yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
+
+            float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
+            float numberOfZombies = LevelManager.Instance.CurrentZombieCount();
+
+            float newXScale = (this.DistanceSE * numberOfZombies) / (LevelManager.Instance.CurrentZombieLimit() * 2);
+
+            if (numberOfZombies < LevelManager.Instance.CurrentZombieLimit())
+            {
+                zombieBarGO.transform.localScale = new Vector3(newXScale, yScale, zScale);
+                zombieBarGO.transform.position = new Vector3(xpos - newXScale, ypos, zpos);
+            }
+        }
+
     }
 }

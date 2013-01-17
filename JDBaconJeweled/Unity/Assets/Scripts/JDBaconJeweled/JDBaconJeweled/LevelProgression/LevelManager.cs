@@ -19,6 +19,9 @@ public class LevelManager : JDIObject
     private List<JDLevel> levelProgression;
     private JDLevel currentLevel;
 
+    private float zombiesKilled;
+    private float currentZombieCount;
+
     private static LevelManager instance;
     public static LevelManager Instance 
     {
@@ -50,11 +53,11 @@ public class LevelManager : JDIObject
     {
         return this.currentLevel.Id;
     }
-    public int CurrentZombieLimit()
+    public float CurrentZombieLimit()
     {
         return this.currentLevel.ZombieLimit;
     }
-    public int CurrentZombieRate()
+    public float CurrentZombieRate()
     {
         return this.currentLevel.ZombieCollectRate;
     }
@@ -62,20 +65,52 @@ public class LevelManager : JDIObject
     {
         return this.currentLevel.Name;
     }
+    public float CurrentZombieCount()
+    {
+        return this.currentZombieCount;
+    }
+
     public void GotoLevel(int levelIndex)
     {
         if (levelIndex >= 0 && levelIndex < levelProgression.Count)
         {
             this.currentLevel = levelProgression[levelIndex];
-            zombiesKilled = CurrentZombieLimit();
+            ResetLevel();
         }
     }
-
-    private int zombiesKilled;
-    public int CurrentLevelZombieKillCount(int update = 0)
+    public void FirstLevel()
     {
-        zombiesKilled += update;
-        return zombiesKilled;
+        this.GotoLevel(0);
+    }
+
+    public void NextLevel()
+    {
+        this.GotoLevel(levelProgression.IndexOf(this.currentLevel) + 1);
+    }
+    public bool OnLastLevel()
+    {
+        return levelProgression.IndexOf(this.currentLevel) == levelProgression.Count - 1;
+    }
+    public void ResetLevel()
+    {
+        zombiesKilled = 0;
+        currentZombieCount = 0;
+    }
+
+    public void KillZombies(int amountToKill = 0)
+    {
+        if (amountToKill < 0)
+        {
+            return;
+        }
+
+        zombiesKilled += amountToKill;
+        currentZombieCount -= amountToKill;
+    }
+
+    public void StepZombieCount()
+    {
+        currentZombieCount += this.CurrentZombieRate();
     }
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
