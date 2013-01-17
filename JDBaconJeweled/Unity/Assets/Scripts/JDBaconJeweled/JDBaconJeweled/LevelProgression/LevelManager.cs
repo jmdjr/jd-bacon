@@ -19,6 +19,9 @@ public class LevelManager : JDIObject
     private List<JDLevel> levelProgression;
     private JDLevel currentLevel;
 
+    private int zombiesKilled;
+    private int currentZombieCount;
+
     private static LevelManager instance;
     public static LevelManager Instance 
     {
@@ -62,20 +65,36 @@ public class LevelManager : JDIObject
     {
         return this.currentLevel.Name;
     }
+    public int CurrentZombieCount()
+    {
+        return this.currentZombieCount;
+    }
+
+
     public void GotoLevel(int levelIndex)
     {
         if (levelIndex >= 0 && levelIndex < levelProgression.Count)
         {
             this.currentLevel = levelProgression[levelIndex];
-            zombiesKilled = CurrentZombieLimit();
+            zombiesKilled = 0;
+            currentZombieCount = 0;
         }
     }
 
-    private int zombiesKilled;
-    public int CurrentLevelZombieKillCount(int update = 0)
+    public void KillZombies(int amountToKill = 0)
     {
-        zombiesKilled += update;
-        return zombiesKilled;
+        if (amountToKill < 0)
+        {
+            return;
+        }
+
+        zombiesKilled += amountToKill;
+        currentZombieCount -= amountToKill;
+    }
+
+    public void StepZombieCount()
+    {
+        currentZombieCount += this.CurrentZombieRate();
     }
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
