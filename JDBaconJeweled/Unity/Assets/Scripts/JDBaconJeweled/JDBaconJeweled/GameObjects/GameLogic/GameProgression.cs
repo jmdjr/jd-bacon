@@ -14,21 +14,25 @@ public class GameProgression : JDMonoGuiBehavior
     private int tick;
 
     private GameScenes currentScene = GameScenes.BULLET_FRAME;
-    
     public GameObject FrameSceneOrientation;
     public GameObject ShopSceneOrientation;
+    
+    // game starts unpaused, while everything else is paused.  this way, it is known that 
+    //  the game has just started.  after this point, all control pausers will be kept in sync with 
+    //  this variable.
+    public bool GameIsPaused = false;
 
-    private GameObject camera;
+    private GameObject cameraGO;
     private GameObject Camera
     {
         get
         {
-            if (camera == null)
+            if (this.cameraGO == null)
             {
-                camera = GameObject.Find("Main Camera");
+                this.cameraGO = GameObject.Find("Main Camera");
             }
 
-            return camera;
+            return this.cameraGO;
         }
     }
 
@@ -47,22 +51,57 @@ public class GameProgression : JDMonoGuiBehavior
         if (scene != this.currentScene)
         {
             this.currentScene = scene;
-            this.Camera.camera.enabled = false;
-
+            this.Camera.transform.position = ShopSceneOrientation.transform.position;
+            this.Camera.transform.rotation = ShopSceneOrientation.transform.rotation;
         }
     }
 
     private void StartLevel()
     {
+        BulletGameGlobal.Instance.PauseFrame = false;
+        this.StartCoroutine(startTimerWhenFrameStable());
     }
 
-    private void StartTimer()
+    IEnumerator startTimerWhenFrameStable()
     {
+        yield return new WaitForSeconds(1);
+        while (!Frame10x10.Instance.IsFrameStable())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForSeconds(0.5f);
+        ZombieTimer.Instance.StartTimerCycle();
+        yield return 0;
+    }
+
+    private void PauseGameplay()
+    {
+        GameIsPaused = true;
+        BulletGameGlobal.Instance.PauseFrame = true;
+        ZombieTimer.Instance.PauseTimer();
+        // add pausers for anything else in this game.
+    }
+
+    private void ResumeGameplay()
+    {
+        GameIsPaused = false;
+        BulletGameGlobal.Instance.PauseFrame = false;
+        ZombieTimer.Instance.ResumeTimer();
+    }
+
+    private bool IsGameStart()
+    {
+        // only test with one for certainty
+        return !GameIsPaused && BulletGameGlobal.Instance.PauseFrame;
     }
 
     private void EndLevel()
     {
+    }
 
+    private void SwitchToShop()
+    {
+        this.TransitionToScene(GameScenes.GUN_SHOP);
     }
 
     private void StepFrame()
@@ -81,12 +120,32 @@ public class GameProgression : JDMonoGuiBehavior
     {
         return Frame10x10.Instance != null && Frame10x10.Instance.IsFrameStable() && Frame10x10.Instance.HasMatches();
     }
-
+    private bool timeToBeginFrame()
+    {
+        return Time.timeScale > 0f && tick >= delay;
+    }
     public override void Update()
     {
         base.Update();
 
-        if (Time.timeScale > 0f && tick >= delay && isFrameAble())
+        // replace this with whatever we deem the starting gun for this game.
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (IsGameStart())
+            {
+                StartLevel();
+            }
+            else if (!GameIsPaused)
+            {
+                this.PauseGameplay();
+            }
+            else if (GameIsPaused)
+            {
+                this.ResumeGameplay();
+            }
+        }
+
+        if (timeToBeginFrame() && isFrameAble())
         {
             tick = 0;
             StepFrame();
@@ -94,5 +153,4 @@ public class GameProgression : JDMonoGuiBehavior
 
         ++tick;
     }
-
 }

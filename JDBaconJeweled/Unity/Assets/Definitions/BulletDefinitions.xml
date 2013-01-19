@@ -21,7 +21,7 @@
   <JDBullet>
     <Id>3</Id>
     <Name>44Caliber</Name>
-    <Unlocked>false</Unlocked>
+    <Unlocked>true</Unlocked>
     <AccessedLevel>2</AccessedLevel>
     <ZombieKillNumber>3</ZombieKillNumber>
     <bulletDebugChar>%</bulletDebugChar>
@@ -48,8 +48,8 @@
   <JDBullet>
     <Id>6</Id>
     <Name>P90</Name>
-    <Unlocked>true</Unlocked>
-    <AccessedLevel>0</AccessedLevel>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>2</AccessedLevel>
     <ZombieKillNumber>5</ZombieKillNumber>
     <bulletDebugChar>X</bulletDebugChar>
     <ResourceName>GameObject Prefabs/NewFrame/Bullets/P90</ResourceName>
@@ -57,8 +57,8 @@
   <JDBullet>
     <Id>7</Id>
     <Name>ShotgunShell</Name>
-    <Unlocked>true</Unlocked>
-    <AccessedLevel>0</AccessedLevel>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>3</AccessedLevel>
     <ZombieKillNumber>5</ZombieKillNumber>
     <bulletDebugChar>X</bulletDebugChar>
     <ResourceName>GameObject Prefabs/NewFrame/Bullets/ShotgunShell</ResourceName>

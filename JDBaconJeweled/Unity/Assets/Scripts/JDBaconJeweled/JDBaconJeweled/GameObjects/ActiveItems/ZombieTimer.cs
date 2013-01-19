@@ -80,7 +80,10 @@ public class ZombieTimer : JDMonoBodyBehavior
         {
             if (instance == null)
             {
-                instance = JDGame.GameMaster.GetComponent<ZombieTimer>();
+                if (GameObject.Find("ZombieTimer") != null)
+                {
+                    instance = GameObject.Find("ZombieTimer").GetComponent<ZombieTimer>();
+                }
             }
 
             return instance;
@@ -91,7 +94,7 @@ public class ZombieTimer : JDMonoBodyBehavior
     {
         base.Start();
         LevelManager.Instance.FirstLevel();
-        this.StartTimerCycle();
+
     }
 
     public void StartTimerCycle()
@@ -102,6 +105,16 @@ public class ZombieTimer : JDMonoBodyBehavior
         }
 
         isRunning = true;
+    }
+
+    public void PauseTimer()
+    {
+        this.isRunning = false;
+    }
+
+    public void ResumeTimer()
+    {
+        this.isRunning = true;
     }
 
     public override void Update()

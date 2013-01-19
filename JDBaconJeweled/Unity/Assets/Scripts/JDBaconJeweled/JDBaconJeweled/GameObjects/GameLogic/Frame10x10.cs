@@ -88,7 +88,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     public override void Start()
     {
         base.Start();
-        BulletGameGlobal.Instance.PauseFrame = false;
+        BulletGameGlobal.Instance.PauseFrame = true;
         BulletGameGlobal.Instance.PreventBulletBouncing = true;
         frame.SpawnFullGrid();
     }
@@ -247,6 +247,48 @@ public class Frame10x10 : JDMonoGuiBehavior
         toSpawn.Enqueue(fallingBullet);
     }
 
+    private void stopActiveBullets()
+    {
+        this.AllBullets.ForEach(bullet =>
+        {
+            BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
+
+            if (boxCollider != null)
+            {
+                if (boxCollider.enabled)
+                {
+                    Rigidbody body = bullet.GetComponent<Rigidbody>();
+
+                    if (body != null)
+                    {
+                        body.useGravity = false;
+                        body.velocity = Vector3.zero;
+                    }
+                }
+            }
+        });
+    }
+    private void startActiveBullets()
+    {
+        this.AllBullets.ForEach(bullet =>
+        {
+            BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
+
+            if (boxCollider != null)
+            {
+                if (boxCollider.enabled)
+                {
+                    Rigidbody body = bullet.GetComponent<Rigidbody>();
+
+                    if (body != null)
+                    {
+                        body.useGravity = true;
+                    }
+                }
+            }
+        });
+    }
+
     public void ToggleBulletsFalling(bool toggle)
     {
         this.AllBullets.ForEach(bullet =>
@@ -260,12 +302,13 @@ public class Frame10x10 : JDMonoGuiBehavior
         base.Update();
         if (BulletGameGlobal.Instance.PauseFrame)
         {
-            Physics.gravity = Vector3.zero;
+            stopActiveBullets();
         }
         else
         {
-            Physics.gravity = new Vector3(0, -9.81f, 0);
+            startActiveBullets();
         }
+
         while (!BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
         {
             GameObject spawn = toSpawn.Dequeue();

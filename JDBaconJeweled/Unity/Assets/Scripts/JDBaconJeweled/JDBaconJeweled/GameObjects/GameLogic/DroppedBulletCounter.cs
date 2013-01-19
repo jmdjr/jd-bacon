@@ -8,6 +8,6 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class DroppedBulletCounter
+public class DroppedBulletCounter : JDMonoGuiBehavior
 {
 }
