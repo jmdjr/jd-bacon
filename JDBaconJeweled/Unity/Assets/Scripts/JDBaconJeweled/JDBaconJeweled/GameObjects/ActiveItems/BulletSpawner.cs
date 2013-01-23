@@ -77,7 +77,7 @@ public class BulletSpawner : JDMonoBehavior
 
     public override void Update()
     {
-        if (!BulletGameGlobal.Instance.PauseFrame && Time.timeScale > 0)
+        if (!BulletGameGlobal.Instance.PauseFrame && !this.IsPaused)
         {
             if (tick >= delay)
             {

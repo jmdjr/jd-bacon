@@ -38,7 +38,6 @@ public class GameObjectGrabber : JDMonoGuiBehavior
     {
         base.Awake();
     }
-
     public override void Update()
     {
         base.Update();
@@ -62,89 +61,75 @@ public class GameObjectGrabber : JDMonoGuiBehavior
     private void DragDropSwap()
     {
         if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
-
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
-            {
-                if (GrabbedGameObject != null)
-                {
-                    GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                }
-
-                if (this.heldGameObject != null && this.heldGameObject.layer != 1)
-                {
-                    this.heldGameObject.layer = 1;
-                    this.heldGameObject = null;
-                }
-
-                this.heldGameObject = hit.transform.gameObject;
-                this.heldGameObject.layer = 2;
-            }
+        { 
+            PickupGameObject();
         }
 
         if (Input.GetMouseButtonUp(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
-            {
-                if (DroppedGameObject != null)
-                {
-                    DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                }
-
-                if (this.heldGameObject != null)
-                {
-                    this.heldGameObject.layer = 1;
-                    this.heldGameObject = null;
-                }
-            }
+        { 
+            DropGameObject();
         }
     }
-
     private void ClickSwap()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
+            if (this.heldGameObject == null)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                PickupGameObject();
+            }
+            else
+            {
+                DropGameObject();
+            }
+        }
+    }
+    
+    private void PickupGameObject()
+    {
 
-                if (this.heldGameObject == null)
-                {
-                    if (GrabbedGameObject != null)
-                    {
-                        GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                    }
-                    if (this.heldGameObject != null && this.heldGameObject.layer != 1)
-                    {
-                        this.heldGameObject.layer = 1;
-                        this.heldGameObject = null;
-                    }
-                    
-                    this.heldGameObject = hit.transform.gameObject;
-                    this.heldGameObject.layer = 2;
-                }
-                else if (this.heldGameObject != null)
-                {
-                    if (DroppedGameObject != null)
-                    {
-                        DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
-                    }
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
 
-                    if (this.heldGameObject != null)
-                    {
-                        this.heldGameObject.layer = 1;
-                        this.heldGameObject = null;
-                    }
-                }
+        if (Physics.Raycast(ray.origin, ray.direction, out hit))
+        {
+            Debug.Log(hit.transform.gameObject.name);
+
+            if (GrabbedGameObject != null)
+            {
+                GrabbedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
+            }
+
+            if (this.heldGameObject != null && this.heldGameObject.layer != 1)
+            {
+                this.heldGameObject.layer = 1;
+                this.heldGameObject = null;
+            }
+
+            this.heldGameObject = hit.transform.gameObject;
+            this.heldGameObject.layer = 2;
+        }
+    }
+    private void DropGameObject()
+    {
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
+        if (Physics.Raycast(ray.origin, ray.direction, out hit))
+        {
+            Debug.Log(hit.transform.gameObject.name);
+
+            if (DroppedGameObject != null)
+            {
+                DroppedGameObject(new GameObjectTransferEventArgs(hit.transform.gameObject, new Position2D((int)hit.point.x, (int)hit.point.y)));
+            }
+
+            if (this.heldGameObject != null)
+            {
+                this.heldGameObject.layer = 1;
+                this.heldGameObject = null;
             }
         }
     }

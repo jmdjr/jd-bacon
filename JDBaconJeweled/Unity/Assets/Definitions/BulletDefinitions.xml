@@ -39,8 +39,8 @@
   <JDBullet>
     <Id>5</Id>
     <Name>AK47</Name>
-    <Unlocked>true</Unlocked>
-    <AccessedLevel>0</AccessedLevel>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>1</AccessedLevel>
     <ZombieKillNumber>5</ZombieKillNumber>
     <bulletDebugChar>X</bulletDebugChar>
     <ResourceName>GameObject Prefabs/NewFrame/Bullets/AK47</ResourceName>

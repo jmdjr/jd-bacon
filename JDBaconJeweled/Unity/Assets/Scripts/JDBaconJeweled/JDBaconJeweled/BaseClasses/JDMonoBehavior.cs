@@ -14,8 +14,18 @@ public class JDMonoBehavior : MonoBehaviour, JDIHaveScriptHandles, JDIObject
     public Rigidbody Body { get { return this.rigidbody; } }
     public Collider Collider { get { return this.rigidbody.collider; } }
     public Vector3 ColliderCenter { get { return this.Collider.bounds.center; } }
+    public bool IsPaused { get { return Time.timeScale == 0; } }
 
     public List<JDIObject> JDCollection = new List<JDIObject>();
+    
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+    }
+    public void UnPause()
+    {
+        Time.timeScale = 1f;
+    }
 
     public virtual void Awake()
     {

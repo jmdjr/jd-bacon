@@ -34,24 +34,24 @@ public class Frame10x10 : JDMonoGuiBehavior
 
     private BulletMatrix frame;
 
-    private List<BulletSpawner> bulletSpawners;
-    private List<FallingBullet> bulletGroups;
-    private List<FallingBullet> AllBullets;
-    private Queue<GameObject> toSpawn;
+    private List<BulletSpawner> bulletSpawners = new List<BulletSpawner>();
+    private List<FallingBullet> bulletGroups = new List<FallingBullet>();
+    private List<FallingBullet> AllBullets = new List<FallingBullet>();
+    private Queue<GameObject> toSpawn = new Queue<GameObject>();
 
     public override void Awake()
     {
         base.Awake();
-        frame = new BulletMatrix(dimension.Y, dimension.X);
-        bulletSpawners = new List<BulletSpawner>();
-        this.bulletGroups = new List<FallingBullet>();
-        toSpawn = new Queue<GameObject>();
-        AllBullets = new List<FallingBullet>();
 
+        // initialize frame
+        frame = new BulletMatrix(dimension.Y, dimension.X);
         frame.Load(false);
 
-        var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
+        frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
+        frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
 
+        // gather and sort bullet spawners
+        var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
         foreach (var comp in childrenComps)
         {
             bulletSpawners.Add(comp.gameObject.GetComponentInChildren<BulletSpawner>());
@@ -70,6 +70,7 @@ public class Frame10x10 : JDMonoGuiBehavior
             }
         }
 
+        // Gather bullet groups
         childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(FallingBullet));
 
         foreach (var comp in childrenComps)
@@ -78,17 +79,15 @@ public class Frame10x10 : JDMonoGuiBehavior
             bulletGroups.Add(bullet);
         }
 
-        frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
-        frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
-
-        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "stuffs", Debug_PrintGrid));
-        DebugCommands.Instance.AddCommand(new ConsoleCommand("TogglePause", "stuffs", Debug_PauseGameplay));
+        // setup debug commands
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
     }
 
     public override void Start()
     {
         base.Start();
-        BulletGameGlobal.Instance.PauseFrame = true;
+
+        BulletGameGlobal.Instance.PauseFrame = false;
         BulletGameGlobal.Instance.PreventBulletBouncing = true;
         frame.SpawnFullGrid();
     }

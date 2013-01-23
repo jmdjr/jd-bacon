@@ -20,7 +20,7 @@ public class GameProgression : JDMonoGuiBehavior
     // game starts unpaused, while everything else is paused.  this way, it is known that 
     //  the game has just started.  after this point, all control pausers will be kept in sync with 
     //  this variable.
-    public bool GameIsPaused = false;
+    public bool GameIsPaused { get { return Time.timeScale == 0; } }
 
     private GameObject cameraGO;
     private GameObject Camera
@@ -58,7 +58,6 @@ public class GameProgression : JDMonoGuiBehavior
 
     private void StartLevel()
     {
-        BulletGameGlobal.Instance.PauseFrame = false;
         this.StartCoroutine(startTimerWhenFrameStable());
     }
 
@@ -72,27 +71,6 @@ public class GameProgression : JDMonoGuiBehavior
         yield return new WaitForSeconds(0.5f);
         ZombieTimer.Instance.StartTimerCycle();
         yield return 0;
-    }
-
-    private void PauseGameplay()
-    {
-        GameIsPaused = true;
-        BulletGameGlobal.Instance.PauseFrame = true;
-        ZombieTimer.Instance.PauseTimer();
-        // add pausers for anything else in this game.
-    }
-
-    private void ResumeGameplay()
-    {
-        GameIsPaused = false;
-        BulletGameGlobal.Instance.PauseFrame = false;
-        ZombieTimer.Instance.ResumeTimer();
-    }
-
-    private bool IsGameStart()
-    {
-        // only test with one for certainty
-        return !GameIsPaused && BulletGameGlobal.Instance.PauseFrame;
     }
 
     private void EndLevel()
@@ -122,28 +100,15 @@ public class GameProgression : JDMonoGuiBehavior
     }
     private bool timeToBeginFrame()
     {
-        return Time.timeScale > 0f && tick >= delay;
+        return !this.IsPaused && tick >= delay;
     }
     public override void Update()
     {
         base.Update();
 
+        StartLevel();
+
         // replace this with whatever we deem the starting gun for this game.
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if (IsGameStart())
-            {
-                StartLevel();
-            }
-            else if (!GameIsPaused)
-            {
-                this.PauseGameplay();
-            }
-            else if (GameIsPaused)
-            {
-                this.ResumeGameplay();
-            }
-        }
 
         if (timeToBeginFrame() && isFrameAble())
         {

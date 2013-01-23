@@ -112,7 +112,10 @@ public class LevelManager : JDIObject
     {
         currentZombieCount += this.CurrentZombieRate();
     }
-
+    public bool HasKilledEnoughZombies()
+    {
+        return this.CurrentZombieCount() < 0;
+    }
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
         throw new NotImplementedException();

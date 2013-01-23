@@ -120,8 +120,8 @@ public class ZombieTimer : JDMonoBodyBehavior
     public override void Update()
     {
         base.Update();
-
-        if (isRunning)
+        
+        if (isRunning && !this.IsPaused)
         {
             LevelManager.Instance.StepZombieCount();
             float xScale = zombieBarGO.transform.localScale.x, yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
