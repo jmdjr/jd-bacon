@@ -54,7 +54,7 @@ public class GameStatistics
     }
     public string GetStatisticNameByIndex(int keyIndex)
     {
-        if (keyIndex >= 0 || keyIndex < stats.Keys.Count)
+        if (HasStatisticByIndex(keyIndex))
         {
             return stats.Keys.ToArray()[keyIndex];
         }
@@ -63,7 +63,7 @@ public class GameStatistics
     }
     public int GetStatisticValueByIndex(int keyIndex)
     {
-        if (keyIndex >= 0 || keyIndex < stats.Values.Count)
+        if (HasStatisticByIndex(keyIndex))
         {
             return stats.Values.ToArray()[keyIndex];
         }

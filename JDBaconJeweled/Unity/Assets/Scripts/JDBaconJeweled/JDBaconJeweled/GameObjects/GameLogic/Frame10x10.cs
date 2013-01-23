@@ -38,59 +38,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     private List<FallingBullet> bulletGroups = new List<FallingBullet>();
     private List<FallingBullet> AllBullets = new List<FallingBullet>();
     private Queue<GameObject> toSpawn = new Queue<GameObject>();
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        // initialize frame
-        frame = new BulletMatrix(dimension.Y, dimension.X);
-        frame.Load(false);
-
-        frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
-        frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
-
-        // gather and sort bullet spawners
-        var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
-        foreach (var comp in childrenComps)
-        {
-            bulletSpawners.Add(comp.gameObject.GetComponentInChildren<BulletSpawner>());
-        }
-        
-        bulletSpawners = bulletSpawners.OrderByDescending(o => o.transform.position.x).ToList();
-        if (bulletSpawners.Count > 0)
-        {
-            var x = bulletSpawners[0].transform.position.x;
-            var y = bulletSpawners[0].transform.position.y;
-            var z = bulletSpawners[0].transform.position.z;
-
-            for (int i = 1; i < bulletSpawners.Count; ++i)
-            {
-                bulletSpawners[i].transform.position = new Vector3(x - i * bulletSpawners[0].transform.localScale.x, y, z);
-            }
-        }
-
-        // Gather bullet groups
-        childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(FallingBullet));
-
-        foreach (var comp in childrenComps)
-        {
-            FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
-            bulletGroups.Add(bullet);
-        }
-
-        // setup debug commands
-        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
-    }
-
-    public override void Start()
-    {
-        base.Start();
-
-        BulletGameGlobal.Instance.PauseFrame = false;
-        BulletGameGlobal.Instance.PreventBulletBouncing = true;
-        frame.SpawnFullGrid();
-    }
+    private List<FallingBullet> toDrop = new List<FallingBullet>();
 
     #region Events
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
@@ -103,37 +51,7 @@ public class Frame10x10 : JDMonoGuiBehavior
     }
     #endregion
 
-    private BulletSpawner GetBulletSpawner(int xPos)
-    {
-        BulletSpawner spawner = null;
-        for (int i = 0; i < bulletSpawners.Count; ++i)
-        {
-            if (xPos == i)
-            {
-                spawner = bulletSpawners[i];
-                break;
-            }
-        }
-
-        return spawner;
-    }
-    private FallingBullet GetBulletGroup(JDBullet bulletType)
-    {
-        FallingBullet group = null;
-        for (int i = 0; i < bulletGroups.Count; ++i)
-        {
-            if ((bulletGroups[i].BulletReference != null && bulletGroups[i].BulletReference.Name == bulletType.Name) || bulletGroups[i].ManualName == bulletType.Name)
-            {
-                group = bulletGroups[i];
-                break;
-            }
-        }
-
-        return group;
-    }
-
     #region Checks
-
     public bool IsFrameStable()
     {
         bool FrameStable = true;
@@ -162,7 +80,6 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         return FrameStable && !BulletGameGlobal.Instance.PauseFrame;
     }
-
     public List<GameObject> RemainningSpawnBullets()
     {
         List<GameObject> collection = new List<GameObject>();
@@ -174,7 +91,6 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         return collection;
     }
-
     public int RemainningBulletsToSpawn()
     {
         int count = 0;
@@ -185,7 +101,6 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         return count;
     }
-
     public bool HasMatches()
     {
         return frame.CollectMatchedBullets().Count > 0;
@@ -193,135 +108,6 @@ public class Frame10x10 : JDMonoGuiBehavior
     #endregion
 
     #region public Mechanics
-    private bool DropBullet(JDBullet bullet)
-    {
-        FallingBullet b = this.AllBullets.Find(fb => bullet == fb.BulletReference);
-
-        if (b != null)
-        {
-            b.transform.position = b.transform.parent.transform.position;
-            b.rigidbody.collider.isTrigger = true;
-            this.AllBullets.Remove(b);
-            return true;
-        }
-
-        return false;
-    }
-    public List<Position2D> DropAnyMatches()
-    {
-        var matches = frame.CollectMatchedBullets();
-
-        if (matches != null)
-        {
-            frame.DropMatchedBullets(matches);
-        }
-
-        return matches;
-    }
-    public void BubbleUpAndSpawn(List<Position2D> matches)
-    {
-        frame.ShiftItemsDown(matches);
-    }
-    #endregion
-    
-    private void QueueBulletInSpawner(JDBullet bullet, Position2D point)
-    {
-        BulletSpawner spawner = GetBulletSpawner(point.X);
-        GameObject fallingBullet = spawner.SpawnBullet(bullet);
-        FallingBullet group = this.GetBulletGroup(bullet);
-
-        if(group != null)
-        {
-            fallingBullet.transform.parent = group.gameObject.transform;
-        }
-        
-        FallingBullet fallingBulletScript = fallingBullet.GetComponent<FallingBullet>();
-        
-        if(fallingBulletScript != null)
-        {
-            fallingBulletScript.MySpawner = spawner;
-            this.AllBullets.Add(fallingBulletScript);
-        }
-
-        toSpawn.Enqueue(fallingBullet);
-    }
-
-    private void stopActiveBullets()
-    {
-        this.AllBullets.ForEach(bullet =>
-        {
-            BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
-
-            if (boxCollider != null)
-            {
-                if (boxCollider.enabled)
-                {
-                    Rigidbody body = bullet.GetComponent<Rigidbody>();
-
-                    if (body != null)
-                    {
-                        body.useGravity = false;
-                        body.velocity = Vector3.zero;
-                    }
-                }
-            }
-        });
-    }
-    private void startActiveBullets()
-    {
-        this.AllBullets.ForEach(bullet =>
-        {
-            BoxCollider boxCollider = bullet.GetComponent<BoxCollider>();
-
-            if (boxCollider != null)
-            {
-                if (boxCollider.enabled)
-                {
-                    Rigidbody body = bullet.GetComponent<Rigidbody>();
-
-                    if (body != null)
-                    {
-                        body.useGravity = true;
-                    }
-                }
-            }
-        });
-    }
-
-    public void ToggleBulletsFalling(bool toggle)
-    {
-        this.AllBullets.ForEach(bullet =>
-        {
-            bullet.rigidbody.useGravity = toggle;
-        });
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        if (BulletGameGlobal.Instance.PauseFrame)
-        {
-            stopActiveBullets();
-        }
-        else
-        {
-            startActiveBullets();
-        }
-
-        while (!BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
-        {
-            GameObject spawn = toSpawn.Dequeue();
-            FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
-
-            if (fallingBullet != null)
-            {
-                fallingBullet.MySpawner.QueueBullet(spawn);
-            }
-        }
-    }
-
-    public bool CanMatchMore() { return frame.CanMatchMore(); }
-
     public bool SwapBullets(GameObject firstBullet, GameObject SecondBullet)
     {
         if (firstBullet == null || SecondBullet == null || !this.IsFrameStable())
@@ -356,8 +142,59 @@ public class Frame10x10 : JDMonoGuiBehavior
 
         return canSwap;
     }
+    public bool CanMatchMore() { return frame.CanMatchMore(); }
+    public List<Position2D> DropAnyMatches()
+    {
+        var matches = frame.CollectMatchedBullets();
 
-    IEnumerator BadSwapDelay(Transform first, Transform second, float HalfTimeDelay) 
+        if (matches != null)
+        {
+            frame.DropMatchedBullets(matches);
+        }
+
+        return matches;
+    }
+    public void BubbleUpAndSpawn(List<Position2D> matches)
+    {
+        frame.ShiftItemsDown(matches);
+    }
+    #endregion
+
+    #region private Mechanics
+    private bool DropBullet(JDBullet bullet)
+    {
+        FallingBullet b = this.AllBullets.Find(fb => bullet == fb.BulletReference);
+        if (b != null)
+        {
+            this.AllBullets.Remove(b);
+            this.toDrop.Add(b);
+            return true;
+        }
+
+        return false;
+    }
+    private void QueueBulletInSpawner(JDBullet bullet, Position2D point)
+    {
+        BulletSpawner spawner = GetBulletSpawner(point.X);
+        GameObject fallingBullet = spawner.SpawnBullet(bullet);
+        FallingBullet group = this.GetBulletGroup(bullet);
+
+        if (group != null)
+        {
+            fallingBullet.transform.parent = group.gameObject.transform;
+        }
+
+        FallingBullet fallingBulletScript = fallingBullet.GetComponent<FallingBullet>();
+
+        if (fallingBulletScript != null)
+        {
+            fallingBulletScript.MySpawner = spawner;
+            this.AllBullets.Add(fallingBulletScript);
+        }
+
+        toSpawn.Enqueue(fallingBullet);
+    }
+    IEnumerator BadSwapDelay(Transform first, Transform second, float HalfTimeDelay)
     {
         BulletGameGlobal.Instance.PauseFrame = true;
         Vector3 firstPosition = first.transform.position;
@@ -379,7 +216,6 @@ public class Frame10x10 : JDMonoGuiBehavior
         second.transform.position = secondPosition;
         yield return 0;
     }
-
     IEnumerator SwapDelay(Transform first, Transform second, float TimeDelay)
     {
         Vector3 firstPosition = first.transform.position;
@@ -393,12 +229,113 @@ public class Frame10x10 : JDMonoGuiBehavior
         first.transform.position = secondPosition;
         second.transform.position = firstPosition;
         BulletGameGlobal.Instance.PauseFrame = false;
-        
+
         yield return 0;
+    }
+    private BulletSpawner GetBulletSpawner(int xPos)
+    {
+        BulletSpawner spawner = null;
+        for (int i = 0; i < bulletSpawners.Count; ++i)
+        {
+            if (xPos == i)
+            {
+                spawner = bulletSpawners[i];
+                break;
+            }
+        }
+
+        return spawner;
+    }
+    private FallingBullet GetBulletGroup(JDBullet bulletType)
+    {
+        FallingBullet group = null;
+        for (int i = 0; i < bulletGroups.Count; ++i)
+        {
+            if ((bulletGroups[i].BulletReference != null && bulletGroups[i].BulletReference.Name == bulletType.Name) || bulletGroups[i].ManualName == bulletType.Name)
+            {
+                group = bulletGroups[i];
+                break;
+            }
+        }
+
+        return group;
+    }
+    #endregion
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        // initialize frame
+        frame = new BulletMatrix(dimension.Y, dimension.X);
+        frame.Load(false);
+
+        frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
+        frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
+
+        // gather and sort bullet spawners
+        var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
+        foreach (var comp in childrenComps)
+        {
+            bulletSpawners.Add(comp.gameObject.GetComponentInChildren<BulletSpawner>());
+        }
+
+        bulletSpawners = bulletSpawners.OrderByDescending(o => o.transform.position.x).ToList();
+        if (bulletSpawners.Count > 0)
+        {
+            var x = bulletSpawners[0].transform.position.x;
+            var y = bulletSpawners[0].transform.position.y;
+            var z = bulletSpawners[0].transform.position.z;
+
+            for (int i = 1; i < bulletSpawners.Count; ++i)
+            {
+                bulletSpawners[i].transform.position = new Vector3(x - i * bulletSpawners[0].transform.localScale.x, y, z);
+            }
+        }
+
+        // Gather bullet groups
+        childrenComps = this.gameObject.transform.GetComponentsInChildren(typeof(FallingBullet));
+
+        foreach (var comp in childrenComps)
+        {
+            FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
+            bulletGroups.Add(bullet);
+        }
+
+        // setup debug commands
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
+    }
+    public override void Start()
+    {
+        base.Start();
+
+        BulletGameGlobal.Instance.PauseFrame = false;
+        BulletGameGlobal.Instance.PreventBulletBouncing = true;
+        frame.SpawnFullGrid();
+    }
+    public override void Update()
+    {
+        base.Update();
+
+        while (!this.IsPaused && !BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
+        {
+            if (this.toDrop.Count > 0)
+            {
+                DroppedBulletCounter.Instance.AddBullets(this.toDrop);
+                this.toDrop.Clear();
+            }
+
+            GameObject spawn = toSpawn.Dequeue();
+            FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
+
+            if (fallingBullet != null)
+            {
+                fallingBullet.MySpawner.QueueBullet(spawn);
+            }
+        }
     }
 
     #region Debug
-
     public void Debug_PauseGameplay(string[] Params)
     {
         if(Time.timeScale == 0)
@@ -410,11 +347,9 @@ public class Frame10x10 : JDMonoGuiBehavior
             Time.timeScale = 0;
         }
     }
-
     public void Debug_PrintGrid(string[] Params)
     {
         Debug.Log(frame.Debug_PrintGrid());
     }
-
     #endregion
 }
