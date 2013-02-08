@@ -281,15 +281,25 @@ public class Frame10x10 : JDMonoGuiBehavior
         }
 
         bulletSpawners = bulletSpawners.OrderByDescending(o => o.transform.position.x).ToList();
+
         if (bulletSpawners.Count > 0)
         {
             var x = bulletSpawners[0].transform.position.x;
             var y = bulletSpawners[0].transform.position.y;
             var z = bulletSpawners[0].transform.position.z;
+            var collider = bulletSpawners[0].GetComponent<BoxCollider>();
+
+            var initialSpawnerScale = bulletSpawners[0].transform.localScale.x;
+
+            if (collider != null)
+            {
+                initialSpawnerScale *= collider.size.x;
+                Debug.Log(initialSpawnerScale);
+            }
 
             for (int i = 1; i < bulletSpawners.Count; ++i)
             {
-                bulletSpawners[i].transform.position = new Vector3(x - i * bulletSpawners[0].transform.localScale.x, y, z);
+                bulletSpawners[i].transform.position = new Vector3(x - i * initialSpawnerScale, y, z);
             }
         }
 
