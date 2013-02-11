@@ -8,36 +8,14 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class GameProgression : JDMonoGuiBehavior
+public class GameProgression : JDMenu
 {
     private int delay;
     private int tick;
 
-    private GameScenes currentScene = GameScenes.BULLET_FRAME;
     public SwapTypes SwapType = SwapTypes.CLICK;
-    public GameObject FrameSceneOrientation;
-    public GameObject ShopSceneOrientation;
-    private GameObjectToucher toucher;
     private Frame10x10 frame;
-    
-    // game starts unpaused, while everything else is paused.  this way, it is known that 
-    //  the game has just started.  after this point, all control pausers will be kept in sync with 
-    //  this variable.
-    public bool GameIsPaused { get { return Time.timeScale == 0; } }
-
-    private GameObject cameraGO;
-    private GameObject Camera
-    {
-        get
-        {
-            if (this.cameraGO == null)
-            {
-                this.cameraGO = GameObject.Find("Main Camera");
-            }
-
-            return this.cameraGO;
-        }
-    }
+    private ZombieTimer timer;
 
     public override void Awake()
     {
@@ -45,58 +23,54 @@ public class GameProgression : JDMonoGuiBehavior
         delay = 5;
         tick = 0;
 
-        toucher = GameObjectToucher.Instance;
         frame = Frame10x10.Instance;
+        timer = ZombieTimer.Instance;
 
         GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
-        toucher.DropGameObject += Instance_DropGameObject;
-        toucher.PickUpGameObject += Instance_PickUpGameObject;
-        //TransitionToScene(GameScenes.GUN_SHOP);
     }
+
     public override void Start()
     {
         base.Start();
-
         StartLevel();
     }
 
-
     void Instance_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
     {
-        if (/*we are in gameplay and */ SwapType == SwapTypes.CLICK)
-        {
-            var go = eventArgs.GameObject;
-            var last = toucher.LastPickedUpGameObject;
+        var go = eventArgs.GameObject;
 
-            if (last != null && go != last)
+        // touching falling bullets.
+        if (go.GetComponent<FallingBullet>() != null)
+        {
+            if (SwapType == SwapTypes.CLICK)
             {
-                frame.SwapBullets(go, last);
-                toucher.ClearHistory();
+                var last = toucher.LastPickedUpGameObject;
+
+                if (last != null && go != last)
+                {
+                    frame.SwapBullets(go, last);
+                    toucher.ClearHistory();
+                }
             }
         }
     }
     void Instance_DropGameObject(GameObjectTransferEventArgs eventArgs)
     {
-        if (/*we are in gameplay and */ SwapType == SwapTypes.DRAG_DROP)
-        {
-            var go = eventArgs.GameObject;
-            var last = toucher.LastPickedUpGameObject;
+        var go = eventArgs.GameObject;
 
-            if (last != null && go != last)
+        // touching falling bullets.
+        if (go.GetComponent<FallingBullet>() != null)
+        {
+            if (SwapType == SwapTypes.DRAG_DROP)
             {
-                frame.SwapBullets(go, last);
-                toucher.ClearHistory();
-            }
-        }
-    }
+                var last = toucher.LastPickedUpGameObject;
 
-    private void TransitionToScene(GameScenes scene)
-    {
-        if (scene != this.currentScene)
-        {
-            this.currentScene = scene;
-            this.Camera.transform.position = ShopSceneOrientation.transform.position;
-            this.Camera.transform.rotation = ShopSceneOrientation.transform.rotation;
+                if (last != null && go != last)
+                {
+                    frame.SwapBullets(go, last);
+                    toucher.ClearHistory();
+                }
+            }
         }
     }
 
@@ -108,22 +82,17 @@ public class GameProgression : JDMonoGuiBehavior
     IEnumerator startTimerWhenFrameStable()
     {
         yield return new WaitForSeconds(1);
-        while (!Frame10x10.Instance.IsFrameStable())
+        while (!frame.IsFrameStable())
         {
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(0.5f);
-        ZombieTimer.Instance.StartTimerCycle();
+        timer.StartTimerCycle();
         yield return 0;
     }
 
     private void EndLevel()
     {
-    }
-
-    private void SwitchToShop()
-    {
-        this.TransitionToScene(GameScenes.GUN_SHOP);
     }
 
     private void StepFrame()
@@ -153,5 +122,17 @@ public class GameProgression : JDMonoGuiBehavior
         }
 
         ++tick;
+    }
+
+    public override void RegisterTouchingEvents()
+    {
+        toucher.DropGameObject += Instance_DropGameObject;
+        toucher.PickUpGameObject += Instance_PickUpGameObject;
+    }
+
+    public override void UnregisterTouchingEvents()
+    {
+        toucher.DropGameObject -= Instance_DropGameObject;
+        toucher.PickUpGameObject -= Instance_PickUpGameObject;
     }
 }

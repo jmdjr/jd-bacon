@@ -16,7 +16,7 @@ public class Frame10x10 : JDMonoGuiBehavior
         {
             if (instance == null)
             {
-                var g = GameObject.Find("Game Menu");
+                var g = GameObject.Find("GamePlay");
 
                 if (g != null)
                 {
@@ -76,7 +76,6 @@ public class Frame10x10 : JDMonoGuiBehavior
         {
             FrameStable = false;
         }
-
 
         return FrameStable && !BulletGameGlobal.Instance.PauseFrame;
     }
@@ -294,7 +293,6 @@ public class Frame10x10 : JDMonoGuiBehavior
             if (collider != null)
             {
                 initialSpawnerScale *= collider.size.x;
-                Debug.Log(initialSpawnerScale);
             }
 
             for (int i = 1; i < bulletSpawners.Count; ++i)

@@ -124,7 +124,7 @@ public class ZombieTimer : JDMonoBodyBehavior
         if (isRunning && !this.IsPaused)
         {
             LevelManager.Instance.StepZombieCount();
-            float xScale = zombieBarGO.transform.localScale.x, yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
+            float /*xScale = zombieBarGO.transform.localScale.x,*/ yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
 
             float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
             float numberOfZombies = LevelManager.Instance.CurrentZombieCount();

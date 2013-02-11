@@ -21,11 +21,26 @@ public class MenuNavigator : JDMonoGuiBehavior
                 
                 if (go != null)
                 {
-                    go.GetComponent<MenuNavigator>();
+                    instance = go.GetComponent<MenuNavigator>();
                 }
             }
 
             return instance;
         }
+    }
+    private List<JDMenu> menus = new List<JDMenu>();
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        var children = this.gameObject.GetComponentsInChildren<JDMenu>();
+
+        foreach (var child in children)
+        {
+            this.menus.Add(child);
+        }
+
+        this.menus.First().BringToTopLayer();
     }
 }

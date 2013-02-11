@@ -33,8 +33,6 @@ public class GameObjectToucher: JDMonoGuiBehavior
 
     public event GameObjectTransferEvent PickUpGameObject;
     public event GameObjectTransferEvent DropGameObject;
-    public event GameObjectTransferEvent LoseHeldGameObject;
-    public event GameObjectTransferEvent ForgotDroppedGameObject;
 
     public override void Update()
     {

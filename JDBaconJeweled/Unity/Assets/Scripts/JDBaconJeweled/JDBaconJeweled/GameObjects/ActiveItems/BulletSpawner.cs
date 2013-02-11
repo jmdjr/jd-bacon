@@ -19,23 +19,6 @@ public class BulletSpawner : JDMonoBehavior
     
     private int delay;
     Frame10x10 gameFrame;
-    Frame10x10 GameFrame
-    {
-        get
-        {
-            if (gameFrame == null)
-            {
-                var g = GameObject.Find("Frame");
-
-                if (g != null)
-                {
-                    gameFrame = g.GetComponent<Frame10x10>();
-                }
-            }
-
-            return gameFrame;
-        }
-    }
     private int tick;
     public override void Awake()
     {
@@ -44,7 +27,7 @@ public class BulletSpawner : JDMonoBehavior
         tick = 0;
 
         BulletGameGlobal.Instance.PreventBulletBouncing = false;
-
+        gameFrame = Frame10x10.Instance;
         base.Awake();
     }
     public override void Start()

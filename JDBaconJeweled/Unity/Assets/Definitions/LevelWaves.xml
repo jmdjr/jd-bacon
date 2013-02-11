@@ -3,8 +3,8 @@
   <JDLevel>
     <Name>Level 1 - Wave 1</Name>
     <Id>0</Id>
-    <ZombieCollectRate>0.01</ZombieCollectRate>
-    <ZombieLimit>100</ZombieLimit>
+    <ZombieCollectRate>1</ZombieCollectRate>
+    <ZombieLimit>10000</ZombieLimit>
   </JDLevel>
   <JDLevel>
     <Name>Level 1 - Wave 2</Name>

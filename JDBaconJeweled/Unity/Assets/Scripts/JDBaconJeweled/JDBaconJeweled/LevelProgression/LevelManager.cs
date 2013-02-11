@@ -10,7 +10,6 @@ using System.Collections.Generic;
 
 public class LevelManager : JDIObject
 {
-    //string LevelWavesDefinitionFile = "../Unity/Assets/Definitions/LevelWaves.xml";
     string LevelWavesDefinitionFile = "./Assets/Definitions/LevelWaves.xml";
 
     public string Name { get { return "LevelManager"; } set { } }

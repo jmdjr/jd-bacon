@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponDefinitions>
+  <JDWeapon>
+    <Id>1</Id>
+    <Name>9mm Pistol</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ClipSize>10</ClipSize>
+    <ShotDelay>1</ShotDelay>
+    <ReloadDelay>1</ReloadDelay>
+    <ResourceName>GameObject Prefabs/Game Prefabs/Buttons/Desert Eagle</ResourceName>
+  </JDWeapon>
+</WeaponDefinitions>

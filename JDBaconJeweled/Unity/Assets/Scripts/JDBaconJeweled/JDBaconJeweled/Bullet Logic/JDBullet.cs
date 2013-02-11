@@ -21,7 +21,7 @@ public class JDBullet : JDIObject
 
     public JDIObjectTypes JDType
     {
-        get { return JDIObjectTypes.OBJECT; }
+        get { return JDIObjectTypes.COLLECTABLE; }
     }
 
 
