@@ -10,7 +10,6 @@ using Random = System.Random;
 
 public class DroppedBulletCounter : JDMonoGuiBehavior
 {
-    static DroppedBulletCounter instance;
     public static DroppedBulletCounter Instance
     {
         get
@@ -23,6 +22,7 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
             return instance;
         }
     }
+    static DroppedBulletCounter instance;
 
     private List<FallingBullet> droppedBullets = new List<FallingBullet>();
 

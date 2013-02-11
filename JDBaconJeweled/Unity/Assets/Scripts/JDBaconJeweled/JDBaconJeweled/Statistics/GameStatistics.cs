@@ -5,8 +5,6 @@ using System.Text;
 
 public class GameStatistics
 {
-    private Dictionary<string, int> stats;
-    private static GameStatistics instance;
     public static GameStatistics Instance
     {
         get
@@ -18,7 +16,9 @@ public class GameStatistics
             return instance;
         }
     }
+    private static GameStatistics instance;
 
+    private Dictionary<string, int> stats;
     public JDIStatTypes AllowedBulletStat;
 
     private GameStatistics()

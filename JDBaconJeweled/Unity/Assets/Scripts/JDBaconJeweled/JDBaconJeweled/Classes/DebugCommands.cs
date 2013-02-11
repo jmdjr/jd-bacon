@@ -6,14 +6,6 @@ using System.Linq;
 
 public class DebugCommands
 {
-    private DebugCommands()
-    {
-        Commands = new List<ConsoleCommand>() {
-            new ConsoleCommand("Help", "This displays the help text for all events.", HelpCommand),
-        };
-    }
-
-    private static DebugCommands instance;
     public static DebugCommands Instance
     {
         get
@@ -26,6 +18,14 @@ public class DebugCommands
             return instance;
         }
     }
+    private static DebugCommands instance;
+    private DebugCommands()
+    {
+        Commands = new List<ConsoleCommand>() {
+            new ConsoleCommand("Help", "This displays the help text for all events.", HelpCommand),
+        };
+    }
+
 
     public List<ConsoleCommand> Commands;
 

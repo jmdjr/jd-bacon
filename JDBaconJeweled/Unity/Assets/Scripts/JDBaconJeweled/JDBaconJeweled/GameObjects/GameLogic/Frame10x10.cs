@@ -10,17 +10,13 @@ using System.Collections.Generic;
 
 public class Frame10x10 : JDMonoGuiBehavior
 {
-    public Position2D dimension = new Position2D(10, 10);
-    public float SwapDelayTime = 0.25f;
-
-    static Frame10x10 instance;
     public static Frame10x10 Instance
     {
         get
         {
             if (instance == null)
             {
-                var g = GameObject.Find("NewFrame");
+                var g = GameObject.Find("Game Menu");
 
                 if (g != null)
                 {
@@ -31,6 +27,10 @@ public class Frame10x10 : JDMonoGuiBehavior
             return instance;
         }
     }
+    static Frame10x10 instance;
+
+    public Position2D dimension = new Position2D(10, 10);
+    public float SwapDelayTime = 0.25f;
 
     private BulletMatrix frame;
 
