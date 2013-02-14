@@ -28,6 +28,7 @@ public class BulletSpawner : JDMonoBehavior
 
         BulletGameGlobal.Instance.PreventBulletBouncing = false;
         gameFrame = Frame10x10.Instance;
+
         base.Awake();
     }
     public override void Start()
