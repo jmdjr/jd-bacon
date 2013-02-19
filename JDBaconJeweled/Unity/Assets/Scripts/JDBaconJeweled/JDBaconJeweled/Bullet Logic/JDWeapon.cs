@@ -15,6 +15,7 @@ public class JDWeapon : JDIObject
     public int ClipSize { get; set; }
     public float ShotDelay { get; set; }
     public float ReloadDelay { get; set; }
+    public int BulletId { get; set; }
     public string ResourceName { get; set; }
 
     public JDIObjectTypes JDType { get { return JDIObjectTypes.WEAPON; } }
@@ -22,5 +23,19 @@ public class JDWeapon : JDIObject
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
         return false;
+    }
+
+    private JDBullet bulletRef;
+    public JDBullet bulletReference
+    {
+        get
+        {
+            if (bulletRef == null)
+            {
+                bulletRef = BulletFactory.Instance.GetReference(this.BulletId);
+            }
+            Debug.Log(bulletRef);
+            return bulletRef;
+        }
     }
 }

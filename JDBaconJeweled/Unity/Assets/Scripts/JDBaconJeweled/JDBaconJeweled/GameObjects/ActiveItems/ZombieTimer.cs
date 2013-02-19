@@ -18,6 +18,8 @@ public class ZombieTimer : JDMonoBodyBehavior
     //public event GenericStatusEvent StoppedTimer;
     //public event GenericStatusEvent EndedTimer;
 
+    float counter = 0;
+
     private bool isRunning = false;
 
     #region Cached References
@@ -71,6 +73,8 @@ public class ZombieTimer : JDMonoBodyBehavior
             return distanceSE;
         }
     }
+
+    private LevelManager level = LevelManager.Instance;
     #endregion
 
     static ZombieTimer instance;
@@ -93,8 +97,7 @@ public class ZombieTimer : JDMonoBodyBehavior
     public override void Start()
     {
         base.Start();
-        LevelManager.Instance.FirstLevel();
-
+        level.FirstLevel();
     }
 
     public void StartTimerCycle()
@@ -120,18 +123,20 @@ public class ZombieTimer : JDMonoBodyBehavior
     public override void Update()
     {
         base.Update();
-        
-        if (isRunning && !this.IsPaused)
+        counter += Time.deltaTime;
+
+        if (isRunning && !this.IsPaused && counter >= 1)
         {
-            LevelManager.Instance.StepZombieCount();
+            counter = 0;
+            level.StepZombieCount();
             float /*xScale = zombieBarGO.transform.localScale.x,*/ yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
 
             float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
-            float numberOfZombies = LevelManager.Instance.CurrentZombieCount();
+            float numberOfZombies = level.CurrentZombieCount();
 
-            float newXScale = (this.DistanceSE * numberOfZombies) / (LevelManager.Instance.CurrentZombieLimit() * 2);
+            float newXScale = (this.DistanceSE * numberOfZombies) / (level.CurrentZombieLimit() * 2);
 
-            if (numberOfZombies < LevelManager.Instance.CurrentZombieLimit())
+            if (numberOfZombies < level.CurrentZombieLimit())
             {
                 zombieBarGO.transform.localScale = new Vector3(newXScale, yScale, zScale);
                 zombieBarGO.transform.position = new Vector3(xpos - newXScale, ypos, zpos);

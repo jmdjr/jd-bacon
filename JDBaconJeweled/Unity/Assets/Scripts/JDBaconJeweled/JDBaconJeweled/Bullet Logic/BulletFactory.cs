@@ -2,6 +2,8 @@
 using UnityEditor;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -108,6 +110,17 @@ public sealed class BulletFactory : JDIObject
 
             return debugChars;
         }
-    
+    }
+
+    public JDBullet GetReference(int Id)
+    {
+        JDBullet reference = null;
+
+        if (Id > 0 && Id <= this.BulletReferences.Max(w => w.Id))
+        {
+            reference = this.BulletReferences.FirstOrDefault(b => b.Id == Id);
+        }
+
+        return reference;
     }
 }

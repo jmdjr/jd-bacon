@@ -24,13 +24,13 @@ public abstract class JDMenu : JDMonoGuiBehavior
 
     public void BringToTopLayer() 
     {
-        this.gameObject.transform.position = Vector3.zero;
+        this.gameObject.transform.localPosition = Vector3.zero;
         RegisterTouchingEvents();
     }
 
     private void SendToBackLayer()
     {
-        this.gameObject.transform.position = BackLayer;
+        this.gameObject.transform.localPosition = BackLayer;
         UnregisterTouchingEvents();
     }
 

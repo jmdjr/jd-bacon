@@ -37,7 +37,7 @@ public class GameObjectToucher: JDMonoGuiBehavior
     public override void Update()
     {
         base.Update();
-
+        
         if (Input.GetMouseButtonDown(0))
         {
             PickUpGameObjectAction();
@@ -91,10 +91,11 @@ public class GameObjectToucher: JDMonoGuiBehavior
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
+        Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, hit.distance);
             //Debug.Log(hit.transform.gameObject.name);
             var go = hit.transform.gameObject;
 
@@ -110,10 +111,11 @@ public class GameObjectToucher: JDMonoGuiBehavior
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
+        Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, hit.distance);
             //Debug.Log(hit.transform.gameObject.name);
             var go = hit.transform.gameObject;
 

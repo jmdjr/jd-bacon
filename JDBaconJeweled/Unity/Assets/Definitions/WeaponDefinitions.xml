@@ -6,8 +6,9 @@
     <Unlocked>true</Unlocked>
     <AccessedLevel>0</AccessedLevel>
     <ClipSize>10</ClipSize>
-    <ShotDelay>1</ShotDelay>
+    <ShotDelay>0.5</ShotDelay>
     <ReloadDelay>1</ReloadDelay>
+    <BulletId>1</BulletId>
     <ResourceName>GameObject Prefabs/Game Prefabs/Buttons/Desert Eagle</ResourceName>
   </JDWeapon>
 </WeaponDefinitions>

@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 using Random = System.Random;
 using System.Collections.Generic;
 
-public class GunStore
+public class WeaponStore
 {
 
 }

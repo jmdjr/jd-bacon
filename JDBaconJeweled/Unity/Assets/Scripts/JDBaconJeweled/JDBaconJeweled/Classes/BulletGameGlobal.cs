@@ -33,7 +33,7 @@ public class BulletGameGlobal
 
     private void BulletGameGlobal_Debug_GlobalSet(string[] Params)
     {
-        Debug.Log(Params.Length);
+        //Debug.Log(Params.Length);
         if(Params.Length == 0 || DebugCommands.IsHelpSwitch(Params[0]))
         {
             Debug.Log(

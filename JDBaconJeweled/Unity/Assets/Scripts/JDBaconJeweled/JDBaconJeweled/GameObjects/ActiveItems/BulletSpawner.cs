@@ -18,7 +18,6 @@ public class BulletSpawner : JDMonoBehavior
     private Quaternion Rotation { get { if (myRotation == Quaternion.identity) { myRotation = this.gameObject.transform.rotation; } return this.myRotation; } }
     
     private int delay;
-    Frame10x10 gameFrame;
     private int tick;
     public override void Awake()
     {
@@ -27,7 +26,6 @@ public class BulletSpawner : JDMonoBehavior
         tick = 0;
 
         BulletGameGlobal.Instance.PreventBulletBouncing = false;
-        gameFrame = Frame10x10.Instance;
 
         base.Awake();
     }
