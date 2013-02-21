@@ -6,7 +6,7 @@ public class JDMonoGuiBehavior : JDMonoBehavior, JDISeeGUI
 {
     public event MonoScriptEventHandler ScriptGUI;
 
-    public void OnGUI()
+    public virtual void OnGUI()
     {
         if (ScriptGUI != null)
         {
