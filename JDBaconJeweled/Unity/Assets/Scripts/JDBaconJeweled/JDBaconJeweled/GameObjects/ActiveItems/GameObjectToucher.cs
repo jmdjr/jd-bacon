@@ -18,6 +18,7 @@ public class GameObjectToucher: JDMonoGuiBehavior
         {
             if (instance == null)
             {
+                Debug.Log(JDGame.GameMaster);
                 if (JDGame.GameMaster != null)
                 {
                     instance = JDGame.GameMaster.GetComponent<GameObjectToucher>();
@@ -33,6 +34,7 @@ public class GameObjectToucher: JDMonoGuiBehavior
 
     public event GameObjectTransferEvent PickUpGameObject;
     public event GameObjectTransferEvent DropGameObject;
+    public event GameObjectTransferEvent OverGameObject;
 
     public override void Update()
     {
@@ -46,6 +48,8 @@ public class GameObjectToucher: JDMonoGuiBehavior
         {
             DropGameObjectAction();
         }
+
+        DetectHoveredGameObjectAction();
     }
 
     public GameObject LastPickedUpGameObject
@@ -96,7 +100,7 @@ public class GameObjectToucher: JDMonoGuiBehavior
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
             Debug.DrawRay(ray.origin, ray.direction, Color.red, hit.distance);
-            //Debug.Log(hit.transform.gameObject.name);
+            Debug.Log(hit.transform.gameObject.name);
             var go = hit.transform.gameObject;
 
             if (PickUpGameObject != null)
@@ -116,7 +120,7 @@ public class GameObjectToucher: JDMonoGuiBehavior
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
             Debug.DrawRay(ray.origin, ray.direction, Color.red, hit.distance);
-            //Debug.Log(hit.transform.gameObject.name);
+            Debug.Log(hit.transform.gameObject.name);
             var go = hit.transform.gameObject;
 
             if (DropGameObject != null)
@@ -126,6 +130,25 @@ public class GameObjectToucher: JDMonoGuiBehavior
 
             storeDroppedGO(go);
         }
+    }
+    private void DetectHoveredGameObjectAction()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 50);
+
+        if (Physics.Raycast(ray.origin, ray.direction, out hit))
+        {
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, hit.distance);
+            Debug.Log(hit.transform.gameObject.name);
+            var go = hit.transform.gameObject;
+
+            if (OverGameObject != null)
+            {
+                OverGameObject(new GameObjectTransferEventArgs(go, new Position2D((int)hit.point.x, (int)hit.point.y)));
+            }
+        }
+        
     }
 
     private void storePickedUpGO(GameObject go)

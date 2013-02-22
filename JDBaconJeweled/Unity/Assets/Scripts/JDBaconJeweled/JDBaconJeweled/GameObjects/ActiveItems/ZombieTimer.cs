@@ -98,6 +98,7 @@ public class ZombieTimer : JDMonoBodyBehavior
     {
         base.Start();
         level.FirstLevel();
+        ResizeBar();
     }
 
     public void StartTimerCycle()
@@ -129,19 +130,24 @@ public class ZombieTimer : JDMonoBodyBehavior
         {
             counter = 0;
             level.StepZombieCount();
-            float /*xScale = zombieBarGO.transform.localScale.x,*/ yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
-
-            float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
-            float numberOfZombies = level.CurrentZombieCount();
-
-            float newXScale = (this.DistanceSE * numberOfZombies) / (level.CurrentZombieLimit() * 2);
-
-            if (numberOfZombies < level.CurrentZombieLimit())
-            {
-                zombieBarGO.transform.localScale = new Vector3(newXScale, yScale, zScale);
-                zombieBarGO.transform.position = new Vector3(xpos - newXScale, ypos, zpos);
-            }
+            ResizeBar();
         }
 
+    }
+
+    public void ResizeBar()
+    {
+        float /*xScale = zombieBarGO.transform.localScale.x,*/ yScale = zombieBarGO.transform.localScale.y, zScale = zombieBarGO.transform.localScale.z;
+
+        float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
+        float numberOfZombies = level.CurrentZombieCount();
+
+        float newXScale = (this.DistanceSE * numberOfZombies) / (level.CurrentZombieLimit() * 2);
+
+        if (numberOfZombies < level.CurrentZombieLimit())
+        {
+            zombieBarGO.transform.localScale = new Vector3(newXScale, yScale, zScale);
+            zombieBarGO.transform.position = new Vector3(xpos - newXScale, ypos, zpos);
+        }
     }
 }

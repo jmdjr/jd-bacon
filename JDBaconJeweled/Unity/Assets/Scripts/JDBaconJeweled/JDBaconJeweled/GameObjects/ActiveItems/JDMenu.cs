@@ -17,7 +17,11 @@ public abstract class JDMenu : JDMonoGuiBehavior
     {
         base.Awake();
 
+        Debug.Log("toucher" + toucher);
+
         toucher = GameObjectToucher.Instance;
+        Debug.Log("toucher" + toucher);
+
     }
 
     public bool IsTopLevel { get { return this.gameObject.transform.position.z == 0; } }

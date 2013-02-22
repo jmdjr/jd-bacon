@@ -30,9 +30,9 @@ public class MenuNavigator : JDMonoGuiBehavior
     }
     private List<JDMenu> menus = new List<JDMenu>();
 
-    public override void Awake()
+    public override void Start()
     {
-        base.Awake();
+        base.Start();
 
         var children = this.gameObject.GetComponentsInChildren<JDMenu>();
 

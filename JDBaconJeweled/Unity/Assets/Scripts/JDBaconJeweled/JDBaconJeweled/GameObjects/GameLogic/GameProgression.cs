@@ -16,6 +16,8 @@ public class GameProgression : JDMenu
     public SwapTypes SwapType = SwapTypes.CLICK;
     private Frame10x10 frame;
     private ZombieTimer timer;
+    public GameObject HoverEffectObject;
+
 
     public override void Awake()
     {
@@ -35,7 +37,7 @@ public class GameProgression : JDMenu
         StartLevel();
     }
 
-    void Instance_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
+    void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
 
@@ -59,16 +61,13 @@ public class GameProgression : JDMenu
 
             // for now use the dummy weapon, when button is added to bar, it will already have weapon set.
             weapon.SetWeapon(1);
-
             weapon.FireWeapon();
-
-
         }
     }
-    void Instance_DropGameObject(GameObjectTransferEventArgs eventArgs)
+    void toucher_DropGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
-
+        Debug.Log("DropEvent");
         // touching falling bullets.
         if (go.GetComponent<FallingBullet>() != null)
         {
@@ -82,6 +81,22 @@ public class GameProgression : JDMenu
                     toucher.ClearHistory();
                 }
             }
+        }
+    }
+
+    public void toucher_OverGameObject(GameObjectTransferEventArgs eventArgs)
+    {
+        var go = eventArgs.GameObject;
+        var gos = go.GetComponent<FallingBullet>();
+        Debug.Log("HoverOver Event");
+        // touching falling bullets.
+        if (gos != null)
+        {
+            this.HoverEffectObject.gameObject.transform.position = gos.gameObject.transform.position;
+        }
+        else
+        {
+            this.HoverEffectObject.gameObject.transform.position = Vector3.zero;
         }
     }
 
@@ -137,13 +152,16 @@ public class GameProgression : JDMenu
 
     public override void RegisterTouchingEvents()
     {
-        toucher.DropGameObject += Instance_DropGameObject;
-        toucher.PickUpGameObject += Instance_PickUpGameObject;
+        Debug.Log(toucher);
+        toucher.DropGameObject += toucher_DropGameObject;
+        toucher.PickUpGameObject += toucher_PickUpGameObject;
+        toucher.OverGameObject += toucher_OverGameObject;
     }
 
     public override void UnregisterTouchingEvents()
     {
-        toucher.DropGameObject -= Instance_DropGameObject;
-        toucher.PickUpGameObject -= Instance_PickUpGameObject;
+        toucher.DropGameObject -= toucher_DropGameObject;
+        toucher.PickUpGameObject -= toucher_PickUpGameObject;
+        toucher.OverGameObject -= toucher_OverGameObject;
     }
 }
