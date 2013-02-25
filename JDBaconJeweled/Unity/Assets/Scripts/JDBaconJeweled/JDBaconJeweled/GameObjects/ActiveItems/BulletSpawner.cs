@@ -36,7 +36,6 @@ public class BulletSpawner : JDMonoBehavior
     }
     public GameObject SpawnBullet(JDBullet bullet)
     {
-
         GameObject loadedBullet = (GameObject)Instantiate(Resources.Load(bullet.ResourceName), this.Position, this.Rotation);
         FallingBullet loadedBulletScript = loadedBullet.GetComponent<FallingBullet>();
 

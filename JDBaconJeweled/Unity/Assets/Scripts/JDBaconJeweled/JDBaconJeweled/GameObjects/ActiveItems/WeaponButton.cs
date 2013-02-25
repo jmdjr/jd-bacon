@@ -86,4 +86,9 @@ public class WeaponButton : JDMonoGuiBehavior
         this.IsFiring = false;
         yield return 0;
     }
+
+    public static GameObject SpawnWeaponButton(JDWeapon weapon)
+    {
+        return (GameObject)Instantiate(Resources.Load(weapon.ResourceName));
+    }
 }

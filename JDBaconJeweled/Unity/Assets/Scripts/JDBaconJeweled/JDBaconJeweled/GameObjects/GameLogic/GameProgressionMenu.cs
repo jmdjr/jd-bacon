@@ -8,7 +8,7 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class GameProgression : JDMenu
+public class GameProgressionMenu : JDMenu
 {
     private int delay;
     private int tick;
@@ -17,7 +17,6 @@ public class GameProgression : JDMenu
     private Frame10x10 frame;
     private ZombieTimer timer;
     public GameObject HoverEffectObject;
-
 
     public override void Awake()
     {
@@ -139,6 +138,7 @@ public class GameProgression : JDMenu
     {
         base.Update();
 
+        ScoreBar.Instance.SetScore(Time.frameCount.ToString());
         // replace this with whatever we deem the starting gun for this game.
 
         if (timeToBeginFrame() && isFrameAble())

@@ -5,6 +5,8 @@ using System.Text;
 
 public class GameStatistics
 {
+    string separator = "||";
+    private static GameStatistics instance;
     public static GameStatistics Instance
     {
         get
@@ -16,7 +18,6 @@ public class GameStatistics
             return instance;
         }
     }
-    private static GameStatistics instance;
 
     private Dictionary<string, int> stats;
     public JDIStatTypes AllowedBulletStat;
@@ -25,6 +26,7 @@ public class GameStatistics
     {
         stats = new Dictionary<string, int>();
     }
+
     public int GetStatistic(string name)
     {
         if (stats.ContainsKey(name))
@@ -73,5 +75,18 @@ public class GameStatistics
     public bool HasStatisticByIndex(int index)
     {
         return index >= 0 && index < this.stats.Count;
+    }
+
+    public string SubGroup(string GroupTitle, string Statistic)
+    {
+        return GroupTitle + separator + Statistic;
+    }
+    public void ResetStatisticGroup(string GroupTitle)
+    {
+        var group = stats.Keys.Where<string>(k => k.StartsWith(GroupTitle + separator));
+        foreach (var key in group)
+        {
+            stats[key] = 0;
+        }
     }
 }

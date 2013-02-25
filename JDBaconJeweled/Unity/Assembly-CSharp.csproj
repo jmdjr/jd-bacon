@@ -83,7 +83,7 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\WeaponButton.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ZeroZoneScript.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ZombieTimer.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\GameProgression.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\GameProgressionMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\MenuNavigator.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\WeaponStore.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\JewelGameBaseFunctions.cs" />
