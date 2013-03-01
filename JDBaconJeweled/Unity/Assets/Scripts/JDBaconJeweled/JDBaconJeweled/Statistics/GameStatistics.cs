@@ -5,7 +5,7 @@ using System.Text;
 
 public class GameStatistics
 {
-    string separator = "||";
+    static string separator = "||";
     private static GameStatistics instance;
     public static GameStatistics Instance
     {
@@ -77,7 +77,7 @@ public class GameStatistics
         return index >= 0 && index < this.stats.Count;
     }
 
-    public string SubGroup(string GroupTitle, string Statistic)
+    public static string SubGroup(string GroupTitle, string Statistic)
     {
         return GroupTitle + separator + Statistic;
     }

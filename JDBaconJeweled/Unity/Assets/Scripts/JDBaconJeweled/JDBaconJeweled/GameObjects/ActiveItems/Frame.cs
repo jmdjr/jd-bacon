@@ -8,9 +8,9 @@ using Object = UnityEngine.Object;
 using Random = System.Random;
 using System.Collections.Generic;
 
-public class Frame10x10 : JDMonoGuiBehavior
+public class Frame : JDMonoGuiBehavior
 {
-    public static Frame10x10 Instance
+    public static Frame Instance
     {
         get
         {
@@ -20,14 +20,14 @@ public class Frame10x10 : JDMonoGuiBehavior
 
                 if (g != null)
                 {
-                    instance = g.GetComponent<Frame10x10>();
+                    instance = g.GetComponent<Frame>();
                 }
             }
 
             return instance;
         }
     }
-    static Frame10x10 instance;
+    static Frame instance;
 
     public Position2D dimension = new Position2D(10, 10);
     public float SwapDelayTime = 0.25f;
@@ -261,10 +261,8 @@ public class Frame10x10 : JDMonoGuiBehavior
     }
     #endregion
 
-    public override void Awake()
+    public void InitializeFrame()
     {
-        base.Awake();
-
         // initialize frame
         frame = new BulletMatrix(dimension.Y, dimension.X);
         frame.Load(false);
@@ -309,22 +307,10 @@ public class Frame10x10 : JDMonoGuiBehavior
             FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
             bulletGroups.Add(bullet);
         }
-
-        // setup debug commands
-        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
     }
-    public override void Start()
-    {
-        base.Start();
 
-        BulletGameGlobal.Instance.PauseFrame = false;
-        BulletGameGlobal.Instance.PreventBulletBouncing = true;
-        frame.SpawnFullGrid();
-    }
-    public override void Update()
+    public void GridUpdateAction()
     {
-        base.Update();
-
         while (!this.IsPaused && !BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
         {
             if (this.toDrop.Count > 0)
@@ -341,6 +327,25 @@ public class Frame10x10 : JDMonoGuiBehavior
                 fallingBullet.MySpawner.QueueBullet(spawn);
             }
         }
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        InitializeFrame();
+
+        // setup debug commands
+        DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
+    }
+    public override void Start()
+    {
+        base.Start();
+
+        BulletGameGlobal.Instance.PauseFrame = false;
+        BulletGameGlobal.Instance.PreventBulletBouncing = true;
+
+        frame.SpawnFullGrid();
     }
 
     #region Debug

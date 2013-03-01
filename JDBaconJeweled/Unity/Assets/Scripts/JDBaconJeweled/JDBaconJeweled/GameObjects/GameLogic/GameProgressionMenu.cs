@@ -14,7 +14,7 @@ public class GameProgressionMenu : JDMenu
     private int tick;
 
     public SwapTypes SwapType = SwapTypes.CLICK;
-    private Frame10x10 frame;
+    private Frame frame;
     private ZombieTimer timer;
     public GameObject HoverEffectObject;
 
@@ -24,7 +24,7 @@ public class GameProgressionMenu : JDMenu
         delay = 5;
         tick = 0;
 
-        frame = Frame10x10.Instance;
+        frame = Frame.Instance;
         timer = ZombieTimer.Instance;
 
         GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
@@ -66,7 +66,7 @@ public class GameProgressionMenu : JDMenu
     void toucher_DropGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
-        Debug.Log("DropEvent");
+        //Debug.Log("DropEvent");
         // touching falling bullets.
         if (go.GetComponent<FallingBullet>() != null)
         {
@@ -87,7 +87,7 @@ public class GameProgressionMenu : JDMenu
     {
         var go = eventArgs.GameObject;
         var gos = go.GetComponent<FallingBullet>();
-        Debug.Log("HoverOver Event");
+        //Debug.Log("HoverOver Event");
         // touching falling bullets.
         if (gos != null)
         {
@@ -134,11 +134,10 @@ public class GameProgressionMenu : JDMenu
     {
         return !this.IsPaused && tick >= delay;
     }
-    public override void Update()
-    {
-        base.Update();
 
-        ScoreBar.Instance.SetScore(Time.frameCount.ToString());
+    public override void MenuUpdate()
+    {
+        ScoreBar.Instance.SetScoreText(Time.frameCount.ToString());
         // replace this with whatever we deem the starting gun for this game.
 
         if (timeToBeginFrame() && isFrameAble())
@@ -150,18 +149,27 @@ public class GameProgressionMenu : JDMenu
         ++tick;
     }
 
+    void frame_ScriptUpdate(MonoScriptEventArgs eventArgs)
+    {
+        frame.GridUpdateAction();
+    }
+
     public override void RegisterTouchingEvents()
     {
         Debug.Log(toucher);
+        frame.InitializeFrame();
+        frame.ScriptUpdate += frame_ScriptUpdate;
         toucher.DropGameObject += toucher_DropGameObject;
         toucher.PickUpGameObject += toucher_PickUpGameObject;
         toucher.OverGameObject += toucher_OverGameObject;
     }
+
 
     public override void UnregisterTouchingEvents()
     {
         toucher.DropGameObject -= toucher_DropGameObject;
         toucher.PickUpGameObject -= toucher_PickUpGameObject;
         toucher.OverGameObject -= toucher_OverGameObject;
+        frame.ScriptUpdate -= frame_ScriptUpdate;
     }
 }
