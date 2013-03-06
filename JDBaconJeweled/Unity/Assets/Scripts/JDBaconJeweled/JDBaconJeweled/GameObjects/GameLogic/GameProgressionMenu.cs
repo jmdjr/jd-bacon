@@ -58,8 +58,6 @@ public class GameProgressionMenu : JDMenu
         {
             var weapon = go.GetComponentInChildren<WeaponButton>();
 
-            // for now use the dummy weapon, when button is added to bar, it will already have weapon set.
-            weapon.SetWeapon(1);
             weapon.FireWeapon();
         }
     }

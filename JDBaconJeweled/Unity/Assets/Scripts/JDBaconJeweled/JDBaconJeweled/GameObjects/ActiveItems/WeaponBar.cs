@@ -27,7 +27,17 @@ public class WeaponBar : JDMonoGuiBehavior
         }
     }
 
-    public List<Vector3> ButtonPositionReferences = new List<Vector3>(4);
+    public static void SetWeaponBar(GameObject parent)
+    {
+        if(parent != null)
+        {
+            instance = parent.GetComponentInChildren<WeaponBar>();
+        }
+    }
+
+    private List<Vector3> ButtonPositionReferences = new List<Vector3>(4);
+
+    
 
 
 }

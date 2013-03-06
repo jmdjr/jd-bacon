@@ -45,7 +45,6 @@ public abstract class JDMenu : JDMonoGuiBehavior
         {
             this.MenuUpdate();
         }
-
     }
 
     public abstract void MenuUpdate();
