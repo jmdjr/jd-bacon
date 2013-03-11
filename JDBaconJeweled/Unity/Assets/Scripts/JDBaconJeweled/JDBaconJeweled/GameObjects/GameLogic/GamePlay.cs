@@ -8,7 +8,7 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class GameProgressionMenu : JDMenu
+public class GamePlay : JDMenu
 {
     private int delay;
     private int tick;
@@ -33,7 +33,6 @@ public class GameProgressionMenu : JDMenu
     public override void Start()
     {
         base.Start();
-        StartLevel();
     }
 
     void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
@@ -97,7 +96,7 @@ public class GameProgressionMenu : JDMenu
         }
     }
 
-    private void StartLevel()
+    public void StartLevel()
     {
         this.StartCoroutine(startTimerWhenFrameStable());
     }
@@ -162,12 +161,15 @@ public class GameProgressionMenu : JDMenu
         toucher.OverGameObject += toucher_OverGameObject;
     }
 
-
     public override void UnregisterTouchingEvents()
     {
         toucher.DropGameObject -= toucher_DropGameObject;
         toucher.PickUpGameObject -= toucher_PickUpGameObject;
         toucher.OverGameObject -= toucher_OverGameObject;
         frame.ScriptUpdate -= frame_ScriptUpdate;
+    }
+
+    public override void AssignButtonMenus()
+    {
     }
 }
