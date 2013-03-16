@@ -40,6 +40,14 @@ public class Frame : JDMonoGuiBehavior
     private Queue<GameObject> toSpawn = new Queue<GameObject>();
     private List<FallingBullet> toDrop = new List<FallingBullet>();
 
+    public IEnumerable<FallingBullet> BulletGroups
+    {
+        get 
+        {
+            return bulletGroups.AsReadOnly();
+        }
+    }
+
     #region Events
     private void frame_BulletSpawned(BulletActionEventArgs eventArgs)
     {
@@ -111,6 +119,7 @@ public class Frame : JDMonoGuiBehavior
     {
         if (firstBullet == null || SecondBullet == null || !this.IsFrameStable())
         {
+            Debug.Log("bullets are null or frame not stable");
             return false;
         }
 
@@ -119,11 +128,18 @@ public class Frame : JDMonoGuiBehavior
 
         if (first == null || second == null || first == second || first.BulletReference == null || second.BulletReference == null)
         {
+            Debug.Log("cant get falling bullet scripts from bullets, or they don't have JDbullet references");
             return false;
         }
-        
+
         Position2D firstPos = frame.GetBulletPosition(first.BulletReference);
         Position2D secondPos = frame.GetBulletPosition(second.BulletReference);
+
+        if (firstPos == Position2D.Zero || secondPos == Position2D.Zero)
+        {
+            Debug.LogError("Positions are set to zero");
+            return false;
+        }
 
         bool canSwap = frame.CanSwapPositions(firstPos, secondPos);
         bool shouldSwap = frame.IsBadSwap(firstPos, secondPos);
@@ -131,11 +147,12 @@ public class Frame : JDMonoGuiBehavior
         if (canSwap && shouldSwap)
         {
             this.StartCoroutine(SwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
-
+            Debug.Log("Swaping bullets now");
             frame.SwapPositions(firstPos, secondPos);
         }
         else if(canSwap)
         {
+            Debug.Log("Swaping bullets now");
             this.StartCoroutine(BadSwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
         }
 
@@ -267,8 +284,8 @@ public class Frame : JDMonoGuiBehavior
         frame = new BulletMatrix(dimension.Y, dimension.X);
         frame.Load(false);
 
-        frame.BulletDestroyed += new BulletActionEvent(frame_BulletDestroyed);
-        frame.BulletSpawned += new BulletActionEvent(frame_BulletSpawned);
+        frame.BulletDestroyed += frame_BulletDestroyed;
+        frame.BulletSpawned += frame_BulletSpawned;
 
         // gather and sort bullet spawners
         var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
@@ -333,8 +350,6 @@ public class Frame : JDMonoGuiBehavior
     {
         base.Awake();
 
-        InitializeFrame();
-
         // setup debug commands
         DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
     }
@@ -344,7 +359,10 @@ public class Frame : JDMonoGuiBehavior
 
         BulletGameGlobal.Instance.PauseFrame = false;
         BulletGameGlobal.Instance.PreventBulletBouncing = true;
+    }
 
+    public void SpawnFrame()
+    {
         frame.SpawnFullGrid();
     }
 

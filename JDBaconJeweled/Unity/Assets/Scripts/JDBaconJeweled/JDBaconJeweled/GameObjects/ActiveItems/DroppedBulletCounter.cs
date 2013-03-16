@@ -10,13 +10,21 @@ using Random = System.Random;
 
 public class DroppedBulletCounter : JDMonoGuiBehavior
 {
+    private LevelManager level;
+    private GameStatistics stats;
+
     public static DroppedBulletCounter Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = JDGame.GameMaster.GetComponent<DroppedBulletCounter>();
+                var g = GameObject.Find("GamePlay");
+
+                if (g != null)
+                {
+                    instance = g.GetComponent<DroppedBulletCounter>();
+                }
             }
 
             return instance;
@@ -25,33 +33,30 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
     static DroppedBulletCounter instance;
 
     private List<FallingBullet> droppedBullets = new List<FallingBullet>();
-
     // bullets to be counted then dropped.
     public void AddBullets(List<FallingBullet> bullets)
     {
         this.droppedBullets.AddRange(bullets);
         var bulletBags = from bullet in bullets
-                            group bullet by bullet.BulletReference.Name into bb
-                            let count = bb.Count()
-                            select new { 
-                                Name = bb.Key,
-                                Count = (int)Math.Floor(count / 3d) + (count % 3)
-                            };
+                         group bullet by bullet.BulletReference.Name into bb
+                         let count = bb.Count()
+                         select new
+                         {
+                             Name = bb.Key,
+                             Count = (int)Math.Floor(count / 3d) + (count % 3)
+                         };
 
         foreach (var bulletBag in bulletBags)
         {
-            if (GameStatistics.Instance.GetStatistic(bulletBag.Name) == -1)
-            {
-                GameStatistics.Instance.CreateStatistic(bulletBag.Name, 0);
-            }
-
-            GameStatistics.Instance.UpdateStatistic(bulletBag.Name, bulletBag.Count);
+            stats.UpdateAllStatsThatHave(bulletBag.Name, bulletBag.Count);
         }
     }
 
     public override void Awake()
     {
         base.Awake();
+        stats = GameStatistics.Instance;
+        level = LevelManager.Instance;
 
         DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintStats", "Prints the game statistics", Debug_PrintStatistics));
     }
@@ -71,7 +76,6 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
 
             this.droppedBullets.Clear();
         }
-
     }
 
     public void Debug_PrintStatistics(string[] Params)
@@ -79,15 +83,15 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
         int index = 0, value = 0;
         string statisticName = "";
         string debugOut = "";
-        statisticName = GameStatistics.Instance.GetStatisticNameByIndex(index);
+        statisticName = stats.GetStatisticNameByIndex(index);
         
         while (statisticName != "")
         {
-            value = GameStatistics.Instance.GetStatisticValueByIndex(index);
+            value = stats.GetStatisticValueByIndex(index);
             debugOut += statisticName + ": " + value + "\n";
 
             ++index;
-            statisticName = GameStatistics.Instance.GetStatisticNameByIndex(index);
+            statisticName = stats.GetStatisticNameByIndex(index);
         }
 
         Debug.Log(debugOut);

@@ -26,7 +26,7 @@ namespace JDBaconJeweled
             BulletMatrix frame = new BulletMatrix(stuffs.Y, stuffs.X);
 
             frame.Load(false);
-            Console.Clear();
+            //Console.Clear();
             frame.BalanceGrid(true, true);
             do
             {
@@ -46,16 +46,16 @@ namespace JDBaconJeweled
                     {
                         Console.WriteLine("these pieces can't be swapped...");
                         System.Threading.Thread.Sleep(750);
-                        Console.Clear();
+                        //Console.Clear();
                         continue;
                     }
 
-                    Console.Clear();
+                    //Console.Clear();
                     frame.Debug_PrintBulletMatrix();
                     System.Threading.Thread.Sleep(100);
 
                     frame.SwapPositions(start, end);
-                    Console.SetCursorPosition(0, 0);
+                    //Console.SetCursorPosition(0, 0);
                     frame.Debug_PrintBulletMatrix();
                     System.Threading.Thread.Sleep(100);
 
@@ -67,12 +67,12 @@ namespace JDBaconJeweled
                         Console.WriteLine("Bad Swap...");
                         System.Threading.Thread.Sleep(750);
                         frame.SwapPositions(start, end);
-                        Console.Clear();
+                        //Console.Clear();
                     }
 
                     frame.BalanceGrid(true, false);
 
-                    Console.SetCursorPosition(0, 0);
+                    //Console.SetCursorPosition(0, 0);
                     frame.Debug_PrintBulletMatrix();
 
                     if (!frame.CanMatchMore())
@@ -107,14 +107,14 @@ namespace JDBaconJeweled
 
             Console.WriteLine("GameOver!");
             Console.WriteLine("Press any key to continue...");
-            Console.ReadKey(true);
+            //Console.ReadKey(true);
         }
 
         private static string PromptForCommand(Regex rex, string command, BulletMatrix frame)
         {
             do
             {
-                Console.Clear();
+                //Console.Clear();
                 frame.Debug_PrintBulletMatrix();
                 Console.WriteLine();
                 Console.WriteLine("Please specify two adjacent pieces to swap, or type quit to leave.");

@@ -33,7 +33,7 @@ public class JDBullet : JDIObject
         {
             if (GameStatistics.Instance.GetStatistic(this.bulletDebugChar) == -1)
             {
-                GameStatistics.Instance.CreateStatistic(this.bulletDebugChar, valueShift);
+                GameStatistics.Instance.SetStatistic(this.bulletDebugChar, valueShift);
             }
             else
             {

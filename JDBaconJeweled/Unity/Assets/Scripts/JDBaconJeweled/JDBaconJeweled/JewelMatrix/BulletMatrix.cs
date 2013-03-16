@@ -481,15 +481,15 @@ public class BulletMatrix
             {
                 if (grid[i, j] != null)
                 {
-                    Console.ForegroundColor = grid[i, j].Debug_Color;
+                    //Console.ForegroundColor = grid[i, j].Debug_Color;
                     Console.Write(grid[i, j].bulletDebugChar);
-                    Console.ResetColor();
+                    //Console.ResetColor();
                 }
                 else
                 {
-                    Console.BackgroundColor = ConsoleColor.Cyan;
+                    //Console.BackgroundColor = ConsoleColor.Cyan;
                     Console.Write(" ");
-                    Console.ResetColor();
+                    //Console.ResetColor();
                 }
 
                 Console.Write(" ");
@@ -554,7 +554,7 @@ public class BulletMatrix
         if (enablePrinting)
         {
 #if DEBUG || RELEASE
-            Console.SetCursorPosition(0, 0);
+            //Console.SetCursorPosition(0, 0);
             this.Debug_PrintBulletMatrix();
             System.Threading.Thread.Sleep(sleepTime);
 #endif

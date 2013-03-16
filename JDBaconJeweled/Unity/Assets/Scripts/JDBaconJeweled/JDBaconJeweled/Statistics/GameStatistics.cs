@@ -43,7 +43,7 @@ public class GameStatistics
             stats[name] += updateByAmount;
         }
     }
-    public void CreateStatistic(string name, int initialValue)
+    public void SetStatistic(string name, int initialValue)
     {
         if (!stats.ContainsKey(name))
         {
@@ -77,9 +77,17 @@ public class GameStatistics
         return index >= 0 && index < this.stats.Count;
     }
 
-    public static string SubGroup(string GroupTitle, string Statistic)
+    public string SubGroup(string GroupTitle, string Statistic)
     {
         return GroupTitle + separator + Statistic;
+    }
+    public void EstablishGroup(string GroupTitle, string[] statisticNames)
+    {
+        foreach (string statName in statisticNames)
+        {
+            string stat = SubGroup(GroupTitle, statName);
+            SetStatistic(stat, 0);
+        }
     }
     public void ResetStatisticGroup(string GroupTitle)
     {
@@ -87,6 +95,19 @@ public class GameStatistics
         foreach (var key in group)
         {
             stats[key] = 0;
+        }
+    }
+
+    public List<string> GetAllStatNamesThatHave(string statPhrase)
+    {
+        return stats.Keys.Where(s => s.Contains(statPhrase)).ToList();
+    }
+
+    public void UpdateAllStatsThatHave(string statphrase, int updateValue)
+    {
+        foreach (string statname in GetAllStatNamesThatHave(statphrase))
+        {
+            this.UpdateStatistic(statname, updateValue);
         }
     }
 }

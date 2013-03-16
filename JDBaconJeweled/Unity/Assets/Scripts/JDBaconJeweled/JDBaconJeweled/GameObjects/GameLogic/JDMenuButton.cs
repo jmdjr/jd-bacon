@@ -21,7 +21,6 @@ public class JDMenuButton : JDMonoGuiBehavior
 
     public void GoToAssignedMenu()
     {
-        Debug.Log("button name: " + this.gameObject.name); 
         if (this.gameObject.name == "Back Button")
         {
             MenuNavigator.Instance.GoBack();

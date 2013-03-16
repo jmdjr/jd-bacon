@@ -90,7 +90,7 @@ public sealed class BulletFactory : JDIObject
     {
         foreach (JDBullet bullet in BulletReferences)
         {
-            GameStatistics.Instance.CreateStatistic(bullet.bulletDebugChar, 0);
+            GameStatistics.Instance.SetStatistic(bullet.bulletDebugChar, 0);
         }
     }
 

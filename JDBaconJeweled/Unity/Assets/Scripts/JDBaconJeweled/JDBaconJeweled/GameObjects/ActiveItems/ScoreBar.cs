@@ -48,7 +48,7 @@ public class ScoreBar : JDMonoBehavior
     public override void Update()
     {
         base.Update();
-        string currentLevelScoreStat = GameStatistics.SubGroup(level.CurrentLevelName(), "Score");
+        string currentLevelScoreStat = stats.SubGroup(level.CurrentLevelName(), "Score");
         int score = stats.GetStatistic(currentLevelScoreStat);
         SetScore(score == -1 ? 0 : score);
     }

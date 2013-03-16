@@ -72,6 +72,7 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\EventDelegates.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletRackDropper.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletSpawner.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CountingBullet.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DroppedBulletCounter.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DynamicText.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\FallingBullet.cs" />

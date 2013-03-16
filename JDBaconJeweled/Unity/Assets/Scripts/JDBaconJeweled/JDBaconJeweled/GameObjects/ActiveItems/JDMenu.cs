@@ -20,7 +20,6 @@ public abstract class JDMenu : JDMonoGuiBehavior
     
     public virtual void RegisterTouchingEvents()
     {
-        Debug.Log("Register Events");
         toucher.PickUpGameObject += toucher_PickUpGameObject;
     }
 
@@ -29,16 +28,18 @@ public abstract class JDMenu : JDMonoGuiBehavior
         if (this.menuButtons.Keys.FirstOrDefault(s => s == eventArgs.GameObject.name) != null)
         {
             this.menuButtons[eventArgs.GameObject.name].GoToAssignedMenu();
+            toucher.ClearHistory();
         }
     }
 
     public virtual void UnregisterTouchingEvents()
     {
-        Debug.Log("UnRegister Events");
         toucher.PickUpGameObject -= toucher_PickUpGameObject;
     }
 
     public abstract void MenuUpdate();
+    public virtual void MenuEnter() { }
+    public virtual void MenuLeave() { }
     public virtual void AssignButtonMenus() { }
 
     public JDMenuButton GetBackButton()
@@ -53,12 +54,14 @@ public abstract class JDMenu : JDMonoGuiBehavior
     public void BringToTopLayer()
     {
         this.gameObject.transform.localPosition = Vector3.zero;
+        MenuEnter();
         RegisterTouchingEvents();
     }
 
     public JDMenu SendToBackLayer()
     {
         this.gameObject.transform.localPosition = BackLayer;
+        MenuLeave();
         UnregisterTouchingEvents();
         return this;
     }

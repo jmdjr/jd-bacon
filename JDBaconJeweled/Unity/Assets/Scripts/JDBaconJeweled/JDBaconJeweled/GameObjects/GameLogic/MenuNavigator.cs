@@ -51,7 +51,6 @@ public class MenuNavigator : JDMonoGuiBehavior
 
         foreach (var child in children)
         {
-            Debug.Log("Menus: Added " + child.gameObject.name);
             this.menus.Add(child);
         }
 
@@ -60,8 +59,7 @@ public class MenuNavigator : JDMonoGuiBehavior
     public override void Start()
     {
         base.Start();
-
-        SwitchToMenu(GetMenu("Main Menu"));
+        SwitchToMenu(GetMenu("Main Menu"));        
     }
 
     public void SwitchToMenu(JDMenu menu, bool saveMenu = true)

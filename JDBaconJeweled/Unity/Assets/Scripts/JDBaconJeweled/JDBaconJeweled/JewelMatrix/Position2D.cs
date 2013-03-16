@@ -14,6 +14,8 @@ public class Position2D
     public int X;
     public int Y;
 
+    public static Position2D Zero = new Position2D();
+
     public Position2D(int x = 0, int y = 0)
     {
         this.X = x;

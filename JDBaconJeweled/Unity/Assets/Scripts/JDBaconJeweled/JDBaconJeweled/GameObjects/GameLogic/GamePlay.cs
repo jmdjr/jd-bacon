@@ -16,6 +16,9 @@ public class GamePlay : JDMenu
     public SwapTypes SwapType = SwapTypes.CLICK;
     private Frame frame;
     private ZombieTimer timer;
+    private LevelManager level;
+    private GameStatistics stats;
+    private ScoreBar score;
     public GameObject HoverEffectObject;
 
     public override void Awake()
@@ -26,13 +29,9 @@ public class GamePlay : JDMenu
 
         frame = Frame.Instance;
         timer = ZombieTimer.Instance;
-
-        GameStatistics.Instance.AllowedBulletStat = JDIStatTypes.INDIVIDUALS;
-    }
-
-    public override void Start()
-    {
-        base.Start();
+        stats = GameStatistics.Instance;
+        level = LevelManager.Instance;
+        score = ScoreBar.Instance;
     }
 
     void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
@@ -56,14 +55,12 @@ public class GamePlay : JDMenu
         if (go.GetComponentInChildren<WeaponButton>() != null)
         {
             var weapon = go.GetComponentInChildren<WeaponButton>();
-
             weapon.FireWeapon();
         }
     }
     void toucher_DropGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
-        //Debug.Log("DropEvent");
         // touching falling bullets.
         if (go.GetComponent<FallingBullet>() != null)
         {
@@ -109,6 +106,17 @@ public class GamePlay : JDMenu
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(0.5f);
+
+        List<string> statNames = new List<string>();
+        foreach (var bullet in frame.BulletGroups)
+        {
+            statNames.Add(bullet.ManualName);
+        }
+        statNames.Add(StatisticsEnum.Cash.ToString());
+        statNames.Add(StatisticsEnum.Score.ToString());
+
+        stats.EstablishGroup(level.CurrentLevelName(), statNames.ToArray());
+
         timer.StartTimerCycle();
         yield return 0;
     }
@@ -132,11 +140,20 @@ public class GamePlay : JDMenu
         return !this.IsPaused && tick >= delay;
     }
 
+    void frame_ScriptUpdate(MonoScriptEventArgs eventArgs)
+    {
+        frame.GridUpdateAction();
+    }
+    public override void MenuEnter()
+    {
+        this.StartLevel();
+        base.MenuEnter();
+    }
     public override void MenuUpdate()
     {
-        ScoreBar.Instance.SetScoreText(Time.frameCount.ToString());
+        score.SetScoreText(stats.SubGroup(level.CurrentLevelName(), "Score"));
         // replace this with whatever we deem the starting gun for this game.
-
+        
         if (timeToBeginFrame() && isFrameAble())
         {
             tick = 0;
@@ -146,15 +163,10 @@ public class GamePlay : JDMenu
         ++tick;
     }
 
-    void frame_ScriptUpdate(MonoScriptEventArgs eventArgs)
-    {
-        frame.GridUpdateAction();
-    }
-
     public override void RegisterTouchingEvents()
     {
-        Debug.Log(toucher);
         frame.InitializeFrame();
+        frame.SpawnFrame();
         frame.ScriptUpdate += frame_ScriptUpdate;
         toucher.DropGameObject += toucher_DropGameObject;
         toucher.PickUpGameObject += toucher_PickUpGameObject;
@@ -171,5 +183,6 @@ public class GamePlay : JDMenu
 
     public override void AssignButtonMenus()
     {
+
     }
 }
