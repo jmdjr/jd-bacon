@@ -18,7 +18,6 @@ public class GameObjectToucher: JDMonoGuiBehavior
         {
             if (instance == null)
             {
-                Debug.Log(JDGame.GameMaster);
                 if (JDGame.GameMaster != null)
                 {
                     instance = JDGame.GameMaster.GetComponent<GameObjectToucher>();

@@ -34,7 +34,6 @@ public class JDWeapon : JDIObject
             {
                 bulletRef = BulletFactory.Instance.GetReference(this.BulletId);
             }
-            Debug.Log(bulletRef);
             return bulletRef;
         }
     }

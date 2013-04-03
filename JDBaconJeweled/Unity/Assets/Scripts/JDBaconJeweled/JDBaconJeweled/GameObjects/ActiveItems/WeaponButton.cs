@@ -8,69 +8,83 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
+[RequireComponent(typeof(BoxCollider))]
 public class WeaponButton : JDMonoGuiBehavior
 {
     JDWeapon weaponReference = null;
-    LevelManager level = LevelManager.Instance;
-    WeaponFactory weaponfactory = WeaponFactory.Instance;
-
-    private bool isFiring = false;
+    LevelManager level = null;
+    GameStatistics stats = null;
     public bool IsFiring
     {
-        get
-        {
-            return isFiring;
-        }
+        get;
 
-        private set
-        {
-            isFiring = value;
-        }
+        private set;
     }
-    private bool isActive = false;
     public bool IsActive
     {
-        get
-        {
-            return isActive;
-        }
+        get;
 
-        private set
-        {
-            isActive = value;
-        }
+        private set;
     }
 
-    public void SetWeapon(int Id)
+    private int availableClips
     {
-        Debug.Log(this.weaponReference);
-        this.weaponReference = WeaponFactory.Instance.GetReference(Id);
-        Debug.Log(this.weaponReference);
-        this.IsActive = true;
+        get 
+        {
+            int clips = 0;
+            if (stats != null && weaponReference != null && weaponReference.bulletReference != null)
+            {
+                var bullet = weaponReference.bulletReference;
+                clips = stats.GetStatistic(stats.SubGroup(level.CurrentLevelName(), bullet.Name));
+            }
+
+            return clips >= 0 ? clips : 0;
+        }
     }
 
+    public override void Awake()
+    {
+        base.Awake();
+
+        level = LevelManager.Instance;
+        stats = GameStatistics.Instance;
+    }
+
+    private bool canFire()
+    {
+        return this.availableClips > 0;
+    }
+    private bool consumedClip()
+    {
+        if (canFire())
+        {
+            var bullet = weaponReference.bulletReference;
+            stats.UpdateStatistic(stats.SubGroup(level.CurrentLevelName(), bullet.Name), -1);
+            return true;
+        }
+
+        return false;
+    }
     public void FireWeapon()
     {
-        if (!IsFiring && IsActive)
+        bool loadedGun = consumedClip();
+
+        if (!loadedGun)
+        {
+            //pulse the clip or something.
+        }
+
+        if (!IsFiring && IsActive && loadedGun)
         {
             this.StartCoroutine(FireWeaponAction());
         }
     }
-
-    public override void Update()
-    {
-        base.Update();
-    }
-
     private IEnumerator FireWeaponAction()
     {
         // set is firing to true
         this.IsFiring = true;
-        Debug.Log(this.weaponReference);
         int clip = this.weaponReference.ClipSize;
-
-
-        while (clip > 0)
+        while (clip > 0 && this.IsFiring)
         {
             // fire shot
             // wait for shot delay
@@ -87,8 +101,31 @@ public class WeaponButton : JDMonoGuiBehavior
         yield return 0;
     }
 
+    public static GameObject SpawnWeaponButton(int WeaponId)
+    {
+        JDWeapon weapon = WeaponFactory.Instance.AvailableWeapons()[WeaponId];
+        return SpawnWeaponButton(weapon);
+    }
     public static GameObject SpawnWeaponButton(JDWeapon weapon)
     {
-        return (GameObject)Instantiate(Resources.Load(weapon.ResourceName));
+        GameObject weaponButton = (GameObject)Resources.Load(weapon.ResourceName);
+        AttachWeaponButton(weaponButton).weaponReference = weapon;
+        return weaponButton;
+    }
+    public void SetWeapon(WeaponButton weaponReference)
+    {
+        this.weaponReference = weaponReference.weaponReference;
+        this.IsActive = true;
+    }
+    public static WeaponButton AttachWeaponButton(GameObject weaponButton)
+    {
+        WeaponButton buttonScript = weaponButton.GetComponent<WeaponButton>();
+
+        if (buttonScript == null)
+        {
+            buttonScript = weaponButton.AddComponent<WeaponButton>();
+        }
+
+        return buttonScript;
     }
 }

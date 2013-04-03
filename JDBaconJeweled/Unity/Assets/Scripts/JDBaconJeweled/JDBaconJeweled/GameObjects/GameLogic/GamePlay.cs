@@ -18,9 +18,9 @@ public class GamePlay : JDMenu
     private ZombieTimer timer;
     private LevelManager level;
     private GameStatistics stats;
-    private ScoreBar score;
     public GameObject HoverEffectObject;
-
+    private JDMenu pausedMenu;
+    private MenuNavigator navigate;
     public override void Awake()
     {
         base.Awake();
@@ -31,10 +31,78 @@ public class GamePlay : JDMenu
         timer = ZombieTimer.Instance;
         stats = GameStatistics.Instance;
         level = LevelManager.Instance;
-        score = ScoreBar.Instance;
+        navigate = MenuNavigator.Instance;
+        //[Player status injection site: load player stats here for which weapons they had saved]
+    }
+    public override void Start()
+    {
+        base.Start();
+        pausedMenu = navigate.GetMenu("Pause Menu");
+    }
+    public override void MenuEnter()
+    {
+        if (!this.IsPaused)
+        {
+            this.StartLevel();
+        }
+        else
+        {
+            this.UnPause();
+        }
+
+        base.MenuEnter();
+    }
+    public override void MenuUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            this.Pause();
+            navigate.SwitchToMenu(pausedMenu);
+        }
+        if (timeToBeginFrame() && isFrameAble())
+        {
+            tick = 0;
+            StepFrame();
+        }
+
+        ++tick;
+    }
+    public override void MenuLeave()
+    {
+        base.MenuLeave();
+    }
+    public override void RegisterTouchingEvents()
+    {
+        frame.ScriptUpdate += frame_ScriptUpdate;
+        timer.ClearedZombies += timer_ClearedZombies;
+        timer.OverrunByZombies += timer_OverrunByZombies;
+        toucher.DropGameObject += toucher_DropGameObject;
+        toucher.PickUpGameObject += toucher_PickUpGameObject;
+        toucher.OverGameObject += toucher_OverGameObject;
     }
 
-    void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
+    private void timer_OverrunByZombies(GenericStatusEventArgs eventArgs)
+    {
+        LoseLevel();
+    }
+    private void timer_ClearedZombies(GenericStatusEventArgs eventArgs)
+    {
+        BeatLevel();
+    }
+    public override void UnregisterTouchingEvents()
+    {
+        timer.ClearedZombies -= timer_ClearedZombies;
+        timer.OverrunByZombies -= timer_OverrunByZombies;
+        toucher.DropGameObject -= toucher_DropGameObject;
+        toucher.PickUpGameObject -= toucher_PickUpGameObject;
+        toucher.OverGameObject -= toucher_OverGameObject;
+        frame.ScriptUpdate -= frame_ScriptUpdate;
+    }
+    public override void AssignButtonMenus()
+    {
+    }
+
+    private void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
 
@@ -58,7 +126,7 @@ public class GamePlay : JDMenu
             weapon.FireWeapon();
         }
     }
-    void toucher_DropGameObject(GameObjectTransferEventArgs eventArgs)
+    private void toucher_DropGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
         // touching falling bullets.
@@ -76,7 +144,6 @@ public class GamePlay : JDMenu
             }
         }
     }
-
     public void toucher_OverGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
@@ -92,13 +159,12 @@ public class GamePlay : JDMenu
             this.HoverEffectObject.gameObject.transform.position = Vector3.zero;
         }
     }
-
-    public void StartLevel()
+    private void frame_ScriptUpdate(MonoScriptEventArgs eventArgs)
     {
-        this.StartCoroutine(startTimerWhenFrameStable());
+        frame.GridUpdateAction();
     }
 
-    IEnumerator startTimerWhenFrameStable()
+    private IEnumerator startTimerWhenFrameStable()
     {
         yield return new WaitForSeconds(1);
         while (!frame.IsFrameStable())
@@ -121,16 +187,27 @@ public class GamePlay : JDMenu
         yield return 0;
     }
 
-    private void EndLevel()
+    public void StartLevel()
     {
+        frame.InitializeFrame();
+        frame.SpawnFrame();
+        this.StartCoroutine(startTimerWhenFrameStable());
     }
-
+    private void BeatLevel()
+    {
+        frame.ResetFrame();
+        navigate.SwitchToMenu(navigate.GetMenu("Gunshop Menu"));
+    }
+    private void LoseLevel()
+    {
+        frame.ResetFrame();
+        navigate.GoBack();
+    }
     private void StepFrame()
     {
         var matches = frame.DropAnyMatches();
         frame.BubbleUpAndSpawn(matches);
     }
-
     private bool isFrameAble()
     {
         return frame != null && frame.IsFrameStable() && frame.HasMatches();
@@ -138,51 +215,5 @@ public class GamePlay : JDMenu
     private bool timeToBeginFrame()
     {
         return !this.IsPaused && tick >= delay;
-    }
-
-    void frame_ScriptUpdate(MonoScriptEventArgs eventArgs)
-    {
-        frame.GridUpdateAction();
-    }
-    public override void MenuEnter()
-    {
-        this.StartLevel();
-        base.MenuEnter();
-    }
-    public override void MenuUpdate()
-    {
-        score.SetScoreText(stats.SubGroup(level.CurrentLevelName(), "Score"));
-        // replace this with whatever we deem the starting gun for this game.
-        
-        if (timeToBeginFrame() && isFrameAble())
-        {
-            tick = 0;
-            StepFrame();
-        }
-
-        ++tick;
-    }
-
-    public override void RegisterTouchingEvents()
-    {
-        frame.InitializeFrame();
-        frame.SpawnFrame();
-        frame.ScriptUpdate += frame_ScriptUpdate;
-        toucher.DropGameObject += toucher_DropGameObject;
-        toucher.PickUpGameObject += toucher_PickUpGameObject;
-        toucher.OverGameObject += toucher_OverGameObject;
-    }
-
-    public override void UnregisterTouchingEvents()
-    {
-        toucher.DropGameObject -= toucher_DropGameObject;
-        toucher.PickUpGameObject -= toucher_PickUpGameObject;
-        toucher.OverGameObject -= toucher_OverGameObject;
-        frame.ScriptUpdate -= frame_ScriptUpdate;
-    }
-
-    public override void AssignButtonMenus()
-    {
-
     }
 }

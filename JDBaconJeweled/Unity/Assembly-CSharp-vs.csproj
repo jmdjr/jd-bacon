@@ -46,6 +46,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\DebugManager.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\GrimReaper.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\InputDelegates.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDDelegates.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDEnumeration.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDEnumerationExtension.cs" />
@@ -72,6 +73,7 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\EventDelegates.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletRackDropper.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletSpawner.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CashBar.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CountingBullet.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DroppedBulletCounter.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DynamicText.cs" />

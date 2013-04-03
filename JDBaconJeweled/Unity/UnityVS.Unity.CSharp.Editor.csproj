@@ -8,21 +8,18 @@
     <ProjectGuid>{202DDE04-A9DD-9848-F932-C7B6A5D1C4BA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace></RootNamespace>
-    <AssemblyName>UnityVS.Unity.CSharp.Editor</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <NoConfig>true</NoConfig>
-    <NoStdLib>true</NoStdLib>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <MonoProfile>2.0</MonoProfile>
-    <UnityPath>C:\Program Files\Unity\Editor</UnityPath>
-    <MonoPath>$(UnityPath)\Data\Mono</MonoPath>
-    <LibraryAssembly>Assembly-CSharp-Editor.dll</LibraryAssembly>
-    <TargetFrameworkDirectory>$(MonoPath)\lib\mono\$(MonoProfile)</TargetFrameworkDirectory>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DefineConstants>DEBUG;TRACE;UNITY_3_5_3;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
@@ -30,29 +27,21 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Temp\bin\Release\</OutputPath>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DefineConstants>TRACE;UNITY_3_5_3;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>$(TargetFrameworkDirectory)\mscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>$(TargetFrameworkDirectory)\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.XML">
-      <HintPath>$(TargetFrameworkDirectory)\System.XML.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>$(TargetFrameworkDirectory)\System.Core.dll</HintPath>
-    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
-      <HintPath>$(UnityPath)\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>$(UnityPath)\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Assets\Scripts\JDBaconJeweled\UnityEditor.dll</HintPath>

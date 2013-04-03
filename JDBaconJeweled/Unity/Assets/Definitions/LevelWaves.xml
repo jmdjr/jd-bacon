@@ -2,19 +2,19 @@
 <LevelWaves>
   <JDLevel>
     <Name>Level 1 - Wave 1</Name>
-    <Id>0</Id>
+    <Id>1</Id>
     <ZombieCollectRate>1</ZombieCollectRate>
     <ZombieLimit>50</ZombieLimit>
   </JDLevel>
   <JDLevel>
     <Name>Level 1 - Wave 2</Name>
-    <Id>1</Id>
+    <Id>2</Id>
     <ZombieCollectRate>1</ZombieCollectRate>
     <ZombieLimit>100</ZombieLimit>
   </JDLevel>
   <JDLevel>
     <Name>Level 1 - Wave 3</Name>
-    <Id>2</Id>
+    <Id>3</Id>
     <ZombieCollectRate>1</ZombieCollectRate>
     <ZombieLimit>150</ZombieLimit>
   </JDLevel>

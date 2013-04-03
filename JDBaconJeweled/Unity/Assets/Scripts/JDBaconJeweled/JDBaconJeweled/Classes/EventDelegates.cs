@@ -66,3 +66,16 @@ public class GenericStatusEventArgs
         this.flag = flag;
     }
 }
+
+public delegate void LevelChangeEvent(GenericStatusEventArgs eventArgs);
+public class LevelChangeEventArgs
+{
+    private int levelIndex;
+
+    public int LevelIndex { get { return levelIndex; } }
+
+    public LevelChangeEventArgs(int levelIndex)
+    {
+        this.levelIndex = levelIndex;
+    }
+}

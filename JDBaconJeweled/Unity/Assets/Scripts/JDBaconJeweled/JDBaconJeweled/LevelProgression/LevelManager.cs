@@ -68,6 +68,10 @@ public class LevelManager : JDIObject
     {
         return this.currentZombieCount;
     }
+    public int NumberOfLevels() 
+    {
+        return this.levelProgression.Count;
+    }
 
     public void GotoLevel(int levelIndex)
     {

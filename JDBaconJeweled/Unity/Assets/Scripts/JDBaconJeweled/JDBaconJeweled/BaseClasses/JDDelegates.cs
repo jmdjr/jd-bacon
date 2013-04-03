@@ -41,9 +41,7 @@ public class JDCollisionObject
 
     public JDCollisionObject(Collision other)
     {
-        JDMonoBehavior behavior = other.gameObject.GetComponent<JDMonoBehavior>();
         this.ObjectTagType = TagTypeExtension.ToTagType(other.collider.tag);
-        //Debug.Log(behavior != null);
     }
 }
 
@@ -71,8 +69,6 @@ public class JDColliderObject
 
     public JDColliderObject(Collider other)
     {
-        JDMonoBehavior behavior = other.gameObject.GetComponent<JDMonoBehavior>();
         this.ObjectTagType = TagTypeExtension.ToTagType(other.collider.tag);
-        //Debug.Log(behavior != null);
     }
 }

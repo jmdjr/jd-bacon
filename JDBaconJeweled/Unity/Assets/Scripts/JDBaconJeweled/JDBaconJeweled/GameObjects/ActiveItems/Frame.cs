@@ -147,12 +147,10 @@ public class Frame : JDMonoGuiBehavior
         if (canSwap && shouldSwap)
         {
             this.StartCoroutine(SwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
-            Debug.Log("Swaping bullets now");
             frame.SwapPositions(firstPos, secondPos);
         }
         else if(canSwap)
         {
-            Debug.Log("Swaping bullets now");
             this.StartCoroutine(BadSwapDelay(firstBullet.transform, SecondBullet.transform, SwapDelayTime));
         }
 
@@ -173,6 +171,13 @@ public class Frame : JDMonoGuiBehavior
     public void BubbleUpAndSpawn(List<Position2D> matches)
     {
         frame.ShiftItemsDown(matches);
+    }
+    public void ResetFrame()
+    {
+        for (int idx = 0; idx < AllBullets.Count; ++idx)
+        {
+            GameObject.Destroy(AllBullets[idx]);
+        }
     }
     #endregion
 

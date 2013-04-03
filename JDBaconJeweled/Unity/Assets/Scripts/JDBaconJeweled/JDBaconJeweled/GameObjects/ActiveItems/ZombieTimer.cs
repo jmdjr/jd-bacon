@@ -15,8 +15,8 @@ using Random = System.Random;
 public class ZombieTimer : JDMonoBodyBehavior
 {
     public event GenericStatusEvent StartTimer;
-    //public event GenericStatusEvent StoppedTimer;
-    //public event GenericStatusEvent EndedTimer;
+    public event GenericStatusEvent ClearedZombies;
+    public event GenericStatusEvent OverrunByZombies;
 
     float counter = 0;
 
@@ -129,10 +129,32 @@ public class ZombieTimer : JDMonoBodyBehavior
         if (isRunning && !this.IsPaused && counter >= 1)
         {
             counter = 0;
-            level.StepZombieCount();
-            ResizeBar();
-        }
 
+            if (level.CurrentZombieCount() >= level.CurrentZombieLimit())
+            {
+                PauseTimer();
+                if (this.OverrunByZombies != null)
+                {
+                    this.OverrunByZombies(new GenericStatusEventArgs(GenericStatusFlags.ACTIVE));
+                }
+                // if zombies count is greater than limit, then trigger overrun event.
+            }
+            else if (level.CurrentZombieCount() < 0)
+            {
+                PauseTimer();
+                if (this.ClearedZombies != null)
+                {
+                    // if zombies count is less than zero, trigger cleared zombies event.
+                    this.ClearedZombies(new GenericStatusEventArgs(GenericStatusFlags.ACTIVE));
+                }
+            }
+            else
+            {
+                // still running.
+                level.StepZombieCount();
+                ResizeBar();
+            }
+        }
     }
 
     public void ResizeBar()
@@ -141,6 +163,9 @@ public class ZombieTimer : JDMonoBodyBehavior
 
         float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
         float numberOfZombies = level.CurrentZombieCount();
+
+        
+
 
         float newXScale = (this.DistanceSE * numberOfZombies) / (level.CurrentZombieLimit() * 2);
 

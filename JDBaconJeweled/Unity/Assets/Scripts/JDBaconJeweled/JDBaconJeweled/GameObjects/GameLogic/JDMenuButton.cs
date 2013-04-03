@@ -12,8 +12,8 @@ using Random = System.Random;
 // JD Menu Buttons are buttons which are housed under "Buttons" game object groups.  menu buttons sole purpose is to navigate to other menus.
 public class JDMenuButton : JDMonoGuiBehavior
 {
-    JDMenu ToMenu = null;
-    
+    private JDMenu ToMenu = null;
+    public EventHandler OnClick;
     public void AssignMenu(JDMenu menuToNavigate)
     {
         ToMenu = menuToNavigate;
@@ -21,6 +21,10 @@ public class JDMenuButton : JDMonoGuiBehavior
 
     public void GoToAssignedMenu()
     {
+        if (this.OnClick != null)
+        {
+            this.OnClick(this, EventArgs.Empty);
+        }
         if (this.gameObject.name == "Back Button")
         {
             MenuNavigator.Instance.GoBack();

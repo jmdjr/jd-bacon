@@ -10,7 +10,6 @@ using Random = System.Random;
 
 public class DroppedBulletCounter : JDMonoGuiBehavior
 {
-    private LevelManager level;
     private GameStatistics stats;
 
     public static DroppedBulletCounter Instance
@@ -56,7 +55,6 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
     {
         base.Awake();
         stats = GameStatistics.Instance;
-        level = LevelManager.Instance;
 
         DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintStats", "Prints the game statistics", Debug_PrintStatistics));
     }

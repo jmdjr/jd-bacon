@@ -7,7 +7,6 @@ public class CountingBullet : JDMonoBodyBehavior
 {
     DynamicText myCount = null;
     GameStatistics stats = null;
-    JDBullet reference = null;
     LevelManager level = null;
 
     public string ManualName = "";
@@ -25,6 +24,7 @@ public class CountingBullet : JDMonoBodyBehavior
     {
         base.Update();
         int bulletStat = stats.GetStatistic(stats.SubGroup(level.CurrentLevelName(), ManualName));
+        bulletStat = bulletStat >= 0 ? bulletStat : 0;
         string statString = string.Format("x{0}", bulletStat.ToString("00"));
         this.myCount.SetText(statString);
     }

@@ -27,7 +27,7 @@ public class MainMenu : JDMenu
         }
         if (this.menuButtons["Start Game"] != null)
         {
-            this.menuButtons["Start Game"].AssignMenu(navigator.GetMenu("GamePlay"));
+            this.menuButtons["Start Game"].AssignMenu(navigator.GetMenu("Level Select Menu"));
         }
     }
 }
