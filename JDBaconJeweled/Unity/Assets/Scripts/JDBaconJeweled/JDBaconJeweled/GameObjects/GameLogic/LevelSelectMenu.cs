@@ -31,25 +31,40 @@ public class LevelSelectMenu : JDMenu
 
     public override void AssignButtonMenus()
     {
-        for(int idx=0; idx < this.menuButtons.Count; ++idx)
+        foreach (JDMenuButton button in this.menuButtons.Values)
         {
+            int levelIndex = 0;
 
-            JDMenuButton button = this.menuButtons.FirstOrDefault(pair => pair.Key.Contains(idx.ToString())).Value;
-
-            if (idx > level.NumberOfLevels())
+            try
             {
-                button.renderer.enabled = false;
+                levelIndex = int.Parse(button.name);
             }
-            else
+            catch (Exception)
             {
-                button.renderer.enabled = true;
-                button.OnClick += new EventHandler((o, e) =>
-                {
-                    level.GotoLevel(idx);
-                });
+            }
 
-                button.AssignMenu(MenuNavigator.Instance.GetMenu("GamePlay"));
+            if (levelIndex > 0)
+            {
+                if (levelIndex > level.NumberOfLevels())
+                {
+                    button.renderer.enabled = false;
+                }
+                else
+                {
+                    button.renderer.enabled = true;
+                    button.OnClick += new EventHandler((o, e) =>
+                    {
+                        this.StartCoroutine(ButtonClickToLevel(levelIndex));
+                    });
+                }
             }
         }
+    }
+
+    public IEnumerator ButtonClickToLevel(int idx)
+    {
+        level.GotoLevel(idx - 1);
+        yield return new WaitForSeconds(0.5f);
+        MenuNavigator.Instance.SwitchToMenu(MenuNavigator.Instance.GetMenu("GamePlay"));
     }
 }

@@ -45,24 +45,45 @@ public class LevelManager : JDIObject
         //string Serial = JDGameUtilz.SerializeObject(levelProgression, "LevelWaves", typeof(List<JDLevel>));
 
         levelProgression = levelProgression.OrderBy(level => level.Id).ToList();
-        GotoLevel(0);
     }
-    
+
+    public bool IsCurrentLevelDefined { get { return this.currentLevel != null; } }
+
     public int CurrentLevel()
     {
-        return this.currentLevel.Id;
+        if (this.IsCurrentLevelDefined)
+        {
+            return this.currentLevel.Id;
+        }
+        
+        return 0;
     }
     public float CurrentZombieLimit()
     {
-        return this.currentLevel.ZombieLimit;
+        if (this.IsCurrentLevelDefined)
+        {
+            return this.currentLevel.ZombieLimit;
+        }
+
+        return 0;
     }
     public float CurrentZombieRate()
     {
-        return this.currentLevel.ZombieCollectRate;
+        if (this.IsCurrentLevelDefined)
+        {
+            return this.currentLevel.ZombieCollectRate;
+        }
+
+        return 0;
     }
     public string CurrentLevelName()
     {
-        return this.currentLevel.Name;
+        if (this.IsCurrentLevelDefined)
+        {
+            return this.currentLevel.Name;
+        }
+
+        return "";
     }
     public float CurrentZombieCount()
     {

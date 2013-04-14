@@ -17,10 +17,6 @@ public class WeaponBar : JDMonoGuiBehavior
     private List<Vector3> Positions = new List<Vector3>();
     private bool isDirty = false;
 
-    public override void Awake()
-    {
-        base.Awake();
-    }
     public override void Start()
     {
         // load from user save the progress/weapons assigned to what slots.
@@ -64,6 +60,8 @@ public class WeaponBar : JDMonoGuiBehavior
         var bar = source.GetComponentInChildren<WeaponBar>();
         return bar;
     }
+
+    public List<GameObject> ActiveWeaponButtons { get { return attachedButtons.AsReadOnly().ToList(); } }
 
     public void SetWeaponButton(int slot, WeaponButton button)
     {
@@ -128,9 +126,6 @@ public class WeaponBar : JDMonoGuiBehavior
         }
     }
 
-    // weapon bar will automatically update its visible weapons based on the actions
-    // taken by the player.  
-
-
+    // weapon bar will automatically update its visible weapons based on the actions taken by the player.  
 }
 

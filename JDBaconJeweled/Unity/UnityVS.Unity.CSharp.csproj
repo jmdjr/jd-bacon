@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\InputDelegates.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\JDMenu.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ScoreBar.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\UpgradeBar.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\WeaponBar.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\WeaponButton.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ZeroZoneScript.cs" />
@@ -116,11 +117,15 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\GameStatistics.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\StatisticsEnum.cs" />
     <Compile Include="Assets\SmoothMoves\Demo\Scripts\Knight.cs" />
-    <None Include="Assets\Definitions\BulletDefinitions.xml" />
+    <None Include="Assets\Definitions\BulletDefinitions.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\Definitions\LevelWaves.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Assets\Definitions\WeaponDefinitions.xml" />
+    <None Include="Assets\Definitions\WeaponDefinitions.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\Editor Default Resources\README.txt" />
     <None Include="Assets\SmoothMoves\PlayMaker Scripts\readme.txt" />
     <None Include="Assets\SmoothMoves\readme.txt" />

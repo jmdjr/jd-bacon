@@ -50,6 +50,10 @@ public class DroppedBulletCounter : JDMonoGuiBehavior
             stats.UpdateAllStatsThatHave(bulletBag.Name, bulletBag.Count);
         }
     }
+    public void AddDeadBullets(List<FallingBullet> bullets)
+    {
+        this.droppedBullets.AddRange(bullets);
+    }
 
     public override void Awake()
     {

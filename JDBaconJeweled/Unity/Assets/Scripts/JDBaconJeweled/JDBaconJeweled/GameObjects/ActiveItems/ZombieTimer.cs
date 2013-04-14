@@ -94,15 +94,9 @@ public class ZombieTimer : JDMonoBodyBehavior
         }
     }
 
-    public override void Start()
-    {
-        base.Start();
-        level.FirstLevel();
-        ResizeBar();
-    }
-
     public void StartTimerCycle()
     {
+        ResizeBar();
         if (StartTimer != null)
         {
             this.StartTimer(new GenericStatusEventArgs(GenericStatusFlags.START));
@@ -163,9 +157,6 @@ public class ZombieTimer : JDMonoBodyBehavior
 
         float xpos = startGO.transform.position.x, ypos = zombieBarGO.transform.position.y, zpos = zombieBarGO.transform.position.z;
         float numberOfZombies = level.CurrentZombieCount();
-
-        
-
 
         float newXScale = (this.DistanceSE * numberOfZombies) / (level.CurrentZombieLimit() * 2);
 

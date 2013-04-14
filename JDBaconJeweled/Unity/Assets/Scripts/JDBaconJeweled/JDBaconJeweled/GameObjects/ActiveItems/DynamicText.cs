@@ -30,6 +30,23 @@ public class DynamicText : JDMonoBehavior
         return null;
     }
 
+    public static DynamicText GetTextMesh(GameObject source)
+    {
+        var textObject = source.GetComponentInChildren<TextMesh>();
+        if (textObject != null)
+        {
+            DynamicText textual = textObject.GetComponent<DynamicText>();
+            if (textual == null)
+            {
+                textual = textObject.gameObject.AddComponent<DynamicText>();
+            }
+
+            return textual;
+        }
+
+        return null;
+    }
+
     public void SetText(string text)
     {
         TextMesh textual = this.gameObject.GetComponent<TextMesh>();

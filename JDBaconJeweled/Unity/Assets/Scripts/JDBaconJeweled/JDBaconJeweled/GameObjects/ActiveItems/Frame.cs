@@ -33,6 +33,7 @@ public class Frame : JDMonoGuiBehavior
     public float SwapDelayTime = 0.25f;
 
     private BulletMatrix frame;
+    private DroppedBulletCounter dropper;
 
     private List<BulletSpawner> bulletSpawners = new List<BulletSpawner>();
     private List<FallingBullet> bulletGroups = new List<FallingBullet>();
@@ -87,6 +88,7 @@ public class Frame : JDMonoGuiBehavior
 
         return FrameStable && !BulletGameGlobal.Instance.PauseFrame;
     }
+    public int AllBulletsCount { get { return this.AllBullets.Count; } }
     public List<GameObject> RemainningSpawnBullets()
     {
         List<GameObject> collection = new List<GameObject>();
@@ -174,10 +176,8 @@ public class Frame : JDMonoGuiBehavior
     }
     public void ResetFrame()
     {
-        for (int idx = 0; idx < AllBullets.Count; ++idx)
-        {
-            GameObject.Destroy(AllBullets[idx]);
-        }
+        dropper.AddDeadBullets(this.AllBullets);
+        this.AllBullets.Clear();
     }
     #endregion
 
@@ -286,11 +286,50 @@ public class Frame : JDMonoGuiBehavior
     public void InitializeFrame()
     {
         // initialize frame
-        frame = new BulletMatrix(dimension.Y, dimension.X);
-        frame.Load(false);
+        if (frame != null)
+        {
+            frame.BulletDestroyed -= frame_BulletDestroyed;
+            frame.BulletSpawned -= frame_BulletSpawned;
+            frame.UnLoad();
+            frame.Load(false);
+            frame.BulletDestroyed += frame_BulletDestroyed;
+            frame.BulletSpawned += frame_BulletSpawned;
+        }
+        else
+        {
+            frame = new BulletMatrix(dimension.Y, dimension.X);
+            frame.Load(false);
+            frame.BulletDestroyed += frame_BulletDestroyed;
+            frame.BulletSpawned += frame_BulletSpawned;
+        }
 
-        frame.BulletDestroyed += frame_BulletDestroyed;
-        frame.BulletSpawned += frame_BulletSpawned;
+
+    }
+
+    public void GridUpdateAction()
+    {
+        while (!this.IsPaused && !BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
+        {
+            if (this.toDrop.Count > 0)
+            {
+                dropper.AddBullets(this.toDrop);
+                this.toDrop.Clear();
+            }
+
+            GameObject spawn = toSpawn.Dequeue();
+            FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
+
+            if (fallingBullet != null)
+            {
+                fallingBullet.MySpawner.QueueBullet(spawn);
+            }
+        }
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+        dropper = DroppedBulletCounter.Instance;
 
         // gather and sort bullet spawners
         var childrenComps = this.gameObject.GetComponentsInChildren(typeof(BulletSpawner));
@@ -329,32 +368,6 @@ public class Frame : JDMonoGuiBehavior
             FallingBullet bullet = comp.gameObject.GetComponentInChildren<FallingBullet>();
             bulletGroups.Add(bullet);
         }
-    }
-
-    public void GridUpdateAction()
-    {
-        while (!this.IsPaused && !BulletGameGlobal.Instance.PauseFrame && toSpawn.Count() > 0)
-        {
-            if (this.toDrop.Count > 0)
-            {
-                DroppedBulletCounter.Instance.AddBullets(this.toDrop);
-                this.toDrop.Clear();
-            }
-
-            GameObject spawn = toSpawn.Dequeue();
-            FallingBullet fallingBullet = spawn.GetComponent<FallingBullet>();
-
-            if (fallingBullet != null)
-            {
-                fallingBullet.MySpawner.QueueBullet(spawn);
-            }
-        }
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-
         // setup debug commands
         DebugCommands.Instance.AddCommand(new ConsoleCommand("PrintFrame", "prints the frame using debug characters", Debug_PrintGrid));
     }

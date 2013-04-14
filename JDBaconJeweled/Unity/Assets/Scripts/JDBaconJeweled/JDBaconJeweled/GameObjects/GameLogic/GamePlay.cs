@@ -21,6 +21,8 @@ public class GamePlay : JDMenu
     public GameObject HoverEffectObject;
     private JDMenu pausedMenu;
     private MenuNavigator navigate;
+
+    private DynamicText LevelText;
     public override void Awake()
     {
         base.Awake();
@@ -37,6 +39,9 @@ public class GamePlay : JDMenu
     public override void Start()
     {
         base.Start();
+        GameObject level = GameObject.Find("LevelText");
+        LevelText = DynamicText.GetTextMesh(level.transform.GetChild(0).gameObject);
+        LevelText.SetText("");
         pausedMenu = navigate.GetMenu("Pause Menu");
     }
     public override void MenuEnter()
@@ -80,15 +85,6 @@ public class GamePlay : JDMenu
         toucher.PickUpGameObject += toucher_PickUpGameObject;
         toucher.OverGameObject += toucher_OverGameObject;
     }
-
-    private void timer_OverrunByZombies(GenericStatusEventArgs eventArgs)
-    {
-        LoseLevel();
-    }
-    private void timer_ClearedZombies(GenericStatusEventArgs eventArgs)
-    {
-        BeatLevel();
-    }
     public override void UnregisterTouchingEvents()
     {
         timer.ClearedZombies -= timer_ClearedZombies;
@@ -102,6 +98,14 @@ public class GamePlay : JDMenu
     {
     }
 
+    private void timer_OverrunByZombies(GenericStatusEventArgs eventArgs)
+    {
+        LoseLevel();
+    }
+    private void timer_ClearedZombies(GenericStatusEventArgs eventArgs)
+    {
+        BeatLevel();
+    }
     private void toucher_PickUpGameObject(GameObjectTransferEventArgs eventArgs)
     {
         var go = eventArgs.GameObject;
@@ -166,7 +170,23 @@ public class GamePlay : JDMenu
 
     private IEnumerator startTimerWhenFrameStable()
     {
-        yield return new WaitForSeconds(1);
+        WeaponBar bar = WeaponBar.GetWeaponBar(this);
+        foreach (GameObject button in bar.ActiveWeaponButtons)
+        {
+            WeaponButton weapon = button.GetComponent<WeaponButton>();
+            if (weapon != null)
+            {
+                weapon.StopFiring();
+            }
+        }
+
+        level.ResetLevel();
+        timer.ResizeBar();
+
+        LevelText.SetText(level.CurrentLevelName());
+        yield return new WaitForSeconds(2);
+        LevelText.SetText("");
+
         while (!frame.IsFrameStable())
         {
             yield return new WaitForEndOfFrame();
@@ -189,20 +209,48 @@ public class GamePlay : JDMenu
 
     public void StartLevel()
     {
+        toucher.ClearHistory();
         frame.InitializeFrame();
         frame.SpawnFrame();
         this.StartCoroutine(startTimerWhenFrameStable());
     }
     private void BeatLevel()
     {
+        this.EndLevel();
+        this.StartCoroutine(BeatLevelCoroutine());
+    }
+    private IEnumerator BeatLevelCoroutine()
+    {
+        // Congradulations you beat this level!
         frame.ResetFrame();
+        level.NextLevel();
+        timer.ResizeBar();
+        yield return new WaitForSeconds(0.5f);
         navigate.SwitchToMenu(navigate.GetMenu("Gunshop Menu"));
+        yield return 0;
     }
     private void LoseLevel()
     {
-        frame.ResetFrame();
+        this.EndLevel();
         navigate.GoBack();
     }
+
+    private void EndLevel()
+    {
+        frame.ResetFrame();
+        toucher.ClearHistory();
+
+        WeaponBar bar = WeaponBar.GetWeaponBar(this);
+        foreach (GameObject button in bar.ActiveWeaponButtons)
+        {
+            WeaponButton weapon = button.GetComponent<WeaponButton>();
+            if (weapon != null)
+            {
+                weapon.StopFiring();
+            }
+        }
+    }
+
     private void StepFrame()
     {
         var matches = frame.DropAnyMatches();

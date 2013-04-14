@@ -49,6 +49,11 @@ public class WeaponButton : JDMonoGuiBehavior
         level = LevelManager.Instance;
         stats = GameStatistics.Instance;
     }
+    public void StopFiring()
+    {
+        this.IsFiring = false;
+        this.StopCoroutine("FireWeaponAction");
+    }
 
     private bool canFire()
     {
@@ -92,6 +97,7 @@ public class WeaponButton : JDMonoGuiBehavior
             --clip;
             level.KillZombies(this.weaponReference.bulletReference.ZombieKillNumber);
             yield return new WaitForSeconds(this.weaponReference.ShotDelay);
+            yield return new WaitForEndOfFrame();
         }
 
         // if clip is empty, wait for reload delay to finish
