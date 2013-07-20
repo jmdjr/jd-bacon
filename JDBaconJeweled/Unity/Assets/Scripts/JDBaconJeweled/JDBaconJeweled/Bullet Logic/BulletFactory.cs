@@ -8,7 +8,7 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public sealed class BulletFactory : JDIObject
+public sealed class BulletFactory : JDISavableObject
 {
     string BulletDefinitionFile = "./Assets/Definitions/BulletDefinitions.xml";
 
@@ -39,7 +39,6 @@ public sealed class BulletFactory : JDIObject
         BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(BulletDefinitionFile),
             "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
 
-        // string Serial = JDGameUtilz.SerializeObject(BulletReferences, "BulletReferences", typeof(List<JDBullet>));
 
         Random r = new Random(0);
 
@@ -83,7 +82,7 @@ public sealed class BulletFactory : JDIObject
 
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
-        return true;
+        return false;
     }
 
     public void ResetStatistics()
@@ -121,5 +120,18 @@ public sealed class BulletFactory : JDIObject
         }
 
         return reference;
+    }
+
+    public string SaveData()
+    {
+        return JDGameUtilz.SerializeObject(BulletReferences, "bulletDefinitions", typeof(List<JDBullet>));
+    }
+
+    public void LoadData(string savefiletext)
+    {
+        int rootStart = savefiletext.IndexOf("<bulletDefinitions>");
+        int rootEnd = savefiletext.IndexOf("</bulletDefinitions>") + "</bulletDefinitions>".Length;
+        string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
+        BulletReferences = (List<JDBullet>)JDGameUtilz.DeserializeObject(partialText, "bulletDefinitions", typeof(List<JDBullet>), JDGameUtilz.EncodingType.UTF8);
     }
 }

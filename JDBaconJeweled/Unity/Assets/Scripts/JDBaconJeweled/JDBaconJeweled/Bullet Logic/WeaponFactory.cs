@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 using Random = System.Random;
 
 
-public class WeaponFactory
+public class WeaponFactory : JDISavableObject
 {
     string WeaponDefinitionFile = "./Assets/Definitions/WeaponDefinitions.xml";
 
@@ -29,17 +29,17 @@ public class WeaponFactory
         }
     }
 
+    public string Name { get; set; }
+    public JDIObjectTypes JDType { get { return JDIObjectTypes.OBJECT; } }
+    public bool ReportStatistics(JDIStatTypes stat, int valueShift) { return false; }
+
     private WeaponFactory()
     {
         WeaponReferences = (List<JDWeapon>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(WeaponDefinitionFile),
             "WeaponDefinitions", typeof(List<JDWeapon>), JDGameUtilz.EncodingType.UTF8);
 
-        // string Serial = JDGameUtilz.SerializeObject(WeaponReferences, "WeaponDefinitions", typeof(List<JDWeapon>));
-
         // load initially available weapons
         CollectAvailableWeapons();
-
-        Debug.Log("weapon count: " + this.WeaponReferences.Count);
     }
     
     public void CollectAvailableWeapons()
@@ -72,4 +72,18 @@ public class WeaponFactory
 
         return reference;
     }
+
+    public string SaveData()
+    {
+        return JDGameUtilz.SerializeObject(WeaponReferences, "WeaponDefinitions", typeof(List<JDWeapon>));
+    }
+
+    public void LoadData(string savefiletext)
+    {
+        int rootStart = savefiletext.IndexOf("<WeaponDefinitions>");
+        int rootEnd = savefiletext.IndexOf("</WeaponDefinitions>") + "</WeaponDefinitions>".Length;
+        string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
+        WeaponReferences = (List<JDWeapon>)JDGameUtilz.DeserializeObject(partialText, "WeaponDefinitions", typeof(List<JDWeapon>), JDGameUtilz.EncodingType.UTF8);
+    }
+
 }

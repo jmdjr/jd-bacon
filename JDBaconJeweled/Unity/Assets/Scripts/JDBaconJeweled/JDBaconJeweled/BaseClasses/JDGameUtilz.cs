@@ -48,15 +48,7 @@ public static class JDGameUtilz
     {
         StreamWriter writer;
         FileInfo t = new FileInfo(fileLocation);
-        if (!t.Exists)
-        {
-            writer = t.CreateText();
-        }
-        else
-        {
-            t.Delete();
-            writer = t.CreateText();
-        }
+        writer = t.CreateText();
         writer.Write(_data);
         writer.Close();
     }
@@ -111,10 +103,4 @@ public static class JDGameUtilz
 
         return xs.Deserialize(memoryStream);
     }
-
-    //public static JDMonoBehavior GetJDMonoBehavior(GameObject obj)
-    //{
-    //    return obj.GetComponent<JDMonoBehavior>();
-    //}
-
 }

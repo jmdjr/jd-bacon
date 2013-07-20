@@ -21,5 +21,9 @@ public class PauseMenu : JDMenu
 
     public override void AssignButtonMenus()
     {
+        if (this.menuButtons["Exit Game"] != null)
+        {
+            this.menuButtons["Exit Game"].AssignMenu(navigator.GetMenu("Main Menu"));
+        }
     }
 }

@@ -7,16 +7,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{164A416E-423A-6066-5BD1-6E559E316DD4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +37,8 @@
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\DebugManager.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\GrimReaper.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\InputDelegates.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDDelegates.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDEnumeration.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDEnumerationExtension.cs" />
@@ -66,12 +67,14 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDIAmCollidable.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDIHaveScriptHandles.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDIObject.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDISavableObject.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDISeeGUI.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDMonoBehavior.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDMonoBodyBehavior.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDMonoGuiBehavior.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDMonoGUIBodyBehavior.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\JDStateMachineSystem.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PlayerStatsActions.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PredicateEqualityComparer.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\SLerpTransitions.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\BulletFactory.cs" />
@@ -84,6 +87,7 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\EventDelegates.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletRackDropper.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletSpawner.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BuyWeaponButton.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CashBar.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CountingBullet.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DroppedBulletCounter.cs" />
@@ -91,7 +95,6 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\FallingBullet.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\Frame.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\GameObjectToucher.cs" />
-    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\InputDelegates.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\JDMenu.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ScoreBar.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\UpgradeBar.cs" />
@@ -115,17 +118,12 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\LevelProgression\JDLevel.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\LevelProgression\LevelManager.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\GameStatistics.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\Stat.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Statistics\StatisticsEnum.cs" />
     <Compile Include="Assets\SmoothMoves\Demo\Scripts\Knight.cs" />
-    <None Include="Assets\Definitions\BulletDefinitions.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\Definitions\LevelWaves.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\Definitions\WeaponDefinitions.xml">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Assets\Definitions\BulletDefinitions.xml" />
+    <None Include="Assets\Definitions\LevelWaves.xml" />
+    <None Include="Assets\Definitions\WeaponDefinitions.xml" />
     <None Include="Assets\Editor Default Resources\README.txt" />
     <None Include="Assets\SmoothMoves\PlayMaker Scripts\readme.txt" />
     <None Include="Assets\SmoothMoves\readme.txt" />

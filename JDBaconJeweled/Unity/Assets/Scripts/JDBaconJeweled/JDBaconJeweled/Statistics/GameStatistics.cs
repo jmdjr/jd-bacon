@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class GameStatistics
+public class GameStatistics : JDISavableObject
 {
     static string separator = "||";
     private static GameStatistics instance;
@@ -19,46 +19,52 @@ public class GameStatistics
         }
     }
 
-    private Dictionary<string, int> stats;
+    private List<Stat> stats;
     public JDIStatTypes AllowedBulletStat;
 
     private GameStatistics()
     {
-        stats = new Dictionary<string, int>();
+        stats = new List<Stat>();
     }
-
+    private Stat getStat(string name)
+    {
+        return stats.FirstOrDefault(i => i.statName == name);
+    }
     public int GetStatistic(string name)
     {
-        if (stats.ContainsKey(name))
+        Stat s = getStat(name);
+        if (s != null)
         {
-            return stats[name];
+            return s.statValue;
         }
 
         return -1;
     }
     public void UpdateStatistic(string name, int updateByAmount)
     {
-        if (stats.ContainsKey(name))
+        Stat s = getStat(name);
+        if (s != null)
         {
-            stats[name] += updateByAmount;
+            s.statValue += updateByAmount;
         }
     }
     public void SetStatistic(string name, int initialValue)
     {
-        if (!stats.ContainsKey(name))
+        Stat s = getStat(name);
+        if (s == null)
         {
-            stats.Add(name, initialValue);
+            stats.Add(new Stat(name, initialValue));
         }
         else
         {
-            stats[name] = initialValue;
+            s.statValue = initialValue;
         }
     }
     public string GetStatisticNameByIndex(int keyIndex)
     {
         if (HasStatisticByIndex(keyIndex))
         {
-            return stats.Keys.ToArray()[keyIndex];
+            return stats[keyIndex].statName;
         }
 
         return "";
@@ -67,7 +73,7 @@ public class GameStatistics
     {
         if (HasStatisticByIndex(keyIndex))
         {
-            return stats.Values.ToArray()[keyIndex];
+            return stats[keyIndex].statValue;
         }
 
         return -1;
@@ -91,16 +97,20 @@ public class GameStatistics
     }
     public void ResetStatisticGroup(string GroupTitle)
     {
-        var group = stats.Keys.Where<string>(k => k.StartsWith(GroupTitle + separator));
+        var group = stats.Where<Stat>(k => k.statName.Contains(GroupTitle + separator));
         foreach (var key in group)
         {
-            stats[key] = 0;
+            key.statValue = 0;
         }
     }
 
     public List<string> GetAllStatNamesThatHave(string statPhrase)
     {
-        return stats.Keys.Where(s => s.Contains(statPhrase)).ToList();
+        return stats
+            .Where(i => i.statName.Contains(statPhrase))
+            .ToList()
+            .ConvertAll<string>(i => i.statName)
+            .ToList();
     }
 
     public void UpdateAllStatsThatHave(string statphrase, int updateValue)
@@ -109,5 +119,34 @@ public class GameStatistics
         {
             this.UpdateStatistic(statname, updateValue);
         }
+    }
+
+    public string SaveData()
+    {
+        return JDGameUtilz.SerializeObject(stats, "Statistics", typeof(List<Stat>));
+    }
+
+    public void LoadData(string savefiletext)
+    {
+        int rootStart = savefiletext.IndexOf("<Statistics>");
+        int rootEnd = savefiletext.IndexOf("</Statistics>") + "</Statistics>".Length;
+        string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
+        stats = (List<Stat>)JDGameUtilz.DeserializeObject(partialText, "Statistics", typeof(List<Stat>), JDGameUtilz.EncodingType.UTF8);
+    }
+
+    public string Name
+    {
+        get { return "Game Statistics"; }
+        set { } 
+    }
+
+    public JDIObjectTypes JDType
+    {
+        get { return JDIObjectTypes.OBJECT; }
+    }
+
+    public bool ReportStatistics(JDIStatTypes stat, int valueShift)
+    {
+        return false;
     }
 }

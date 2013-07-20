@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 using Random = System.Random;
 using System.Collections.Generic;
 
-public class LevelManager : JDIObject
+public class LevelManager : JDISavableObject
 {
     string LevelWavesDefinitionFile = "./Assets/Definitions/LevelWaves.xml";
 
@@ -42,7 +42,6 @@ public class LevelManager : JDIObject
         levelProgression = (List<JDLevel>)JDGameUtilz.DeserializeObject(JDGameUtilz.LoadXML(LevelWavesDefinitionFile),
             "LevelWaves", typeof(List<JDLevel>), JDGameUtilz.EncodingType.UTF8);
 
-        //string Serial = JDGameUtilz.SerializeObject(levelProgression, "LevelWaves", typeof(List<JDLevel>));
 
         levelProgression = levelProgression.OrderBy(level => level.Id).ToList();
     }
@@ -143,5 +142,18 @@ public class LevelManager : JDIObject
     public bool ReportStatistics(JDIStatTypes stat, int valueShift)
     {
         throw new NotImplementedException();
+    }
+
+    public string SaveData()
+    {
+        return JDGameUtilz.SerializeObject(levelProgression, "LevelWaves", typeof(List<JDLevel>));
+    }
+
+    public void LoadData(string savefiletext)
+    {
+        int rootStart = savefiletext.IndexOf("<LevelWaves>");
+        int rootEnd = savefiletext.IndexOf("</LevelWaves>") + "</LevelWaves>".Length;
+        string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
+        levelProgression = (List<JDLevel>)JDGameUtilz.DeserializeObject(partialText, "LevelWaves", typeof(List<JDLevel>), JDGameUtilz.EncodingType.UTF8);
     }
 }
