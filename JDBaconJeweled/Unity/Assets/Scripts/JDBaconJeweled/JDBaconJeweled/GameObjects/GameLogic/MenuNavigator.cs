@@ -53,13 +53,12 @@ public class MenuNavigator : JDMonoGuiBehavior
         {
             this.menus.Add(child);
         }
-
     }
 
     public override void Start()
     {
         base.Start();
-        SwitchToMenu(GetMenu("Main Menu"));        
+        SwitchToMenu(GetMenu("Main Menu"));
     }
 
     public void SwitchToMenu(JDMenu menu, bool saveMenu = true)

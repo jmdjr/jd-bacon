@@ -18,7 +18,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_3_5_3;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_5;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -37,10 +37,10 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,32 +73,33 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\BulletGameGlobal.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\DebugCommands.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Classes\EventDelegates.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletRackDropper.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BulletSpawner.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\BuyWeaponButton.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CashBar.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\CountingBullet.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DroppedBulletCounter.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\DynamicText.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\FallingBullet.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\Frame.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\GameObjectToucher.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\JDMenu.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ScoreBar.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\UpgradeBar.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\WeaponBar.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\WeaponButton.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ZeroZoneScript.cs" />
-     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\ActiveItems\ZombieTimer.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\GamePlay.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\GunShopMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\JDMenuButton.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\LevelSelectMenu.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\LoadGameMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\MainMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\MenuNavigator.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\OptionsMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\PauseMenu.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\GameLogic\SettingsMenu.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\BulletRackDropper.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\BulletSpawner.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\CashBar.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\CountingBullet.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\DroppedBulletCounter.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\FallingBullet.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\Frame.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\GameObjectToucher.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\ScoreBar.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\Gameplay Screen\ZombieTimer.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\DynamicText.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\JDMenu.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\UpgradeBar.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\WeaponBar.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\WeaponButton.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\General Objects\ZeroZoneScript.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\GameObjects\JewelGameBaseFunctions.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JDBaconJeweledConsole.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\JewelMatrix\BulletMatrix.cs" />
