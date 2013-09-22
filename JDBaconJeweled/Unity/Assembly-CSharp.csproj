@@ -65,6 +65,8 @@
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PlayerStatsActions.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PredicateEqualityComparer.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\SLerpTransitions.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\WikiCoroutine\WikiCoroutineNode.cs" />
+     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\WikiCoroutine\WikiCoroutineScheduler.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\BulletFactory.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\JDBullet.cs" />
      <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\JDWeapon.cs" />

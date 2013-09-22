@@ -7,14 +7,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{164A416E-423A-6066-5BD1-6E559E316DD4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -77,6 +79,8 @@
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PlayerStatsActions.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\PredicateEqualityComparer.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\SLerpTransitions.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\WikiCoroutine\WikiCoroutineNode.cs" />
+    <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\BaseClasses\WikiCoroutine\WikiCoroutineScheduler.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\BulletFactory.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\JDBullet.cs" />
     <Compile Include="Assets\Scripts\JDBaconJeweled\JDBaconJeweled\Bullet Logic\JDWeapon.cs" />

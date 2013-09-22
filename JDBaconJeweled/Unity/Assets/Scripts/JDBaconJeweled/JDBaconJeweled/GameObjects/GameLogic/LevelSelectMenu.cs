@@ -64,7 +64,8 @@ public class LevelSelectMenu : JDMenu
     public IEnumerator ButtonClickToLevel(int idx)
     {
         level.GotoLevel(idx - 1);
-        yield return new WaitForSeconds(0.5f);
+        
         MenuNavigator.Instance.SwitchToMenu(MenuNavigator.Instance.GetMenu("GamePlay"));
+        yield return 0;
     }
 }

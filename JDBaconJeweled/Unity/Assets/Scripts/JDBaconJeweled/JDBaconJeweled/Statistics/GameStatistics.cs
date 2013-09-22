@@ -129,9 +129,13 @@ public class GameStatistics : JDISavableObject
     public void LoadData(string savefiletext)
     {
         int rootStart = savefiletext.IndexOf("<Statistics>");
-        int rootEnd = savefiletext.IndexOf("</Statistics>") + "</Statistics>".Length;
-        string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
-        stats = (List<Stat>)JDGameUtilz.DeserializeObject(partialText, "Statistics", typeof(List<Stat>), JDGameUtilz.EncodingType.UTF8);
+
+        if (rootStart != -1)
+        {
+            int rootEnd = savefiletext.IndexOf("</Statistics>") + "</Statistics>".Length;
+            string partialText = savefiletext.Substring(rootStart, rootEnd - rootStart);
+            stats = (List<Stat>)JDGameUtilz.DeserializeObject(partialText, "Statistics", typeof(List<Stat>), JDGameUtilz.EncodingType.UTF8);
+        }
     }
 
     public string Name

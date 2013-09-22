@@ -222,14 +222,23 @@ public class GamePlay : JDMenu
     private IEnumerator BeatLevelCoroutine()
     {
         // Congradulations you beat this level!
-        frame.ResetFrame();
-        level.NextLevel();
-        timer.ResizeBar();
         yield return new WaitForSeconds(0.5f);
         navigate.SwitchToMenu(navigate.GetMenu("Gunshop Menu"));
         yield return 0;
     }
     private void LoseLevel()
+    {
+        this.EndLevel();
+        this.StartCoroutine(LoseLevelCoroutine());
+    }
+    private IEnumerator LoseLevelCoroutine()
+    {
+        // Congradulations you beat this level!
+        yield return new WaitForSeconds(0.5f);
+        navigate.GoBack();
+        yield return 0;
+    }
+    public void QuitLevel()
     {
         this.EndLevel();
         navigate.GoBack();
@@ -238,6 +247,8 @@ public class GamePlay : JDMenu
     private void EndLevel()
     {
         frame.ResetFrame();
+        level.NextLevel();
+        timer.ResizeBar();
         toucher.ClearHistory();
 
         WeaponBar bar = WeaponBar.GetWeaponBar(this);

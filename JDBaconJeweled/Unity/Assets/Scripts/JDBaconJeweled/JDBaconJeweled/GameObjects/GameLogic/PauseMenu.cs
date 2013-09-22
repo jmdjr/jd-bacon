@@ -23,7 +23,14 @@ public class PauseMenu : JDMenu
     {
         if (this.menuButtons["Exit Game"] != null)
         {
+            this.menuButtons["Exit Game"].OnClick += ExitGame;
             this.menuButtons["Exit Game"].AssignMenu(navigator.GetMenu("Main Menu"));
         }
+    }
+
+    public void ExitGame(object sender, EventArgs args)
+    {
+        GamePlay gameplay = (GamePlay)navigator.GetMenu("GamePlay");
+        gameplay.QuitLevel();
     }
 }

@@ -49,7 +49,7 @@ public class DynamicText : JDMonoBehavior
 
     public void SetText(string text)
     {
-        TextMesh textual = this.gameObject.GetComponent<TextMesh>();
+        TextMesh textual = this.GetComponent<TextMesh>();
         textual.text = text;
     }
 }

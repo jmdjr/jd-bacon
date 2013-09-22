@@ -14,9 +14,16 @@ public class LoadGameMenu : JDMenu
     string saveFileName = "";
     private void SaveLoad()
     {
-        string root = "C:/" + saveFileName;
+        string root = "C:/GameSaves/";
         
         string testFileXML = "";
+
+        if (!Directory.Exists(root))
+        {
+            Directory.CreateDirectory(root);
+        }
+
+        root += saveFileName;
 
         if (File.Exists(root))
         {
@@ -68,9 +75,18 @@ public class LoadGameMenu : JDMenu
 
     public void SaveFile(object sender, EventArgs args)
     {
-        string saveFileName = sender.ToString();
+        JDMenuButton saveButton = sender as JDMenuButton;
+
+        saveFileName = sender.ToString();
         saveFileName = saveFileName.Substring(0, saveFileName.IndexOf("(") - 1) + ".xml";
         SaveLoad();
+
+        if (saveButton != null)
+        {
+            DynamicText savefileText = DynamicText.GetTextMesh(saveButton);
+            savefileText.SetText("PLAYER SAVED!");
+        }
+
         saveFileName = "";
     }
 }
