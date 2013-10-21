@@ -17,11 +17,11 @@ public class MenuNavigator : JDMonoGuiBehavior
         {
             if (instance == null)
             {
-                var go = GameObject.Find("Menus");
+                var go = GameObject.FindObjectOfType(typeof(MenuNavigator));
                 
                 if (go != null)
                 {
-                    instance = go.GetComponent<MenuNavigator>();
+                    instance = (MenuNavigator)go;
                 }
             }
 
@@ -47,7 +47,7 @@ public class MenuNavigator : JDMonoGuiBehavior
     {
         base.Awake();
 
-        var children = this.gameObject.GetComponentsInChildren<JDMenu>();
+        var children = GameObject.FindSceneObjectsOfType(typeof(JDMenu)).Cast<JDMenu>();
 
         foreach (var child in children)
         {
