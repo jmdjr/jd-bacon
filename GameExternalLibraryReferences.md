@@ -1,0 +1,20 @@
+# Introduction #
+Since XNA is such a core library, implementing everything necessary for any good game across multiple platforms, it can't account for all the important aspects of a game.  This is where external libraries come in.  Here, I will include links to and details about the External libraries used to assist in developing our game.
+
+# Details #
+First off, I would like to thank Nelxon and his XNA Developer Survival Kit 2 found [here](http://nelxon.com/resources/xdsk2/).  Most if not all of these external libraries are found at that link.
+So far, here are the external libraries I plan on using (as of 3/3/2012)
+
+XNAnimation - Chartacter modeling support, animation and texture mapping.
+
+ScreenManager - Used to manage scene transistions (title scene, game scene, etc)
+
+EasyXnaAudioComponent - simple and small class to assist managing the songs and sound effects in our game.
+
+Jitter - [from the makers of JigLibX](http://jitter-physics.com/wordpress/) Physics engine.  Simple and extensible, found through XDSK2.
+
+
+
+
+## reference material ##
+http://www.digitalrune.com/Support/Blog/tabid/719/EntryId/49/XNA-4-0-Class-Diagrams.aspx

@@ -1,0 +1,1 @@
+Adding 2d, 3d, UI, Cinematic, and Text asset folders.  There are also level folders within the 3d asset folders.
