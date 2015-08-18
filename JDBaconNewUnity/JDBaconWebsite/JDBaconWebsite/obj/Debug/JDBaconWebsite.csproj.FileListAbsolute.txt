@@ -1,0 +1,4 @@
+C:\Users\johndavis\Desktop\Moving Into Trunk\JDBaconNewUnity\JDBaconWebsite\JDBaconWebsite\bin\JDBaconWebsite.dll
+C:\Users\johndavis\Desktop\Moving Into Trunk\JDBaconNewUnity\JDBaconWebsite\JDBaconWebsite\bin\JDBaconWebsite.pdb
+C:\Users\johndavis\Desktop\Moving Into Trunk\JDBaconNewUnity\JDBaconWebsite\JDBaconWebsite\obj\Debug\JDBaconWebsite.dll
+C:\Users\johndavis\Desktop\Moving Into Trunk\JDBaconNewUnity\JDBaconWebsite\JDBaconWebsite\obj\Debug\JDBaconWebsite.pdb
