@@ -1,1 +1,0 @@
-This directory is the primary source when accessing images programatically.
