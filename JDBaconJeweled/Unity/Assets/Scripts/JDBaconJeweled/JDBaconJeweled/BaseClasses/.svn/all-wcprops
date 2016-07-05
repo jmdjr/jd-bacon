@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/615/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses
+END
+PredicateEqualityComparer.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/!svn/ver/430/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/PredicateEqualityComparer.cs.meta
+END
+JDISeeGUI.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDISeeGUI.cs.meta
+END
+GrimReaper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/!svn/ver/426/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/GrimReaper.cs
+END
+JDIObject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/!svn/ver/410/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIObject.cs
+END
+JDIAmCollidable.cs
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/411/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIAmCollidable.cs
+END
+JDMonoGuiBehavior.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoGuiBehavior.cs.meta
+END
+InputDelegates.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/!svn/ver/576/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/InputDelegates.cs.meta
+END
+JDEnumeration.cs
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/!svn/ver/421/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDEnumeration.cs
+END
+JDMonoBehavior.cs
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/!svn/ver/488/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoBehavior.cs
+END
+PredicateEqualityComparer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/!svn/ver/430/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/PredicateEqualityComparer.cs
+END
+SLerpTransitions.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/!svn/ver/465/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/SLerpTransitions.cs.meta
+END
+JDMonoGuiBehavior.cs
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/!svn/ver/536/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoGuiBehavior.cs
+END
+JDGame.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDGame.cs.meta
+END
+InputDelegates.cs
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/!svn/ver/576/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/InputDelegates.cs
+END
+JDMonoGUIBodyBehavior.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoGUIBodyBehavior.cs.meta
+END
+JDISavableObject.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/!svn/ver/601/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDISavableObject.cs.meta
+END
+SLerpTransitions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/465/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/SLerpTransitions.cs
+END
+JDMonoBodyBehavior.cs
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/448/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoBodyBehavior.cs
+END
+JDEnumerationExtension.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDEnumerationExtension.cs.meta
+END
+JDGame.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/426/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDGame.cs
+END
+JDStateMachineSystem.cs
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/!svn/ver/410/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDStateMachineSystem.cs
+END
+JDEnumeration.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDEnumeration.cs.meta
+END
+JDMonoGUIBodyBehavior.cs
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/!svn/ver/410/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoGUIBodyBehavior.cs
+END
+JDMonoBehavior.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoBehavior.cs.meta
+END
+JDISavableObject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/601/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDISavableObject.cs
+END
+PlayerStatsActions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/601/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/PlayerStatsActions.cs
+END
+JDIHaveScriptHandles.cs
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/!svn/ver/410/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIHaveScriptHandles.cs
+END
+JDDelegates.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/421/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDDelegates.cs.meta
+END
+JDEnumerationExtension.cs
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/!svn/ver/421/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDEnumerationExtension.cs
+END
+JDGameUtilz.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDGameUtilz.cs.meta
+END
+DebugManager.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/!svn/ver/427/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/DebugManager.cs.meta
+END
+JDISeeGUI.cs
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/!svn/ver/410/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDISeeGUI.cs
+END
+JDMonoBodyBehavior.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDMonoBodyBehavior.cs.meta
+END
+JDDelegates.cs
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/!svn/ver/576/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDDelegates.cs
+END
+WikiCoroutine.meta
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/615/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/WikiCoroutine.meta
+END
+JDStateMachineSystem.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDStateMachineSystem.cs.meta
+END
+JDGameUtilz.cs
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/!svn/ver/601/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDGameUtilz.cs
+END
+PlayerStatsActions.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/!svn/ver/601/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/PlayerStatsActions.cs.meta
+END
+DebugManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/!svn/ver/430/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/DebugManager.cs
+END
+GrimReaper.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/426/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/GrimReaper.cs.meta
+END
+JDIObject.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIObject.cs.meta
+END
+JDIHaveScriptHandles.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIHaveScriptHandles.cs.meta
+END
+JDIAmCollidable.cs.meta
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/!svn/ver/416/JDBaconJeweled/Unity/Assets/Scripts/JDBaconJeweled/JDBaconJeweled/BaseClasses/JDIAmCollidable.cs.meta
+END

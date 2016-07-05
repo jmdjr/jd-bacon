@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<bulletDefinitions>
+  <JDBullet>
+    <Id>1</Id>
+    <Name>9mm</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>1</ZombieKillNumber>
+    <bulletDebugChar>@</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/9mm</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>2</Id>
+    <Name>22Caliber</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>2</ZombieKillNumber>
+    <bulletDebugChar>#</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/22 Caliber</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>3</Id>
+    <Name>44Caliber</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>2</AccessedLevel>
+    <ZombieKillNumber>3</ZombieKillNumber>
+    <bulletDebugChar>%</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/44 Caliber</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>4</Id>
+    <Name>50Caliber</Name>
+    <Unlocked>true</Unlocked>
+    <AccessedLevel>0</AccessedLevel>
+    <ZombieKillNumber>4</ZombieKillNumber>
+    <bulletDebugChar>*</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/50 Caliber</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>5</Id>
+    <Name>AK47</Name>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>1</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/AK47</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>6</Id>
+    <Name>P90</Name>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>2</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/P90</ResourceName>
+  </JDBullet>
+  <JDBullet>
+    <Id>7</Id>
+    <Name>ShotgunShell</Name>
+    <Unlocked>false</Unlocked>
+    <AccessedLevel>3</AccessedLevel>
+    <ZombieKillNumber>5</ZombieKillNumber>
+    <bulletDebugChar>X</bulletDebugChar>
+    <ResourceName>GameObject Prefabs/NewFrame/Bullets/ShotgunShell</ResourceName>
+  </JDBullet>
+</bulletDefinitions>
